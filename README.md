@@ -58,14 +58,14 @@
 ## 7 计算机网络
 
 - [网络是怎样连接的.pdf](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的.pdf)
+- [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的学习笔记.md)
 - [计算机网络 第七版（谢希仁）.pdf](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络.pdf)
+- [谢希仁 计算机网络（第7版）学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络学习笔记.md)
 - [TCP/IP 协议](https://github.com/Corner430/study-notes/blob/main/计算机网络/TCPIP协议/TCPIP协议.md)
 - UDP协议
 - [HTTP 协议](https://github.com/Corner430/study-notes/blob/main/计算机网络/HTTP协议/HTTP协议.md)
 - Websocket协议
 - RPC
-- [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的学习笔记.md)
-- [谢希仁 计算机网络（第7版）学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络学习笔记.md)
 
 ## 8 数据库
 

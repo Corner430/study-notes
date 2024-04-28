@@ -83,6 +83,14 @@
   - [9.3 远程传输命令](#93-远程传输命令)
   - [9.4 不间断会话服务](#94-不间断会话服务)
 - [第 10 章 使用 apache 服务部署静态网站](#第-10-章-使用-apache-服务部署静态网站)
+- [第 11 章 使用 vsftpd 服务传输文件](#第-11-章-使用-vsftpd-服务传输文件)
+  - [11.1 ftp 服务](#111-ftp-服务)
+  - [vsftpd(very secure ftp daemon，非常安全的 FTP 守护进程)](#112-vsftpdvery-secure-ftp-daemon非常安全的ftp守护进程)
+- [第 12 章 使用Samba 或 NFS 实现文件共享](#第-12-章-使用-samba-或-nfs-实现文件共享)
+  - [12.1 Samba 介绍](#121-samba-介绍)
+  - [12.2 安装与使用 Samba](#122-安装与使用-samba)
+  - [12.3 NFS 介绍](#123-nfs-介绍)
+  - [12.4 autofs 自动挂载服务](#124-autofs-自动挂载服务)
 
 # 第 1 章 部署虚拟环境安装 Linux 系统
 
@@ -882,229 +890,57 @@ SSH、FTP、Telnet 都可用来进行远程登陆，但ssh最安全
 
 # 第 10 章 使用 Apache 服务部署静态网站
 
-1. 目前能够提供 Web 网络服务的程序有 IIS、Nginx 和 Apache 等。其中，IIS（Internet Information Services，互联网信息服务）是 Windows 系统中默认的 Web 服务程序，这是一款图形化的网站管理工具，**不仅可以提供 Web 网站服务，还可以提供 FTP、NMTP、SMTP等服务**
+# 第 11 章 使用 vsftpd 服务传输文件
 
-2. Apache 服务程序可以运行在 Linux 系统、UNIX 系统甚至是 Windows 系统中，支持基于 IP、域名及端口号的虚拟主机功能，支持多种认证方式，集成有代理服务器模块、安全Socket层（SSL），能够实时监视服务状态与定制日志消息，并优则会各类丰富的模块支持。
+## 11.1 FTP 服务
 
---------------------------------------
+- FTP 基于客户端/服务端模式，默认使用20、21号端口
+  - 端口20（数据端口）用于进行数据传输
+  - 端口21（命令端口）用于接受客户端发出的相关FTP命令与参数
 
-> **详细内容参加课本**
+- FTP 工作模式
+  - 主动模式：FTP 服务器主动向客户端发起连接请求
+  - 被动模式：FTP 服务器等待客户端发起连接请求（FTP的默认工作模式）
 
-### 1. Apache 服务的安装与配置
+## 11.2 vsftpd（very secure ftp daemon，非常安全的FTP守护进程）
 
-安装和使用Apache HTTP服务器（通常称为Apache）是在Ubuntu上托管网站的常见方法之一。下面是一份简单的指南，指导您如何在Ubuntu上安装和使用Apache。
 
-**安装Apache**
+#  第 12 章 使用 Samba 或 NFS 实现文件共享
 
-1. 打开终端：使用Ctrl + Alt + T快捷键，或者从应用程序菜单中找到终端。
+## 12.1 Samba 介绍
 
-2. 确保您的系统已更新：
-   
-   ```
-   sudo apt update
-   sudo apt upgrade
-   ```
+Samba 是一个开源的网络文件共享协议，允许不同操作系统之间共享文件和打印机
 
-3. 安装Apache：
+## 12.2 安装与使用 Samba
 
-   ```
-   sudo apt install apache2
-   ```
+- 配置文件 `/etc/samba/smb.conf`
+- 配置文件可以定义共享资源，设置身份验证、访问控制等
 
-4. 安装过程中，系统会要求您确认安装，按Enter键继续。安装完成后，Apache服务会自动启动。
-
-**管理Apache服务**
-
-1. 启动Apache服务：
-
-   ```
-   sudo systemctl start apache2
+   ```plaintext
+   [share_name]
+   path = /path/to/shared/folder
+   writable = yes
+   valid users = your_username
    ```
 
-2. 停止Apache服务：
+   - `share_name` 是共享的名称。
+   - `path` 是共享资源的路径。
+   - `writable` 指定共享是否可写入。
+   - `valid users` 指定可以访问共享的用户。
 
-   ```
-   sudo systemctl stop apache2
-   ```
+- 检查配置文件的语法错误：`testparm`
+- 添加 Samba 用户：`smbpasswd -a your_username`
+- 重启 Samba 服务：`systemctl restart smbd`
+- 使用 Samba
+  - Windows 映射网络驱动器
+  - Linux 使用 `smbclient` 或 `smbmount` 命令
 
-3. 重启Apache服务：
+## 12.3 NFS 介绍
 
-   ```
-   sudo systemctl restart apache2
-   ```
+- NFS（Network File System）是一种分布式文件系统协议，用于在网络上共享文件和目录
 
-4. 禁用Apache服务，使其在系统启动时不自动启动：
+- NFS工作基于客户端-服务器模型
 
-   ```
-   sudo systemctl disable apache2
-   ```
+- 需要同时配置服务端和客户端
 
-5. 启用Apache服务，使其在系统启动时自动启动：
-
-   ```
-   sudo systemctl enable apache2
-   ```
-
-**配置Apache**
-
-Apache的主要配置文件是`/etc/apache2/apache2.conf`，但为了更好的模块化和安全性，Apache将其配置拆分为多个文件和目录。重要的配置目录包括：
-
-- `/etc/apache2/sites-available/`：包含虚拟主机配置文件。每个网站通常有一个独立的配置文件。
-- `/etc/apache2/sites-enabled/`：包含已启用的虚拟主机配置文件的符号链接。启用的配置文件会在Apache启动时生效。
-- `/etc/apache2/conf-available/`：包含全局配置片段。这些可以在虚拟主机配置中包含。
-- `/etc/apache2/conf-enabled/`：包含已启用的全局配置片段的符号链接。
-
-您可以使用文本编辑器（如Nano或Vim）编辑这些配置文件来配置Apache以满足您的需求。
-
-**创建虚拟主机**
-
-虚拟主机允许您在同一台服务器上托管多个网站。要创建虚拟主机，可以使用以下步骤：
-
-1. 在`/etc/apache2/sites-available/`目录中创建一个新的配置文件，例如`mywebsite.conf`：
-
-   ```
-   sudo nano /etc/apache2/sites-available/mywebsite.conf
-   ```
-
-2. 在配置文件中定义虚拟主机的基本设置，如下所示：
-
-   ```apache
-   <VirtualHost *:80>
-       ServerAdmin webmaster@mywebsite.com
-       ServerName mywebsite.com
-       DocumentRoot /var/www/mywebsite
-   </VirtualHost>
-   ```
-
-   在这里，`ServerName`是您的域名，`DocumentRoot`是您网站的根目录。
-
-3. 创建网站的根目录：
-
-   ```
-   sudo mkdir /var/www/mywebsite
-   ```
-
-4. 为网站根目录设置权限，以便Apache能够访问：
-
-   ```
-   sudo chown -R www-data:www-data /var/www/mywebsite
-   ```
-
-5. 启用虚拟主机配置：
-
-   ```
-   sudo a2ensite mywebsite
-   ```
-
-6. 重新加载Apache以使更改生效：
-
-   ```
-   sudo systemctl reload apache2
-   ```
-
-现在，您的网站应该可以通过浏览器访问，使用您在虚拟主机配置中定义的域名。
-
-这只是一个基本的Apache安装和配置指南，您可以根据自己的需求进一步调整和扩展Apache的配置。如果您打算在网站上运行PHP、数据库或其他应用程序，还需要安装和配置相应的软件。
-
-### SELinux安全子系统
-- `setenforce`: 设置SELinux的应用模式，是强制、执行还是停用
-- [semanage: 默认目录的安全上下文查询与修改](https://wangchujiang.com/linux-command/c/semanage.html)
-- [restorecon: 恢复文件的安全上下文](https://wangchujiang.com/linux-command/c/restorecon.html)
-- [getenforce: 显示当前SELinux的应用模式，是强制、执行还是停用](https://wangchujiang.com/linux-command/c/getenforce.html)
-
-SELinux（Security-Enhanced Linux）是一种强制访问控制（MAC）安全机制，最初由美国国家安全局（NSA）开发，用于增强Linux操作系统的安全性。它提供了比传统的Linux文件权限更细粒度的访问控制，以减少潜在的系统漏洞和恶意活动。以下是有关SELinux的详细解释：
-
-**SELinux核心概念：**
-
-1. **强制访问控制（MAC）：** SELinux引入了强制访问控制的概念，与传统的Linux访问控制模型（基于用户和组的访问控制列表）不同。**在MAC中，每个文件和进程都与一个安全策略标签相关联，这些标签决定了它们的访问权限。**
-
-2. **安全策略标签：** 每个文件、目录、进程和资源都有一个安全策略标签，其中包括了**安全上下文信息**。这些标签用于确定哪些主体（用户或进程）可以访问哪些对象。
-
-3. **主体（Subjects）：** 主体是请求访问资源的实体，通常是用户或进程。主体需要满足安全策略要求才能访问对象。
-
-4. **对象（Objects）：** 对象是需要受到保护的资源，如文件、目录、网络端口等。对象的访问权限由其安全策略标签定义。
-
-**SELinux策略：**
-
-SELinux使用策略来定义系统的安全要求。策略是一组规则，定义了主体（用户或进程）可以访问哪些对象（文件、目录等）。策略分为两个主要部分：
-
-1. **强制策略（Mandatory Access Control - MAC）：** 这部分定义了系统的强制访问规则，限制了主体对对象的访问。即使超级用户（root）也受到这些规则的约束。
-
-2. **自由策略（Type Enforcement - TE）：** 这部分允许系统管理员根据需要定制特定应用程序或服务的访问规则。这些规则允许更灵活的访问控制。
-
-**SELinux策略模式：**
-
-SELinux有三种主要策略模式：
-
-1. **Enforcing（强制）：** 这是默认模式，强制执行安全策略规则。如果主体试图违反规则，其访问将被拒绝，并在日志中记录。
-
-2. **Permissive（宽松）：** 在这种模式下，SELinux仍然记录违反策略的访问请求，但不会阻止它们。这有助于系统管理员查找可能会导致问题的规则，而无需中断服务。
-
-3. **Disabled（禁用）：** 在这种模式下，SELinux完全被禁用，不应该在生产环境中使用，因为它会降低系统的安全性。
-
-**SELinux工具：**
-
-1. **`sestatus`：** 用于查看SELinux状态和模式的命令。
-2. **`getenforce`：** 用于检查当前SELinux强制模式。
-3. **`setenforce`：** 用于更改SELinux强制模式。
-4. **`semanage`：** 用于管理SELinux策略的命令，包括添加或修改策略规则。
-5. **`audit2allow`：** 用于生成自定义策略规则的工具，以允许先前被拒绝的操作。
-6. **`restorecon`：** 用于还原文件或目录的安全上下文。
-
-虽然SELinux可以提供更高级别的安全性，但它也可能导致一些配置和权限问题。因此，对于新手来说，可能需要一些时间来理解和管理SELinux。在生产环境中，正确配置和管理SELinux可以提供额外的安全保障。
-
-### 3. 个人用户主页功能
-- [htpasswd: apache服务器创建密码认证文件](https://wangchujiang.com/linux-command/c/htpasswd.html)
-
-### 4. 虚拟主机功能
-**利用虚拟主机功能，可以把一台处理运行状态的物理服务器分割成多个“虚拟的服务器”**
-
-Apache的虚拟主机（Virtual Host）功能允许一台运行中的物理服务器分割成多个虚拟服务器，每个虚拟服务器可以托管不同的网站或应用程序。**这些虚拟服务器可以根据用户的请求中的不同IP地址、主机域名或端口号来提供不同的网站内容**。这是一种非常有用的功能，特别适用于在单个物理服务器上托管多个网站，从而实现更好的资源共享、隔离性和灵活性。
-
-Apache提供了两种主要类型的虚拟主机：名字虚拟主机（Name-based Virtual Hosts）和IP虚拟主机（IP-based Virtual Hosts）。
-
-**1. 名字虚拟主机（Name-based Virtual Hosts）：**
-
-名字虚拟主机是最常见的虚拟主机类型。它基于HTTP请求头中的主机域名来区分不同的虚拟主机。这意味着多个域名可以映射到同一个IP地址上，并且Apache将根据请求中的主机域名来确定哪个虚拟主机提供服务。
-
-**配置名字虚拟主机：**
-
-要配置名字虚拟主机，您需要在Apache的配置文件中定义不同虚拟主机的设置，通常是在`/etc/apache2/sites-available/`目录中创建不同的配置文件，每个文件对应一个虚拟主机。以下是一个简单的示例：
-
-```apache
-<VirtualHost *:80>
-    ServerAdmin webmaster@example.com
-    ServerName www.example.com
-    DocumentRoot /var/www/example
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerAdmin webmaster@another-example.com
-    ServerName www.another-example.com
-    DocumentRoot /var/www/another-example
-</VirtualHost>
-```
-
-**2. IP虚拟主机（IP-based Virtual Hosts）：**
-
-IP虚拟主机是基于不同IP地址来区分虚拟主机的。每个虚拟主机都关联一个独立的IP地址，而不是主机域名。这意味着每个虚拟主机都可以使用不同的IP地址来提供服务。
-
-**配置IP虚拟主机：**
-
-要配置IP虚拟主机，您需要在Apache的配置文件中为每个虚拟主机分配独立的IP地址，然后将每个虚拟主机的设置定义在不同的配置块中。
-
-```apache
-<VirtualHost 192.168.1.100:80>
-    ServerAdmin webmaster@example.com
-    DocumentRoot /var/www/example
-</VirtualHost>
-
-<VirtualHost 192.168.1.101:80>
-    ServerAdmin webmaster@another-example.com
-    DocumentRoot /var/www/another-example
-</VirtualHost>
-```
-
-无论您选择名字虚拟主机还是IP虚拟主机，都需要确保每个虚拟主机的配置在Apache中是唯一的。一旦配置完成，您需要启用这些虚拟主机配置，通常使用`a2ensite`命令（在Ubuntu上）并重新加载Apache。
-
-通过使用Apache的虚拟主机功能，您可以在一台物理服务器上轻松地托管多个网站，为不同的域名或IP地址提供不同的内容，从而实现更好的资源共享和隔离，以满足不同网站或应用程序的需求。
+## 12.4 autofs 自动挂载服务

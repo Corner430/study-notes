@@ -16,9 +16,10 @@
 ## 1 Linux 运维
 ### Linux
 
-[Linux 就该这么学.pdf](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux就该这么学.pdf)
+- [Linux 就该这么学.pdf](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux就该这么学.pdf)
 - [Linux 就该这么学笔记](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux就该这么学笔记.md)
 - [Linux 常用操作示例](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux常用操作示例.md)
+- [Vim 笔记](https://github.com/Corner430/study-notes/blob/main/Linux运维/vim笔记.md)
 
 
 ## 2 Docker

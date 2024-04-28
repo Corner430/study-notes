@@ -1,4 +1,5 @@
 * [1 Linux运维](#1-linux-运维)
+  * [Linux](#linux)
 
   * [3 数据库](#3-%E6%95%B0%E6%8D%AE%E5%BA%93)
     * [MySQL](#mysql)
@@ -20,9 +21,10 @@
 # 1 Linux 运维
 ## Linux
 
+- [Linux 就该这么学笔记](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux就该这么学笔记.md)
+
 - [Linux 命令笔记(Cent OS7)](https://github.com/DragonV96/study-notes/blob/master/Linux运维/Linux/Linux命令笔记.md)
 - [Shell 脚本笔记](https://github.com/DragonV96/study-notes/blob/master/Linux运维/Linux/Shell脚本笔记.md)
-
 
 
 ## 3 数据库

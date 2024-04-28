@@ -2,15 +2,16 @@
   - [Linux](#linux)
   - [Vim](#vim)
 - [2 Docker](#2-docker)
-- [3 工具](#3-工具)
+- [3 python](#3-python)
+- [4 工具](#4-工具)
   - [git](#git)
-- [4 数据库](#4-数据库)
+- [5 数据库](#5-数据库)
   - [MySQL](#mysql)
-- [5 数据结构与算法](#5-数据结构与算法)
+- [6 数据结构与算法](#6-数据结构与算法)
   - [数据结构](#数据结构)
   - [算法](#算法)
-- [6 计算机网络](#6-计算机网络)
-- [7 设计模式](#7-设计模式)
+- [7 计算机网络](#7-计算机网络)
+- [8 设计模式](#8-设计模式)
 
 
 ## 1 Linux 运维
@@ -27,18 +28,21 @@
 
 ## 2 Docker
 
-- [Docker 笔记](https://github.com/Corner430/study-notes/blob/master/docker/Docker笔记.md)
-- [Docker-compose.yml 文件参数详解](https://github.com/Corner430/study-notes/blob/master/docker/Docker-compose.yml文件参数详解.md)
+- [Docker 笔记](https://github.com/Corner430/study-notes/blob/main/docker/Docker笔记.md)
+- [Docker-compose.yml 文件参数详解](https://github.com/Corner430/study-notes/blob/main/docker/Docker-compose.yml文件参数详解.md)
 
+## 3 python
 
-## 3 工具
+- [python 基础](https://github.com/Corner430/study-notes/blob/main/python/python笔记.md)
+
+## 4 工具
 
 ### git
 
 - [git 笔记](https://github.com/Corner430/study-notes/blob/master/工具/git/git笔记.md)
 
 
-## 4 数据库
+## 5 数据库
 
 ### MySQL
 
@@ -47,7 +51,7 @@
 - [MySQL 架构设计学习笔记](https://github.com/Corner430/study-notes/blob/master/数据库/MySQL/Mysql架构设计学习笔记.md)
 - [MySQL 学习笔记](https://github.com/Corner430/study-notes/blob/master/数据库/MySQL/Mysql学习笔记.md)
 
-## 5 数据结构与算法
+## 6 数据结构与算法
 
 ### 数据结构
 
@@ -55,7 +59,7 @@
 
 - [经典八大排序算法](https://github.com/Corner430/study-notes/blob/master/数据结构与算法/算法/经典八大排序算法.md)
 
-## 6 计算机网络
+## 7 计算机网络
 
 - [TCP/IP 协议](https://github.com/Corner430/study-notes/blob/master/计算机网络/TCPIP协议/TCPIP协议.md)
 - UDP协议
@@ -63,7 +67,7 @@
 - Websocket协议
 - RPC
 
-## 7 设计模式
+## 8 设计模式
 
 - [设计模式学习笔记](https://github.com/Corner430/study-notes/blob/master/设计模式/设计模式学习笔记.md)
 

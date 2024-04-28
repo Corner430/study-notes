@@ -2,7 +2,6 @@
   - [Linux](#linux)
   - [Vim](#vim)
 - [2 Docker](#2-docker)
-  - [Kubernetes](#kubernetes)
 - [3 工具](#3-工具)
   - [git](#git)
 - [4 数据库](#4-数据库)
@@ -28,10 +27,9 @@
 
 ## 2 Docker
 
-- [Docker 命令笔记](https://github.com/Corner430/study-notes/blob/master/Linux运维/docker/Docker命令笔记.md)
-- [Docker-compose.yml 文件参数详解](https://github.com/Corner430/study-notes/blob/master/Linux运维/docker/Docker-compose.yml文件参数详解.md)
+- [Docker 笔记](https://github.com/Corner430/study-notes/blob/master/docker/Docker笔记.md)
+- [Docker-compose.yml 文件参数详解](https://github.com/Corner430/study-notes/blob/master/docker/Docker-compose.yml文件参数详解.md)
 
-### Kubernetes
 
 ## 3 工具
 

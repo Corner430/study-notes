@@ -1,20 +1,31 @@
+- [1 数组](#1-数组)
+  - [704. 二分查找](#704-二分查找)
+  - [35. 搜索插入位置](#35-搜索插入位置)
+  - [34. 在排序数组中查找元素的第一个和最后一个位置](#34-在排序数组中查找元素的第一个和最后一个位置)
+  - [69. x 的平方根](#69-x-的平方根)
+  - [367. 有效的完全平方数](#367-有效的完全平方数)
+  - [27. 移除元素](#27-移除元素)
+  - [26. 删除排序数组中的重复项](#26-删除排序数组中的重复项)
+  - [283. 移动零](#283-移动零)
+  - [844. 比较含退格的字符串](#844-比较含退格的字符串)
+  - [977. 有序数组的平方](#977-有序数组的平方)
+  - [209. 长度最小的子数组](#209-长度最小的子数组)
+  - [904. 水果成篮](#904-水果成篮)
+  - [76. 最小覆盖子串](#76-最小覆盖子串)
+  - [59. 螺旋矩阵 II](#59-螺旋矩阵-ii)
+  - [54. 螺旋矩阵](#54-螺旋矩阵)
+  - [剑指Offer 29. 顺时针打印矩阵](#剑指offer-29-顺时针打印矩阵)
+  - [167. 两数之和 II - 输入有序数组](#167-两数之和-ii---输入有序数组)
+  - [344. 反转字符串](#344-反转字符串)
+  - [5. 最长回文子串](#5-最长回文子串)
+  - [83. 删除排序链表中的重复元素](#83-删除排序链表中的重复元素)
+  - [剑指 Offer 57. 和为s的两个数字](#剑指-offer-57-和为s的两个数字)
+  - [剑指 Offer II 006. 排序数组中两个数字之和](#剑指-offer-ii-006-排序数组中两个数字之和)
+
+
 ## 1 数组
 
 ### [704. 二分查找](https://leetcode.cn/problems/binary-search/description/)
-
-给定一个 `n` 个元素有序的（升序）整型数组 `nums` 和一个目标值 `target`  ，写一个函数搜索 `nums` 中的 `target`，如果目标值存在返回下标，否则返回 `-1`。
-
-**示例 1:**
-
-输入: `nums = [-1,0,3,5,9,12]`, `target = 9`
-输出: `4`
-解释: `9` 出现在 `nums` 中并且下标为 `4`
-
-**示例 2:**
-
-输入: `nums = [-1,0,3,5,9,12]`, `target = 2`
-输出: `-1`
-解释: `2` 不存在 `nums` 中因此返回 `-1`
 
 ***python***
 
@@ -56,25 +67,6 @@ public:
 
 ### [35. 搜索插入位置](https://leetcode.cn/problems/search-insert-position/description/)
 
-给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
-
-请必须使用时间复杂度为 `O(log n)` 的算法。
-
-**示例 1:**
-
-输入：`nums = [1,3,5,6]`, `target = 5`
-输出：`2`
-
-**示例 2:**
-
-输入：`nums = [1,3,5,6]`, `target = 2`
-输出：`1`
-
-**示例 3:**
-
-输入：`nums = [1,3,5,6]`, `target = 7`
-输出：`4`
-
 ***python***
 
 ```python
@@ -115,23 +107,19 @@ public:
 
 ### [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/)
 
-给定一个按照升序排列的整数数组 `nums`，和一个目标值 `target`。找出给定目标值在数组中的开始位置和结束位置。
+***python***
 
-如果数组中不存在目标值 `target`，返回 `[-1, -1]`。
+```python
 
-**进阶：**
+```
 
-你可以设计并实现时间复杂度为 `O(log n)` 的算法解决此问题吗？
+***cpp***
 
-**示例 1:**
+```cpp
 
-输入：`nums = [5,7,7,8,8,10]`, `target = 8`
-输出：`[3,4]`
+```
 
-**示例 2:**
-
-输入：`nums = [5,7,7,8,8,10]`, `target = 6`
-输出：`[-1,-1]`
+### [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/description/)
 
 ***python***
 
@@ -145,3 +133,234 @@ public:
 
 ```
 
+### [367. 有效的完全平方数](https://leetcode-cn.com/problems/valid-perfect-square/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [27. 移除元素](https://leetcode-cn.com/problems/remove-element/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [26. 删除排序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [283. 移动零](https://leetcode-cn.com/problems/move-zeroes/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [844. 比较含退格的字符串](https://leetcode-cn.com/problems/backspace-string-compare/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [977. 有序数组的平方](https://leetcode-cn.com/problems/squares-of-a-sorted-array/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [209. 长度最小的子数组](https://leetcode-cn.com/problems/minimum-size-subarray-sum/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [904. 水果成篮](https://leetcode-cn.com/problems/fruit-into-baskets/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [76. 最小覆盖子串](https://leetcode-cn.com/problems/minimum-window-substring/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [59. 螺旋矩阵 II](https://leetcode-cn.com/problems/spiral-matrix-ii/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [54. 螺旋矩阵](https://leetcode-cn.com/problems/spiral-matrix/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [剑指Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [167. 两数之和 II - 输入有序数组](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [344. 反转字符串](https://leetcode-cn.com/problems/reverse-string/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/description/)
+
+***python***
+
+```python
+
+```
+
+***cpp***
+
+```cpp
+
+```
+
+### [剑指 Offer 57. 和为s的两个数字](https://leetcode-cn.com/problems/he-wei-sde-liang-ge-shu-zi-lcof/description/)
+
+[]()
+
+### [剑指 Offer II 006. 排序数组中两个数字之和](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
+
+[]()

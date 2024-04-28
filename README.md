@@ -1,5 +1,6 @@
 - [1 Linux 运维](#1-linux-运维)
   - [Linux](#linux)
+  - [Vim](#vim)
 - [2 Docker](#2-docker)
   - [Kubernetes](#kubernetes)
 - [3 工具](#3-工具)
@@ -19,6 +20,9 @@
 - [Linux 就该这么学.pdf](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux就该这么学.pdf)
 - [Linux 就该这么学笔记](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux就该这么学笔记.md)
 - [Linux 常用操作示例](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux常用操作示例.md)
+
+### Vim
+
 - [Vim 笔记](https://github.com/Corner430/study-notes/blob/main/Linux运维/vim笔记.md)
 
 

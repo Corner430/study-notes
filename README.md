@@ -9,9 +9,9 @@
 - [6 数据结构与算法](#6-数据结构与算法)
   - [数据结构](#数据结构)
   - [算法](#算法)
-- [7 数据库](#7-数据库)
+- [7 计算机网络](#7-计算机网络)
+- [8 数据库](#8-数据库)
   - [MySQL](#mysql)
-- [8 计算机网络](#8-计算机网络)
 - [9 设计模式](#9-设计模式)
 
 
@@ -55,7 +55,19 @@
 - [经典八大排序算法](https://github.com/Corner430/study-notes/blob/master/数据结构与算法/算法/经典八大排序算法.md)
 - [leetcode](https://github.com/Corner430/study-notes/blob/master/数据结构与算法/算法/leetcode.md)
 
-## 7 数据库
+## 7 计算机网络
+
+- [网络是怎样连接的.pdf](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的.pdf)
+- [计算机网络 第七版（谢希仁）.pdf](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络.pdf)
+- [TCP/IP 协议](https://github.com/Corner430/study-notes/blob/master/计算机网络/TCPIP协议/TCPIP协议.md)
+- UDP协议
+- [HTTP 协议](https://github.com/Corner430/study-notes/blob/master/计算机网络/HTTP协议/HTTP协议.md)
+- Websocket协议
+- RPC
+- [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/master/计算机网络/网络是怎样连接的学习笔记.md)
+- [谢希仁 计算机网络（第7版）学习笔记](https://github.com/Corner430/study-notes/blob/master/计算机网络/计算机网络学习笔记.md)
+
+## 8 数据库
 
 ### MySQL
 
@@ -64,13 +76,6 @@
 - [MySQL 架构设计学习笔记](https://github.com/Corner430/study-notes/blob/master/数据库/MySQL/Mysql架构设计学习笔记.md)
 - [MySQL 学习笔记](https://github.com/Corner430/study-notes/blob/master/数据库/MySQL/Mysql学习笔记.md)
 
-## 8 计算机网络
-
-- [TCP/IP 协议](https://github.com/Corner430/study-notes/blob/master/计算机网络/TCPIP协议/TCPIP协议.md)
-- UDP协议
-- [HTTP 协议](https://github.com/Corner430/study-notes/blob/master/计算机网络/HTTP协议/HTTP协议.md)
-- Websocket协议
-- RPC
 
 ## 9 设计模式
 

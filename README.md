@@ -44,7 +44,7 @@
 
 ### git
 
-- [git 笔记](https://github.com/Corner430/study-notes/blob/master/工具/git/git笔记.md)
+- [git 笔记](https://github.com/Corner430/study-notes/blob/main/工具/git/git笔记.md)
 
 ## 6 数据结构与算法
 
@@ -52,31 +52,31 @@
 
 ### 算法
 
-- [经典八大排序算法](https://github.com/Corner430/study-notes/blob/master/数据结构与算法/算法/经典八大排序算法.md)
-- [leetcode](https://github.com/Corner430/study-notes/blob/master/数据结构与算法/算法/leetcode.md)
+- [经典八大排序算法](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/经典八大排序算法.md)
+- [leetcode](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/leetcode.md)
 
 ## 7 计算机网络
 
 - [网络是怎样连接的.pdf](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的.pdf)
 - [计算机网络 第七版（谢希仁）.pdf](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络.pdf)
-- [TCP/IP 协议](https://github.com/Corner430/study-notes/blob/master/计算机网络/TCPIP协议/TCPIP协议.md)
+- [TCP/IP 协议](https://github.com/Corner430/study-notes/blob/main/计算机网络/TCPIP协议/TCPIP协议.md)
 - UDP协议
-- [HTTP 协议](https://github.com/Corner430/study-notes/blob/master/计算机网络/HTTP协议/HTTP协议.md)
+- [HTTP 协议](https://github.com/Corner430/study-notes/blob/main/计算机网络/HTTP协议/HTTP协议.md)
 - Websocket协议
 - RPC
-- [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/master/计算机网络/网络是怎样连接的学习笔记.md)
-- [谢希仁 计算机网络（第7版）学习笔记](https://github.com/Corner430/study-notes/blob/master/计算机网络/计算机网络学习笔记.md)
+- [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的学习笔记.md)
+- [谢希仁 计算机网络（第7版）学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络学习笔记.md)
 
 ## 8 数据库
 
 ### MySQL
 
-- [MySQL 操作笔记](https://github.com/Corner430/study-notes/blob/master/数据库/MySQL/Mysql操作笔记.md)
-- [MySQL 实战笔记](https://github.com/Corner430/study-notes/blob/master/数据库/MySQL/Mysql实战笔记.md)
-- [MySQL 架构设计学习笔记](https://github.com/Corner430/study-notes/blob/master/数据库/MySQL/Mysql架构设计学习笔记.md)
-- [MySQL 学习笔记](https://github.com/Corner430/study-notes/blob/master/数据库/MySQL/Mysql学习笔记.md)
+- [MySQL 操作笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql操作笔记.md)
+- [MySQL 实战笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql实战笔记.md)
+- [MySQL 架构设计学习笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql架构设计学习笔记.md)
+- [MySQL 学习笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql学习笔记.md)
 
 
 ## 9 设计模式
 
-- [设计模式学习笔记](https://github.com/Corner430/study-notes/blob/master/设计模式/设计模式学习笔记.md)
+- [设计模式学习笔记](https://github.com/Corner430/study-notes/blob/main/设计模式/设计模式学习笔记.md)

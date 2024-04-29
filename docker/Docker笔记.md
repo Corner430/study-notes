@@ -30,10 +30,11 @@
     - [6.2.2 Docker Compose 的使用](#622-docker-compose-的使用)
       - [6.2.2.1 编排 开机自启动 ssh 服务的 Ubuntu 系统](#6221-编排-开机自启动-ssh-服务的-ubuntu-系统)
       - [6.2.2.2 编排 Ubuntu + MySQL](#6222-编排-ubuntu--mysql)
-- [7 Docker 私有仓库](#7-docker-私有仓库)
-  - [7.1 私有仓库搭建](#71-私有仓库搭建)
-  - [7.2 将镜像上传至私有仓库](#72-将镜像上传至私有仓库)
-  - [7.3 从私有仓库拉取镜像](#73-从私有仓库拉取镜像)
+- [7 docker compose 相关命令](#7-docker-compose-相关命令)
+- [8 Docker 私有仓库](#8-docker-私有仓库)
+  - [8.1 私有仓库搭建](#81-私有仓库搭建)
+  - [8.2 将镜像上传至私有仓库](#82-将镜像上传至私有仓库)
+  - [8.3 从私有仓库拉取镜像](#83-从私有仓库拉取镜像)
 
 
 # 1 初识 docker
@@ -490,11 +491,44 @@ networks:
   my_network:
 ```
 
-# 7 Docker 私有仓库
+# 7 docker compose 相关命令
 
-> 一般要单独那一台做私有仓库，不要和其他服务混合在一起
+命令格式：`docker compose [OPTIONS] COMMAND`
 
-## 7.1 私有仓库搭建
+```bash
+Options:
+      --compatibility              以向后兼容模式运行compose
+  -f, --file stringArray           Compose配置文件
+  -p, --project-name string        项目名称
+
+Commands:
+  build       构建或重新构建服务
+  cp          在服务容器和本地文件系统之间复制文件/文件夹
+  create      为服务创建容器
+  down        停止和删除容器、网络
+  exec        在运行中的容器中执行命令
+  images      列出由创建的容器使用的镜像
+  logs        查看容器的输出
+  ls          列出运行中的compose项目
+  port        打印端口绑定的公共端口
+  ps          列出容器
+  restart     重启服务容器
+  rm          移除已停止的服务容器
+  run         在服务上运行一次性命令
+  start       启动服务
+  stats       显示容器的资源使用统计信息的实时流
+  stop        停止服务
+  top         显示运行中的进程
+  unpause     恢复服务
+  up          创建并启动容器
+  version     显示Docker Compose的版本信息
+```
+
+# 8 Docker 私有仓库
+
+> 一般要单独拿一台做私有仓库，不要和其他服务混合在一起
+
+## 8.1 私有仓库搭建
 
 ```bash
 # 1. 拉取私有仓库镜像
@@ -518,7 +552,7 @@ systemctl restart docker
 docker start registry
 ```
 
-## 7.2 将镜像上传至私有仓库
+## 8.2 将镜像上传至私有仓库
 
 ```bash
 # 1. 标记镜像为私有仓库的镜像
@@ -528,7 +562,7 @@ docker tag centos:7 私有仓库服务器ip:5000/centos:7
 docker push 私有仓库服务器ip:5000/centos:7
 ```
 
-## 7.3 从私有仓库拉取镜像
+## 8.3 从私有仓库拉取镜像
 
 ```bash
 # 从私有仓库拉取镜像

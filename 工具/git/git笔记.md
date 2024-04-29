@@ -1,5 +1,42 @@
 # git笔记
 
+- [git笔记](#git笔记)
+  - [1 基础概念](#1-基础概念)
+    - [1.1 git的区域](#11-git的区域)
+  - [2 常用命令](#2-常用命令)
+    - [2.1 配置本地ssh](#21-配置本地ssh)
+    - [2.2 git的基本操作流程](#22-git的基本操作流程)
+      - [2.2.1 克隆远程仓库的代码](#221-克隆远程仓库的代码)
+      - [2.2.2 本地代码提交流程](#222-本地代码提交流程)
+    - [2.3 tag的使用](#23-tag的使用)
+  - [3 各阶段代码回退撤销操作](#3-各阶段代码回退撤销操作)
+    - [3.1 丢弃工作区的修改](#31-丢弃工作区的修改)
+    - [3.2 撤销暂存区的修改](#32-撤销暂存区的修改)
+    - [3.3 撤销本地仓库的修改](#33-撤销本地仓库的修改)
+    - [3.4 撤销远程仓库的修改](#34-撤销远程仓库的修改)
+  - [4 推送冲突解决](#4-推送冲突解决)
+  - [5 分支管理](#5-分支管理)
+    - [5.1 本地分支管理](#51-本地分支管理)
+      - [5.1.1 创建本地分支并切换到该分支](#511-创建本地分支并切换到该分支)
+      - [5.1.2 推送到远程仓库分支](#512-推送到远程仓库分支)
+      - [5.1.3 删除本地分支](#513-删除本地分支)
+      - [5.1.4 本地分支合并冲突解决](#514-本地分支合并冲突解决)
+    - [5.2 远程分支管理](#52-远程分支管理)
+  - [6 高级操作](#6-高级操作)
+    - [6.1 电脑同时配置gitlab、github和gitee](#61-电脑同时配置gitlabgithub和gitee)
+      - [6.1.1 生成密钥](#611-生成密钥)
+      - [6.1.2 添加config配置](#612-添加config配置)
+      - [6.1.3 配置git仓库](#613-配置git仓库)
+    - [6.2 配置项目同时提交到github和gitee](#62-配置项目同时提交到github和gitee)
+      - [6.2.1 本地只有一个ssh-key的情况](#621-本地只有一个ssh-key的情况)
+      - [6.2.2 本地有多个ssh-key的情况](#622-本地有多个ssh-key的情况)
+  - [7 常见问题](#7-常见问题)
+    - [7.1 本地已配置ssh但push时仍需输账号密码](#71-本地已配置ssh但push时仍需输账号密码)
+    - [7.2 ssh -T git@github.com 报错](#72-ssh--t-gitgithubcom-报错)
+    - [7.3 提交时报未合并代码错误](#73-提交时报未合并代码错误)
+    - [7.4 误操作reset后恢复本地代码](#74-误操作reset后恢复本地代码)
+
+
 ## 1 基础概念
 
 ### 1.1 git的区域
@@ -18,6 +55,7 @@
 - 查看仓库名称：`git remote`，可在 `.git/config` 文件中查看和更改，默认为 `origin`
 - 查看指定文件变更内容：`git diff HEAD -- <filename>`
 - 查看本地和远程分支：`git branch -a`
+- 查看远程分支：`git branch -r`
 - 查看本地分支追踪的远程分支：`git branch -vv`
 
 ### 2.1 配置本地ssh
@@ -286,7 +324,7 @@ ssh-keygen -t rsa -C "xxx@xx.com" -f ~/.ssh/id_rsa_gitlab
 
 （4）在`~/.ssh/`目录（.ssh在用户文件夹下）会分别生成`id_rsa_gitee`和`id_rsa_gitee.pub`私钥和公钥（还有github与gitlab对应私钥和公钥）。将`id_rsa_gitee.pub`中的全部内容复制粘帖到公司gitlab服务器的SSH-key的配置中。
 
-#### 3.1.2 添加config配置
+#### 6.1.2 添加config配置
 
 （1）在`~/.ssh/`下添加config配置文件
 
@@ -341,7 +379,7 @@ IdentityFile
 指定本次连接使用的密钥文件
 ````
 
-#### 3.1.3 配置git仓库
+#### 6.1.3 配置git仓库
 
 由于公司使用gitlab进行代码管理，所以将gitlab设置为`global`全局配置（可根据自身情况选择设置）。
 
@@ -378,13 +416,13 @@ git config --local user.name 'xxx'
 git config --local user.email 'xxx@xx.com'
 ```
 
-### 3.2 配置项目同时提交到github和gitee
+### 6.2 配置项目同时提交到github和gitee
 
 **前提：已经在gitee上导入github项目。**
 
 ![image-20200123163017591](assets/image-20200123163017591.png)
 
-#### 3.2.1 本地只有一个ssh-key的情况
+#### 6.2.1 本地只有一个ssh-key的情况
 
 **方法一：多次推送**
 
@@ -463,11 +501,11 @@ git pull --rebase origin master
 git push
 ````
 
-#### 3.2.2 本地有多个ssh-key的情况
+#### 6.2.2 本地有多个ssh-key的情况
 
-## 4 常见问题
+## 7 常见问题
 
-### 4.1 本地已配置ssh但push时仍需输账号密码
+### 7.1 本地已配置ssh但push时仍需输账号密码
 
 1）查看本地项目远程地址 url 版本
 
@@ -494,7 +532,7 @@ git remote -v
 
 ![image-20210228142304179](assets/image-20210228142304179.png)
 
-### 4.2 ssh -T git@github.com 报错
+### 7.2 ssh -T git@github.com 报错
 
 报错原因：kex_exchange_identification: Connection closed by remote host Connection closed by 20.205.243.166 port 22
 
@@ -502,7 +540,7 @@ git remote -v
 
 （1）方案一：修改 ssh 配置文件，使用 443 端口
 
-```sehll
+```shell
 vim ~/.ssh/config
 # 添加如下内容
 HostName ssh.github.com
@@ -519,7 +557,7 @@ Port 443
 
 （3）方案三：使用 https 访问
 
-### 4.2 提交时报未合并代码错误
+### 7.3 提交时报未合并代码错误
 
 报错原因：Committing is not possible because you have unmerged files.（因为你没有合并代码，所以不允许提交）
 
@@ -546,7 +584,7 @@ git rm xxx.js
 
 ![1588730161370](assets/1588730161370.png)
 
-### 4.3 误操作reset后恢复本地代码
+### 7.4 误操作reset后恢复本地代码
 
 将本地git版本用 hard 模式回退到历史某一版本时，想要恢复原来的版本。
 

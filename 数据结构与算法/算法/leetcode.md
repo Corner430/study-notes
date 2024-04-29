@@ -1,34 +1,36 @@
 - [1 数组](#1-数组)
-  - [704. 二分查找](#704-二分查找)
-  - [35. 搜索插入位置](#35-搜索插入位置)
-  - [34. 在排序数组中查找元素的第一个和最后一个位置](#34-在排序数组中查找元素的第一个和最后一个位置)
-  - [69. x 的平方根](#69-x-的平方根)
-  - [367. 有效的完全平方数](#367-有效的完全平方数)
-  - [27. 移除元素](#27-移除元素)
-  - [26. 删除排序数组中的重复项](#26-删除排序数组中的重复项)
-  - [283. 移动零](#283-移动零)
-  - [844. 比较含退格的字符串](#844-比较含退格的字符串)
-  - [977. 有序数组的平方](#977-有序数组的平方)
-  - [209. 长度最小的子数组](#209-长度最小的子数组)
-  - [904. 水果成篮](#904-水果成篮)
-  - [76. 最小覆盖子串](#76-最小覆盖子串)
-  - [59. 螺旋矩阵 II](#59-螺旋矩阵-ii)
-  - [54. 螺旋矩阵](#54-螺旋矩阵)
-  - [剑指Offer 29. 顺时针打印矩阵](#剑指offer-29-顺时针打印矩阵)
-  - [167. 两数之和 II - 输入有序数组](#167-两数之和-ii---输入有序数组)
-  - [344. 反转字符串](#344-反转字符串)
-  - [5. 最长回文子串](#5-最长回文子串)
-  - [83. 删除排序链表中的重复元素](#83-删除排序链表中的重复元素)
-  - [剑指 Offer 57. 和为s的两个数字](#剑指-offer-57-和为s的两个数字)
-  - [剑指 Offer II 006. 排序数组中两个数字之和](#剑指-offer-ii-006-排序数组中两个数字之和)
+  - [1.1 二分查找](#11-二分查找)
+    - [704. 二分查找](#704-二分查找)
+    - [35. 搜索插入位置](#35-搜索插入位置)
+    - [34. 在排序数组中查找元素的第一个和最后一个位置](#34-在排序数组中查找元素的第一个和最后一个位置)
+    - [69. x 的平方根](#69-x-的平方根)
+    - [367. 有效的完全平方数](#367-有效的完全平方数)
+    - [27. 移除元素](#27-移除元素)
+    - [26. 删除排序数组中的重复项](#26-删除排序数组中的重复项)
+    - [283. 移动零](#283-移动零)
+    - [844. 比较含退格的字符串](#844-比较含退格的字符串)
+    - [977. 有序数组的平方](#977-有序数组的平方)
+    - [209. 长度最小的子数组](#209-长度最小的子数组)
+    - [904. 水果成篮](#904-水果成篮)
+    - [76. 最小覆盖子串](#76-最小覆盖子串)
+    - [59. 螺旋矩阵 II](#59-螺旋矩阵-ii)
+    - [54. 螺旋矩阵](#54-螺旋矩阵)
+    - [剑指Offer 29. 顺时针打印矩阵](#剑指offer-29-顺时针打印矩阵)
+    - [167. 两数之和 II - 输入有序数组](#167-两数之和-ii---输入有序数组)
+    - [344. 反转字符串](#344-反转字符串)
+    - [5. 最长回文子串](#5-最长回文子串)
+    - [83. 删除排序链表中的重复元素](#83-删除排序链表中的重复元素)
+    - [剑指 Offer 57. 和为s的两个数字](#剑指-offer-57-和为s的两个数字)
+    - [剑指 Offer II 006. 排序数组中两个数字之和](#剑指-offer-ii-006-排序数组中两个数字之和)
 
 
 ## 1 数组
 
-### [704. 二分查找](https://leetcode.cn/problems/binary-search/description/)
+### 1.1 二分查找
+
+#### [704. 二分查找](https://leetcode.cn/problems/binary-search/description/)
 
 ***python***
-
 ```python
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
@@ -45,7 +47,6 @@ class Solution:
 ```
 
 ***cpp***
-
 ```cpp
 class Solution {
 public:
@@ -65,10 +66,9 @@ public:
 };
 ```
 
-### [35. 搜索插入位置](https://leetcode.cn/problems/search-insert-position/description/)
+#### [35. 搜索插入位置](https://leetcode.cn/problems/search-insert-position/description/)
 
 ***python***
-
 ```python
 class Solution:
     def searchInsert(self, nums: List[int], target: int) -> int:
@@ -85,7 +85,6 @@ class Solution:
 ```
 
 ***cpp***
-
 ```cpp
 class Solution {
 public:
@@ -105,7 +104,176 @@ public:
 };
 ```
 
-### [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/)
+#### [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/)
+
+***python***
+```python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        left, right = 0, len(nums) - 1  # []
+
+        def getLeftBound(nums, target):
+            nonlocal left, right
+            while left <= right:
+                mid = left + (right - left) // 2
+                if nums[mid] >= target:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            if left < len(nums) and nums[left] == target:
+                return left
+            return -1
+
+        def getRightBound(nums, target):
+            nonlocal left, right
+            right = len(nums) - 1
+            while left <= right:
+                mid = left + (right - left) // 2
+                if nums[mid] <= target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            return right
+
+        leftBound = getLeftBound(nums, target)
+        if leftBound == -1:
+            return [-1, -1]
+        return [leftBound, getRightBound(nums, target)]
+```
+
+***cpp***
+```cpp
+class Solution {
+public:
+    int left = 0, right;
+    int findLeftBound(const vector<int>& nums, const int& target) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] >= target)
+                right = mid - 1;
+            else
+                left = mid + 1;
+        }
+        if (left < nums.size() && nums[left] == target)
+            return left;
+        return -1;
+    }
+
+    int findRightBound(const vector<int>& nums, const int& target) {
+        right = nums.size() - 1; // []
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] <= target)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+        return right;
+    }
+
+    vector<int> searchRange(vector<int>& nums, int target) {
+        right = nums.size() - 1; // []
+        int leftBound = findLeftBound(nums, target);
+        if (leftBound == -1)
+            return {-1, -1};
+        return {leftBound, findRightBound(nums, target)};
+    }
+};
+```
+
+#### [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/description/)
+
+***python***
+```python
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        if x == 0:
+            return x
+        left, right = 1, x
+        while left <= right:
+            mid = left + (right - left) // 2
+            if x // mid == mid:
+                return mid
+            elif x // mid > mid:
+                left = mid + 1
+            else :
+                right = mid - 1
+        return right
+```
+
+***cpp***
+```cpp
+class Solution {
+public:
+    int mySqrt(int x) {
+        if (x == 0)
+            return 0;
+        int left = 1, right = x;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (x / mid == mid) // 防止数值溢出
+                return mid;
+            else if (x / mid > mid)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+        return right;
+    }
+};
+```
+
+#### [367. 有效的完全平方数](https://leetcode-cn.com/problems/valid-perfect-square/description/)
+
+***python***
+```python
+class Solution:
+    def isPerfectSquare(self, num: int) -> bool:
+        left, right = 1, num
+        while left <= right:
+            mid = left + (right - left) // 2
+            if mid * mid == num:
+                return True
+            elif mid * mid < num:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return False
+```
+
+***cpp***
+```cpp
+class Solution {
+public:
+    bool isPerfectSquare(int num) {
+        int left = 1, right = num;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if ((long)mid * mid == num)
+                return true;
+            else if ((long)mid * mid < num)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+        return false;
+    }
+};
+```
+
+#### [27. 移除元素](https://leetcode-cn.com/problems/remove-element/description/)
+
+***python***
+```python
+
+```
+
+***cpp***
+```cpp
+
+```
+
+#### [26. 删除排序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/)
 
 ***python***
 
@@ -119,7 +287,7 @@ public:
 
 ```
 
-### [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/description/)
+#### [283. 移动零](https://leetcode-cn.com/problems/move-zeroes/description/)
 
 ***python***
 
@@ -133,7 +301,7 @@ public:
 
 ```
 
-### [367. 有效的完全平方数](https://leetcode-cn.com/problems/valid-perfect-square/description/)
+#### [844. 比较含退格的字符串](https://leetcode-cn.com/problems/backspace-string-compare/description/)
 
 ***python***
 
@@ -147,7 +315,7 @@ public:
 
 ```
 
-### [27. 移除元素](https://leetcode-cn.com/problems/remove-element/description/)
+#### [977. 有序数组的平方](https://leetcode-cn.com/problems/squares-of-a-sorted-array/description/)
 
 ***python***
 
@@ -161,7 +329,7 @@ public:
 
 ```
 
-### [26. 删除排序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/)
+#### [209. 长度最小的子数组](https://leetcode-cn.com/problems/minimum-size-subarray-sum/description/)
 
 ***python***
 
@@ -175,7 +343,7 @@ public:
 
 ```
 
-### [283. 移动零](https://leetcode-cn.com/problems/move-zeroes/description/)
+#### [904. 水果成篮](https://leetcode-cn.com/problems/fruit-into-baskets/description/)
 
 ***python***
 
@@ -189,7 +357,7 @@ public:
 
 ```
 
-### [844. 比较含退格的字符串](https://leetcode-cn.com/problems/backspace-string-compare/description/)
+#### [76. 最小覆盖子串](https://leetcode-cn.com/problems/minimum-window-substring/description/)
 
 ***python***
 
@@ -203,7 +371,7 @@ public:
 
 ```
 
-### [977. 有序数组的平方](https://leetcode-cn.com/problems/squares-of-a-sorted-array/description/)
+#### [59. 螺旋矩阵 II](https://leetcode-cn.com/problems/spiral-matrix-ii/description/)
 
 ***python***
 
@@ -217,7 +385,7 @@ public:
 
 ```
 
-### [209. 长度最小的子数组](https://leetcode-cn.com/problems/minimum-size-subarray-sum/description/)
+#### [54. 螺旋矩阵](https://leetcode-cn.com/problems/spiral-matrix/description/)
 
 ***python***
 
@@ -231,7 +399,7 @@ public:
 
 ```
 
-### [904. 水果成篮](https://leetcode-cn.com/problems/fruit-into-baskets/description/)
+#### [剑指Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/description/)
 
 ***python***
 
@@ -245,7 +413,7 @@ public:
 
 ```
 
-### [76. 最小覆盖子串](https://leetcode-cn.com/problems/minimum-window-substring/description/)
+#### [167. 两数之和 II - 输入有序数组](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
 
 ***python***
 
@@ -259,7 +427,7 @@ public:
 
 ```
 
-### [59. 螺旋矩阵 II](https://leetcode-cn.com/problems/spiral-matrix-ii/description/)
+#### [344. 反转字符串](https://leetcode-cn.com/problems/reverse-string/description/)
 
 ***python***
 
@@ -273,7 +441,7 @@ public:
 
 ```
 
-### [54. 螺旋矩阵](https://leetcode-cn.com/problems/spiral-matrix/description/)
+#### [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/description/)
 
 ***python***
 
@@ -287,7 +455,7 @@ public:
 
 ```
 
-### [剑指Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/description/)
+#### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/description/)
 
 ***python***
 
@@ -301,66 +469,10 @@ public:
 
 ```
 
-### [167. 两数之和 II - 输入有序数组](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
-
-***python***
-
-```python
-
-```
-
-***cpp***
-
-```cpp
-
-```
-
-### [344. 反转字符串](https://leetcode-cn.com/problems/reverse-string/description/)
-
-***python***
-
-```python
-
-```
-
-***cpp***
-
-```cpp
-
-```
-
-### [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/description/)
-
-***python***
-
-```python
-
-```
-
-***cpp***
-
-```cpp
-
-```
-
-### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/description/)
-
-***python***
-
-```python
-
-```
-
-***cpp***
-
-```cpp
-
-```
-
-### [剑指 Offer 57. 和为s的两个数字](https://leetcode-cn.com/problems/he-wei-sde-liang-ge-shu-zi-lcof/description/)
+#### [剑指 Offer 57. 和为s的两个数字](https://leetcode-cn.com/problems/he-wei-sde-liang-ge-shu-zi-lcof/description/)
 
 []()
 
-### [剑指 Offer II 006. 排序数组中两个数字之和](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
+#### [剑指 Offer II 006. 排序数组中两个数字之和](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
 
 []()

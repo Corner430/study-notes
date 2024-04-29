@@ -13,26 +13,12 @@
 
 ![1571121419790](assets/1571121419790.png)
 
-- 存储 git 凭据到本地
-
-```shell
-git config --global credential.helper store
-git config --global credential.helper 'cache --timeout=3600'
-```
-
-- 查看仓库名称
-
-```shell
-git remote
-```
-
-可在 `.git/config` 文件中查看和更改，默认为 `origin`
-
-- 查看变更内容
-
-```shell
-git diff HEAD -- <filename>
-```
+- 存储 git 凭据到本地：`git config --global credential.helper store`
+- 设置 git 凭据缓存时间：`git config --global credential.helper 'cache --timeout=3600'`
+- 查看仓库名称：`git remote`，可在 `.git/config` 文件中查看和更改，默认为 `origin`
+- 查看指定文件变更内容：`git diff HEAD -- <filename>`
+- 查看本地和远程分支：`git branch -a`
+- 查看本地分支追踪的远程分支：`git branch -vv`
 
 ### 2.1 配置本地ssh
 
@@ -214,11 +200,71 @@ git pull
 
 这会自动进行 `merge` 操作，如果 `merge` 有冲突，会提示冲突文件，手动解决冲突后再次提交。
 
-## 5 高级操作
+## 5 分支管理
 
-### 5.1 电脑同时配置gitlab、github和gitee
+### 5.1 本地分支管理
 
-#### 5.1.1 生成密钥
+#### 5.1.1 创建本地分支并切换到该分支
+
+```shell
+git checkout -b <branch_name>
+
+# 等价于
+git branch <branch_name>
+git checkout <branch_name>
+```
+
+这并不会改变工作区的代码，只是切换到了新的分支
+
+此时无法执行 `git pull`，因为不知道当前分支追踪的远程分支，这一点可以通过 `git branch -vv` 查看。
+
+#### 5.1.2 推送到远程仓库分支
+
+**方案一，直接推送**：
+
+此时直接执行 `git push` 会显示 everything up-to-date，需要指定推送的分支
+
+```shell
+git push origin <local_branch_name>:<remote_branch_name>
+```
+
+**方案二，切换分支后推送**：
+
+（1）切换回要推送的分支
+
+```shell
+git checkout <branch_name>
+```
+
+（2）拉取，合并
+
+```shell
+git pull
+git merge <new_branch_name> # 这会将新创建的分支中的内容合并到当前分支，直接合并到了本地仓库
+git push origin <branch_name>
+```
+
+#### 5.1.3 删除本地分支
+
+```shell
+git branch -d <branch_name> # 合并后删除本地分支
+git branch -D <branch_name> # 强制删除本地分支，此时可能还没合并
+```
+
+#### 5.1.4 本地分支合并冲突解决
+
+- 在 [5.1.2 推送到远程仓库分支](#512-推送到远程仓库分支) 的方案中，在 `merge` 前进行了一次 `pull` 操作，所以此时的 `merge` 可能会发生冲突，需要手动解决，和 [4 推送冲突解决](#4-推送冲突解决) 中的操作一样
+
+- 如果先 `merge` 后 `pull`，就转化成了 [4 推送冲突解决](#4-推送冲突解决) 中的问题了
+
+### 5.2 远程分支管理
+
+
+## 6 高级操作
+
+### 6.1 电脑同时配置gitlab、github和gitee
+
+#### 6.1.1 生成密钥
 
 （1）生成gitee密钥（指定文件名后缀防止覆盖）
 

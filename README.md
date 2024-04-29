@@ -18,7 +18,7 @@
 ## 1 Linux 运维
 ### Linux
 
-- [Linux 就该这么学.pdf](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux就该这么学.pdf)
+- [Linux 就该这么学.pdf](https://github.com/Corner430/study-notes/blob/main/book.md)
 - [Linux 就该这么学笔记](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux就该这么学笔记.md)
 - [Linux 常用操作示例](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux常用操作示例.md)
 
@@ -57,7 +57,7 @@
 
 ## 7 计算机网络
 
-- [网络是怎样连接的.pdf](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的.pdf)
+- [网络是怎样连接的.pdf](https://github.com/Corner430/study-notes/blob/main/book.md)
 - [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的学习笔记.md)
 - [计算机网络 第七版（谢希仁）.pdf](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络.pdf)
 - [谢希仁 计算机网络（第7版）学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络学习笔记.md)

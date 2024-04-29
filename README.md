@@ -53,6 +53,7 @@
 
 ### 算法
 
+- [算法图解.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#算法图解)
 - [经典八大排序算法](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/经典八大排序算法.md)
 - [leetcode](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/leetcode.md)
 
@@ -72,6 +73,7 @@
 
 ### MySQL
 
+- [MySQL必知必会.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#MySQL必知必会)
 - [MySQL 操作笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql操作笔记.md)
 - [MySQL 实战笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql实战笔记.md)
 - [MySQL 架构设计学习笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql架构设计学习笔记.md)

@@ -1,0 +1,296 @@
+# MySQL操作笔记
+
+- [MySQL操作笔记](#mysql操作笔记)
+  - [1 查询](#1-查询)
+    - [1.1 MySQL 环境变量查询](#11-mysql-环境变量查询)
+      - [1.1.1 状态](#111-状态)
+      - [1.1.2 索引](#112-索引)
+      - [1.1.3 事务](#113-事务)
+      - [1.1.4 日志](#114-日志)
+    - [1.2 查询缓存](#12-查询缓存)
+    - [1.3 执行计划](#13-执行计划)
+      - [1.3.1 使用及作用](#131-使用及作用)
+      - [1.3.2 参数详解](#132-参数详解)
+  - [2 日志](#2-日志)
+    - [2.1 binlog 日志](#21-binlog-日志)
+      - [2.1.1 开启 binlog 日志](#211-开启-binlog-日志)
+      - [2.1.2 查看 binlog 信息](#212-查看-binlog-信息)
+      - [2.1.3 管理 binlog](#213-管理-binlog)
+  - [4 数据库规范](#4-数据库规范)
+    - [4.1 设计](#41-设计)
+    - [4.2 操作](#42-操作)
+    - [4.3 索引](#43-索引)
+    - [4.4 事务](#44-事务)
+  - [5 备份与恢复](#5-备份与恢复)
+    - [5.1 数据不丢失恢复配置](#51-数据不丢失恢复配置)
+  - [6 常见问题](#6-常见问题)
+
+
+## 1 查询
+
+### 1.1 MySQL 环境变量查询
+
+#### 1.1.1 状态
+
+- 查询用户连接状态
+
+````sql
+-- 查询用户连接状态（结果集的 Command 字段：Sleep 表示空闲，Query 表示查询）
+show processlist;
+````
+
+#### 1.1.2 索引
+
+#### 1.1.3 事务
+
+````sql
+-- 查询长事务（查找持续时间超过60s的事务）
+select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx_started))>60
+````
+
+#### 1.1.4 日志
+
+````sql
+-- 1表示每次事务的redo log都直接持久化到磁盘，保证MySQL异常重启之后数据不丢失
+show variables like 'innodb_flush_log_at_trx_commit';
+
+-- 1表示每次事务的binlog都持久化到磁盘，保证MySQL异常重启之后binlog不丢失
+show variables like 'sync_binlog';
+````
+
+### 1.2 查询缓存
+
+**1. 不使用查询缓存**
+
+将 `query_cache_type` 设置为 `DEMAND`
+
+**2. 按需使用查询缓存**
+
+````sql
+-- 查询语句加上 SQL_CACHE 参数
+select SQL_CACHE * from T
+````
+
+### 1.3 执行计划
+
+#### 1.3.1 使用及作用
+
+**1. 使用方式**
+
+在查询 SQL 前加上 explain 关键字即可查看语句的执行计划，如：
+
+````sql
+EXPLAIN SELECT t.id, t.name FROM table_test t WHERE t.name = 'xxx';
+````
+
+**2. 作用**
+
+- 查询是否走索引
+- 是否全表扫描
+- 语句被优化器采用何种策略
+
+#### 1.3.2 参数详解
+
+explain 查询计划有10列信息，如图。
+
+![1614233928217](assets/1614233928217.png)
+
+**1. id**
+
+id 是 SQL 执行的顺序标识：
+
+- id 相同时，执行顺序由上至下；
+- 含子查询时，id 的序号会递增，id 值越大优先级越高，越先被执行；
+
+**2. select_type**
+
+select_type 表示查询中每个 SELECT 的子句类型，分为9类：
+
+- SIMPLE：简单查询，未使用 UNION 或子查询；
+- PRIMARY：查询包含复杂的子查询时，最外层 SELECT 为此类型；
+- UNION：UNION 中的第二个或后面的 SELECT 语句；
+- DEPENDENT UNION：UNION 中的第二个或后面的 SELECT 语句，取决于外面的查询；
+- SUBQUERY：子查询种的第一个 SELECT 语句；
+- DEPENDENT  SUBQUERY：子查询种的第一个 SELECT 语句，取决于外面的查询；
+- DERIVED：派生表的 SELECT FROM 子句的子查询；
+- UNCACHEBALE SUBQUERY：一个子查询的结果不能被缓存，必须重新评估外连接的第一行。
+
+**3. table**
+
+table 中显示查询的结果集是来自于哪张表的，显示为 \<derivedn>（n 表示数字）表示第几步执行结果
+
+**4. type**
+
+type 表示查询语句在表中搜索结果集的方式，分为8类：
+
+- ALL：全表扫描；
+- index：只遍历索引树；
+- range：只检索给定范围的行，使用一个索引来选择行；
+- ref：非唯一索引，返回匹配某个单独值的所有行；
+- eq_ref：唯一索引，对于每个索引键，表中只有一条记录与之匹配（常见于使用主键或唯一索引作为 WHERE 条件）；
+- const：表示通过索引一次就找到结果集（MySQL 优化器对查询某部分进行了优化，并将该查询转换为一个常量）；
+- system：表只有一行记录，const 的特例；
+- NULL：
+
+对应查询类型效率依次降低：system > const > eq_ref > ref > range > index > ALL。
+
+查询语句一般达到 range 或 ref 级别即可。
+
+## 2 日志
+
+### 2.1 binlog 日志
+
+#### 2.1.1 开启 binlog 日志
+
+①在 `/etc/my.cnf` 中的 `[mysqld]` 下增加如下配置
+
+````shell
+[mysqld]
+# Server Id.数据库服务器 id，用来在主从服务器中标记唯一 mysql 服务器
+server_id=1918
+# 打开 binlog
+log_bin=mysql-bin
+# 设置 binlog 志格式，有 ROW、STATEMENT、MIXED 三种格式，根据需要设置
+binlog_format=ROW
+````
+
+②重启 mysql
+
+````shell
+# 重启 mysql 服务
+systemctl restart mysqld
+
+# 重启 mysql 的 docker 容器
+docker restart mysql
+````
+
+#### 2.1.2 查看 binlog 信息
+
+- 查看 binlog 开关
+
+```sql
+show variables like 'log_bin';
+```
+
+- 查看 binlog 日志格式
+
+```sql
+show variables like 'binlog_format';
+```
+
+- 查看 binlog 相关的 SQL 语句
+
+````sql
+show binlog events [IN 'log_name'] [FROM pos] [LIMIT [offset,]row_count]
+
+实例：
+-- 查看第一个binlog日志
+show binlog events;
+
+-- 查看指定的binlog日志
+show binlog events in 'binlog.000030';
+
+-- 查看从指定位置开始的指定binlog日志
+show binlog events in 'binlog.000030' from 922;
+
+-- 查看从指定位置开始的指定binlog日志，限制查看的条数
+show binlog events in 'binlog.000030' from 922 limit 2;
+
+-- 查看从指定位置开始的指定binlog日志，限制查看的条数，且带有偏移
+show binlog events in 'binlog.000030' from 922 limit 1,2;
+````
+
+#### 2.1.3 管理 binlog
+
+- 查看所有 binlog 的日志列表
+
+````sql
+show master logs;
+````
+
+- 查看最后一个 binlog 日志的编号名称，及最后一个事件结束的位置（pos）
+
+````sql
+show master status;
+````
+
+- 刷新 binlog，此刻开始产生一个新编号的 binlog 日志文件
+
+````sql
+flush logs;
+````
+
+- 清空所有的 binlog 日志**（此操作需谨慎）**
+
+````sql
+reset master;
+````
+
+## 4 数据库规范
+
+### 4.1 设计
+
+### 4.2 操作
+
+### 4.3 索引
+
+1. 尽量使用主键查询。
+
+原因：主键长度越小，普通索引的叶子节点就越小，普通索引占用的空间也就越小。
+
+
+
+### 4.4 事务
+
+1. 尽量不使用长事务。
+
+原因：①事务在开启瞬间会生成 read-view 存储在回滚日志中，长事务会一直占用 read-view，导致回滚日志不会及时删除过旧的 read-view，而占用大量存储空间；②长事务占用锁资源，严重时会拖垮整个库。
+
+
+
+2. 使用事务自动提交模式 `set autocommit=1` ，需要启动事务时通过显示语句的方式来启动事务。
+
+原因：有些客户端连接框架会默认连接成功后先执行一个 `set autocommit=0` 的命令，这就导致接下来的
+查询都在事务中，如果是长连接，就导致了意外的长事务。
+
+
+
+3. 通过显示语句 `begin` 的方式来连续启动多个事务时，尽量使用 `commit work and chain` 提交事务并自动启动下一个事务。
+
+原因：节省 `begin` 语句带来的开销，从程序开发的角度明确地知道每个语句是否处于事务中。
+
+
+
+## 5 备份与恢复
+
+### 5.1 数据不丢失恢复配置
+
+**1. 双1配置**
+
+①将 `innodb_flush_log_at_trx_commit` 参数设置为 1
+
+表示每次事务的 redo log 都直接持久化到磁盘，保证 MySQL 异常重启之后数据不丢失（redo log 的 crash-safe 能力）。
+
+②将 `innodb_flush_log_at_trx_commit` 参数设置为 1
+
+表示每次事务的 binlog 都持久化到磁盘，保证 MySQL 异常重启之后 binlog 不丢失。
+
+
+
+## 6 常见问题
+
+问题1：如果表 T 中没有字段 k，而你执行了这个语句 `select * from T where k=1`, 那肯定是会报“不存在这个列”的错误： `Unknown column ‘k’ in ‘where clause’`。这个错误是在查询语句执行的哪个阶段报出来的呢？
+
+答：分析器进行词法分析阶段。
+
+
+
+问题2：在什么场景下，一天一备会比一周一备更有优势呢？或者说，它影响了这个数据库系统的哪个指标？
+
+答：一天一备比一周一备更有优势，好处是“最长恢复时间最短”。它影响了这个数据库系统的 RTO（恢复目标时间）。
+
+
+
+问题3：如何避免出现或处理长事务这种情况？
+
+答：

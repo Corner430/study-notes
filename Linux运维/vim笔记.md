@@ -23,7 +23,7 @@
 - [Vimtutor_1.5](http://www2.geog.ucl.ac.uk/~plewis/teaching/unix/vimtutor)
 - [vimtutor](https://vimhelp.org/usr_01.txt.html#vimtutor)：有一些书籍进行推荐，还有电子版
 - [VIM无废话极简入门](https://www.bilibili.com/video/BV1qg4y13766/?spm_id_from=333.880.my_history.page.click&vd_source=2dd00fcea46a9c5a26706a99eb12ea3f)
-- 《Vim实用技巧》
+- [Vim 实用技巧.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#Vim-实用技巧)
 - 《精通vim》
 - [lazyvim](https://github.com/LazyVim/LazyVim)
 - [Vimium](https://github.com/philc/vimium)

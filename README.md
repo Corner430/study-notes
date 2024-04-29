@@ -18,12 +18,13 @@
 ## 1 Linux 运维
 ### Linux
 
-- [Linux 就该这么学.pdf](https://github.com/Corner430/study-notes/blob/main/book.md)
+- [Linux 就该这么学.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#linux-就该这么学)
 - [Linux 就该这么学笔记](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux就该这么学笔记.md)
 - [Linux 常用操作示例](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux常用操作示例.md)
 
 ### Vim
 
+- [Vim 实用技巧.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#Vim-实用技巧)
 - [Vim 笔记](https://github.com/Corner430/study-notes/blob/main/Linux运维/vim笔记.md)
 
 
@@ -57,9 +58,9 @@
 
 ## 7 计算机网络
 
-- [网络是怎样连接的.pdf](https://github.com/Corner430/study-notes/blob/main/book.md)
+- [网络是怎样连接的.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#网络是怎样连接的)
 - [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的学习笔记.md)
-- [计算机网络 第七版（谢希仁）.pdf](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络.pdf)
+- [计算机网络 第七版（谢希仁）.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#计算机网络)
 - [谢希仁 计算机网络（第7版）学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络学习笔记.md)
 - [TCP/IP 协议](https://github.com/Corner430/study-notes/blob/main/计算机网络/TCPIP协议/TCPIP协议.md)
 - UDP协议

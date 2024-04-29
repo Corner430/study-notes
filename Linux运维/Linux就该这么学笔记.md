@@ -1,4 +1,5 @@
-[Linux 就该这么学.pdf](https://github.com/Corner430/study-notes/blob/main/Linux运维/Linux就该这么学.pdf)
+- [Linux 就该这么学.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#linux-就该这么学)
+
 
 - [第 1 章 部署虚拟环境安装 Linux 系统](#第-1-章-部署虚拟环境安装-linux-系统)
   - [1.1 - 1.4 安装 RHEL 7](#11---14-安装-rhel-7)

@@ -24,6 +24,8 @@
     - [5.2 远程分支管理](#52-远程分支管理)
       - [5.2.1 创建立本地支追踪远程分支](#521-创建立本地支追踪远程分支)
       - [5.2.2 设置已经存在的本地分支追踪远程分支](#522-设置已经存在的本地分支追踪远程分支)
+      - [5.2.3 推送到远程指定分支](#523-推送到远程指定分支)
+      - [5.2.4 删除远程分支](#524-删除远程分支)
   - [6 高级操作](#6-高级操作)
     - [6.1 电脑同时配置gitlab、github和gitee](#61-电脑同时配置gitlabgithub和gitee)
       - [6.1.1 生成密钥](#611-生成密钥)
@@ -37,6 +39,7 @@
     - [7.2 ssh -T git@github.com 报错](#72-ssh--t-gitgithubcom-报错)
     - [7.3 提交时报未合并代码错误](#73-提交时报未合并代码错误)
     - [7.4 误操作reset后恢复本地代码](#74-误操作reset后恢复本地代码)
+    - [7.5 子 git 文件夹在 github 上带有白色箭头，无法管理](#75-子-git-文件夹在-github-上带有白色箭头无法管理)
 
 
 ## 1 基础概念
@@ -309,7 +312,24 @@ git checkout -b <branch_name> origin/<branch_name>
 #### 5.2.2 设置已经存在的本地分支追踪远程分支
 
 ```shell
-git branch -u <remote_origin>/<remote_branch_name>
+git branch -u <remote>/<remote_branch_name>
+```
+
+#### 5.2.3 推送到远程指定分支
+
+```shell
+# 如果不存在，则会自动创建
+
+git push origin <local_branch_name>
+# 示例 git push origin backup
+
+git push origin <local_branch_name>:<remote_branch_name>
+```
+
+#### 5.2.4 删除远程分支
+
+```shell
+git push origin :<branch_name> # 相当于推送一个空分支，删除远程分支
 ```
 
 ## 6 高级操作
@@ -571,6 +591,8 @@ Port 443
 
 （3）方案三：使用 https 访问
 
+通过 ***Personal access tokens (classic)*** 生成 token，然后使用 token 访问
+
 ### 7.3 提交时报未合并代码错误
 
 报错原因：Committing is not possible because you have unmerged files.（因为你没有合并代码，所以不允许提交）
@@ -643,3 +665,9 @@ git reset --hard HEAD@{2}
 ````
 
 ![1588144300276](assets/1588144300276.png)
+
+### 7.5 子 git 文件夹在 github 上带有白色箭头，无法管理
+
+1. 删除子文件夹下的 .git 文件夹
+2. 执行命令 `git rm --cached 子文件夹名` 删除子文件夹
+3. 提交代码

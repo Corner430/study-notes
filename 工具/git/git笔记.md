@@ -22,6 +22,8 @@
       - [5.1.3 删除本地分支](#513-删除本地分支)
       - [5.1.4 本地分支合并冲突解决](#514-本地分支合并冲突解决)
     - [5.2 远程分支管理](#52-远程分支管理)
+      - [5.2.1 创建立本地支追踪远程分支](#521-创建立本地支追踪远程分支)
+      - [5.2.2 设置已经存在的本地分支追踪远程分支](#522-设置已经存在的本地分支追踪远程分支)
   - [6 高级操作](#6-高级操作)
     - [6.1 电脑同时配置gitlab、github和gitee](#61-电脑同时配置gitlabgithub和gitee)
       - [6.1.1 生成密钥](#611-生成密钥)
@@ -50,6 +52,7 @@
 
 ![1571121419790](assets/1571121419790.png)
 
+- 查看帮助：`git help <command>`
 - 存储 git 凭据到本地：`git config --global credential.helper store`
 - 设置 git 凭据缓存时间：`git config --global credential.helper 'cache --timeout=3600'`
 - 查看仓库名称：`git remote`，可在 `.git/config` 文件中查看和更改，默认为 `origin`
@@ -297,6 +300,17 @@ git branch -D <branch_name> # 强制删除本地分支，此时可能还没合�
 
 ### 5.2 远程分支管理
 
+#### 5.2.1 创建立本地支追踪远程分支
+
+```shell
+git checkout -b <branch_name> origin/<branch_name>
+```
+
+#### 5.2.2 设置已经存在的本地分支追踪远程分支
+
+```shell
+git branch -u <remote_origin>/<remote_branch_name>
+```
 
 ## 6 高级操作
 

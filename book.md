@@ -9,9 +9,11 @@
 - [4 c/c++](#4-cc)
   - [C Primer Plus](#c-primer-plus)
   - [C++ Primer Plus](#c-primer-plus-1)
-- [5 算法](#5-算法)
+- [5 python](#5-python)
+  - [python编程 从入门到实践](#python编程-从入门到实践)
+- [6 算法](#6-算法)
   - [算法图解](#算法图解)
-- [6 数据库](#6-数据库)
+- [7 数据库](#7-数据库)
   - [MySQL必知必会](#mysql必知必会)
 
 ## 1 Linux
@@ -36,10 +38,14 @@
 
 ### [C++ Primer Plus](https://onedrive.live.com/embed?resid=48C45A7DF562C5CE%2116654&authkey=!AN9E73XPaxkB9Ww&em=2)
 
-## 5 算法
+## 5 python
+
+### [python编程 从入门到实践](https://onedrive.live.com/embed?resid=48C45A7DF562C5CE%2133106&authkey=!ACYVsB9aEP3YEuk&em=2)
+
+## 6 算法
 
 ### [算法图解](https://onedrive.live.com/embed?resid=48C45A7DF562C5CE%2133105&authkey=!AKU8pKAFGPfo7ik&em=2)
 
-## 6 数据库
+## 7 数据库
 
 ### [MySQL必知必会](https://onedrive.live.com/embed?resid=48C45A7DF562C5CE%2133104&authkey=!AFrTjno0x9qD5K0&em=2)

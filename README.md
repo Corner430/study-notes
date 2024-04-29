@@ -35,10 +35,13 @@
 
 ## 3 python
 
+- [python编程 从入门到实践.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#python编程-从入门到实践)
 - [python 基础](https://github.com/Corner430/study-notes/blob/main/python/python笔记.md)
 
 ## 4 cpp
 
+- [《C Primer Plus》](https://github.com/Corner430/study-notes/blob/main/book.md#c-primer-plus)
+- [《C++ Primer Plus》](https://github.com/Corner430/study-notes/blob/main/book.md#C-primer-plus-1)
 - [cpp 入门笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp入门笔记.md)
 
 ## 5 工具

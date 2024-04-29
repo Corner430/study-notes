@@ -150,9 +150,9 @@ git push origin v1.0.1
 git push origin --tags
 ```
 
-### 2.4 各阶段代码回退撤销操作
+## 3 各阶段代码回退撤销操作
 
-#### 2.4.1 丢弃工作区的修改
+### 3.1 丢弃工作区的修改
 
 还未执行 `git add`
 
@@ -163,7 +163,7 @@ git checkout -- <filename>
 
 相当于用本地仓库相应分支的版本替换工作区的版本
 
-#### 2.4.2 撤销暂存区的修改
+### 3.2 撤销暂存区的修改
 
 已执行 `git add`，但未执行 `git commit`
 
@@ -174,15 +174,31 @@ git reset HEAD <filename>
 
 此时工作区的代码不变，暂存区的代码回退到上一次提交的版本
 
-#### 2.4.3 撤销本地仓库的修改
+### 3.3 撤销本地仓库的修改
 
 已执行 `git commit`，但未执行 `git push`
 
 ```shell
-git reset --soft HEAD^
+git reset --hard <commit_id>
 ```
 
-## 3 高级操作
+此时工作区、暂存区、本地仓库的代码都回退到指定的版本
+
+并没有删除，只是移动了 HEAD 指针。可以通过 `git reflog` 查看历史操作，之后通过 `git reset --hard <commit_id>` 恢复
+
+### 3.4 撤销远程仓库的修改
+
+已执行 `git push`
+
+```shell
+git revert <commit_id>
+```
+
+会生成一个新的提交，撤销指定的提交
+
+**注意**：不可以先回退到某个版本，再推送到远程仓库，**会遭到拒绝而失败**。只有本地仓库 ahead 于远程仓库时**或者 `-f` 强制推送**，才可以推送。
+
+## 4 高级操作
 
 ### 3.1 电脑同时配置gitlab、github和gitee
 

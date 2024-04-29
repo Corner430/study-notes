@@ -20,6 +20,14 @@ git config --global credential.helper store
 git config --global credential.helper 'cache --timeout=3600'
 ```
 
+- 查看仓库名称
+
+```shell
+git remote
+```
+
+可在 `.git/config` 文件中查看和更改，默认为 `origin`
+
 ### 2.1 配置本地ssh
 
 （1）设置git的用户名和邮箱（第一次安装git的情况下）
@@ -142,29 +150,37 @@ git push origin v1.0.1
 git push origin --tags
 ```
 
-### 2.4 reset的使用
+### 2.4 各阶段代码回退撤销操作
 
-1）soft
+#### 2.4.1 丢弃工作区的修改
 
-````shell
-# 回退到 git commit 前，处在暂存区
-git reset --soft HEAD
-````
+还未执行 `git add`
 
-2）mixed
+```shell
+git checkout -- .
+git checkout -- <filename>
+```
 
-````shell
-# 回退到 git add前
-git reset --soft HEAD
-````
+相当于用本地仓库相应分支的版本替换工作区的版本
 
-3）hard
+#### 2.4.2 撤销暂存区的修改
 
-````shell
-# 工作区、暂存区、本地仓库的改变内容全部丢失
-git reset --soft HEAD
-````
+已执行 `git add`，但未执行 `git commit`
 
+```shell
+git reset HEAD
+git reset HEAD <filename>
+```
+
+此时工作区的代码不变，暂存区的代码回退到上一次提交的版本
+
+#### 2.4.3 撤销本地仓库的修改
+
+已执行 `git commit`，但未执行 `git push`
+
+```shell
+git reset --soft HEAD^
+```
 
 ## 3 高级操作
 

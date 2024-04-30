@@ -54,6 +54,8 @@
 
 ### 数据结构
 
+- [大话数据结构.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#大话数据结构)
+
 ### 算法
 
 - [算法图解.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#算法图解)
@@ -77,9 +79,7 @@
 ### MySQL
 
 - [MySQL必知必会.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#MySQL必知必会)
-- [MySQL 操作笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql操作笔记.md)
-- [MySQL 实战笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql实战笔记.md)
-- [MySQL 架构设计学习笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql架构设计学习笔记.md)
+- [数据库系统概念.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#数据库系统概念)
 - [MySQL 学习笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql学习笔记.md)
 
 

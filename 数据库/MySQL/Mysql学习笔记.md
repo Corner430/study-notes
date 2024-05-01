@@ -41,7 +41,6 @@
       - [2.1.5 求和](#215-求和)
       - [2.1.6 求平均值](#216-求平均值)
       - [2.1.7 聚合函数的特点](#217-聚合函数的特点)
-      - [2.1.8 小结](#218-小结)
     - [2.2 分组查询](#22-分组查询)
       - [2.2.1 分组查询介绍](#221-分组查询介绍)
       - [2.2.2 group by的使用](#222-group-by的使用)
@@ -49,7 +48,6 @@
       - [2.2.4 group by + 聚合函数的使用](#224-group-by--聚合函数的使用)
       - [2.2.5 group by + having的使用](#225-group-by--having的使用)
       - [2.2.6 group by + with rollup的使用](#226-group-by--with-rollup的使用)
-      - [2.2.7 小结](#227-小结)
     - [2.3 连接查询-内连接](#23-连接查询-内连接)
       - [2.3.1 连接查询的介绍](#231-连接查询的介绍)
       - [2.3.2 内连接查询](#232-内连接查询)
@@ -848,14 +846,6 @@ select avg(ifnull(height,0)) from students where gender = 1;
 
 聚合函数默认忽略字段为 `null` 的记录 要想列值为 `null` 的记录也参与计算，必须使用 `ifnull` 函数对 `null` 值做替换。
 
-#### 2.1.8 小结
-
-- `count(col)`: 表示求指定列的总行数
-- `max(col)`: 表示求指定列的最大值
-- `min(col)`: 表示求指定列的最小值
-- `sum(col)`: 表示求指定列的和
-- `avg(col)`: 表示求指定列的平均值
-
 ### 2.2 分组查询
 
 #### 2.2.1 分组查询介绍
@@ -889,6 +879,16 @@ select name, gender from students group by name, gender;
 ```shell
 # 根据gender字段进行分组， 查询gender字段和分组的name字段信息
 select gender, group_concat(name) from students group by gender;
+
+# 输出如下
++--------+----------------------------------------------------------------+
+| gender | group_concat(name)                                             |
++--------+----------------------------------------------------------------+
+| NULL   | lisi                                                           |
+| nan    | zhangsan,caocao,guojing,huanglaoxie,yangguo,wangtiedan,liergou |
+| nv     | ouyangfeng,huangrong                                           |
++--------+----------------------------------------------------------------+
+3 rows in set (0.00 sec)
 ```
 
 #### 2.2.4 group by + 聚合函数的使用
@@ -921,14 +921,6 @@ select gender, count(*) from students group by gender with rollup;
 # 根据gender字段进行分组，汇总所有人的年龄
 select gender, group_concat(age) from students group by gender with rollup;
 ```
-
-#### 2.2.7 小结
-
-- `group by` 根据指定的一个或者多个字段对数据进行分组
-- `group_concat(字段名)`函数是统计每个分组指定字段的信息集合
-- 聚合函数在和 `group by` 结合使用时, 聚合函数统计和计算的是每个分组的数据
-- `having` 是对分组数据进行条件过滤
-- `with rollup`在最后记录后面新增一行，显示`select`查询时聚合函数的统计和计算结果
 
 ### 2.3 连接查询-内连接
 

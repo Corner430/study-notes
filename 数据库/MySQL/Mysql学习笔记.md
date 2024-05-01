@@ -70,7 +70,6 @@
       - [2.9.2 对于已经存在的字段添加外键约束](#292-对于已经存在的字段添加外键约束)
       - [2.9.3 在创建数据表时设置外键约束](#293-在创建数据表时设置外键约束)
       - [2.9.4 删除外键约束](#294-删除外键约束)
-      - [2.9.5 小结](#295-小结)
     - [2.10 演练-分组和聚合函数的组合使用](#210-演练-分组和聚合函数的组合使用)
       - [2.10.1 数据准备](#2101-数据准备)
       - [2.10.2. SQL语句演练](#2102-sql语句演练)
@@ -93,7 +92,6 @@
       - [3.7.4 联合索引](#374-联合索引)
       - [3.7.5 联合索引的最左原则](#375-联合索引的最左原则)
       - [3.7.6 MySQL中索引的优点和缺点和使用原则](#376-mysql中索引的优点和缺点和使用原则)
-      - [3.7.7 小结](#377-小结)
 
 ## 1 MySQL 数据库的基本使用
 
@@ -1120,11 +1118,11 @@ select * from students where (age, height) =  (select max(age), max(height) from
 
 #### 2.8.1 数据库设计之三范式的介绍
 
-范式: 对设计数据库提出的一些规范，目前有迹可寻的共有8种范式，一般遵守3范式即可。
+范式: 对设计数据库提出的一些规范，目前有迹可寻的共有 8 种范式，一般遵守 3 范式即可。
 
-- 第一范式（1NF）: 强调的是列的原子性，即列不能够再分成其他几列。
-- 第二范式（2NF）: 满足 1NF，另外包含两部分内容，一是表必须有一个主键；二是非主键字段 必须完全依赖于主键，而不能只依赖于主键的一部分。
-- 第三范式（3NF）: 满足 2NF，另外非主键列必须直接依赖于主键，不能存在传递依赖。即不能存在：非主键列 A 依赖于非主键列 B，非主键列 B 依赖于主键的情况。
+- 第一范式（`1NF`）: 强调的是列的原子性，即列不能够再分成其他几列。
+- 第二范式（`2NF`）: 满足 `1NF`，另外包含两部分内容，一是表必须有一个主键；二是非主键字段 必须完全依赖于主键，而不能只依赖于主键的一部分。
+- 第三范式（`3NF`）: 满足 `2NF`，另外非主键列必须直接依赖于主键，不能存在传递依赖。即不能存在：非主键列 A 依赖于非主键列 B，非主键列 B 依赖于主键的情况。
 
 #### 2.8.2 第一范式的介绍
 
@@ -1136,7 +1134,7 @@ select * from students where (age, height) =  (select max(age), max(height) from
 
 ![第二范式的问题](imgs/2nf.png)
 
-- 这种表结构设计就没有达到 `2NF`，因为 `Discount(折扣), Quantity(数量)`完全依赖于主键(`OrderID`)，而 `UnitPrice单价，ProductName`产品名称 只依赖于 `ProductID`, 所以 `OrderDetail` 表不符合 2NF。
+- 这种表结构设计就没有达到 `2NF`，因为 `Discount(折扣), Quantity(数量)`完全依赖于主键(`OrderID`)，而 `UnitPrice单价，ProductName产品名称` 只依赖于 `ProductID`, 所以 `OrderDetail` 表不符合 2NF。
 
 - 我们可以把【`OrderDetail`】表拆分为【`OrderDetail`】`(OrderID，ProductID，Discount，Quantity)`和【`Product`】`(ProductID，UnitPrice，ProductName)`这样就符合第二范式了。
 
@@ -1150,14 +1148,14 @@ select * from students where (age, height) =  (select max(age), max(height) from
 
 #### 2.8.5 E-R模型的介绍
 
-E-R模型即实体-关系模型，E-R模型就是描述数据库存储数据的结构模型。
+`E-R`模型即实体-关系模型，`E-R`模型就是描述数据库存储数据的结构模型。
 
-E-R模型的使用场景:
+`E-R`模型的使用场景:
 
 1. 对于大型公司开发项目，我们需要根据产品经理的设计，我们先使用建模工具, 如: ***power designer, db desinger*** 等这些软件来画出实体-关系模型(E-R模型)
 2. 然后根据三范式设计数据库表结构
 
-E-R模型的效果图:
+`E-R`模型的效果图:
 
 ![E-R模型图](imgs/E-R模型图.png)
 
@@ -1186,22 +1184,22 @@ E-R模型的效果图:
 
 ![多对多](imgs/多对多.png)
 
-- 多对多关系，新建一张表 C，这个表只有两个字段，一个用于存储A的主键值，一个用于存储 B 的主键值
+- 多对多关系，新建一张表 C，这个表只有两个字段，一个用于存储 A 的主键值，一个用于存储 B 的主键值
 
 #### 2.8.6 小结
 
 - 范式就是设计数据库的一些通用规范。
-  - 1NF强调字段是最小单元，不可再分
-  - 2NF强调在1NF基础上必须要有主键和非主键字段必须完全依赖于主键，也就是说 不能部分依赖
-  - 3MF强调在2NF基础上 非主键字段必须直接依赖于主键，也就是说不能传递依赖(间接依赖)。
-- E-R模型由 实体、属性、实体之间的关系构成，主要用来描述数据库中表结构。
-- 开发流程是先画出E-R模型，然后根据三范式设计数据库中的表结构
+  - `1NF`强调字段是最小单元，不可再分
+  - `2NF`强调在`1NF`基础上必须要有主键和非主键字段必须完全依赖于主键，也就是说 不能部分依赖
+  - `3MF`强调在`2NF`基础上 非主键字段必须直接依赖于主键，也就是说不能传递依赖(间接依赖)。
+- `E-R`模型由 实体、属性、实体之间的关系构成，主要用来描述数据库中表结构。
+- 开发流程是先画出`E-R`模型，然后根据三范式设计数据库中的表结构
 
 ### 2.9 外键 SQL 语句的编写
 
 #### 2.9.1 外键约束作用
 
-外键约束:对外键字段的值进行更新和插入时会和引用表中字段的数据进行验证，数据如果不合法则更新和插入会失败，保证数据的有效性
+外键约束: 对外键字段的值进行更新和插入时会和引用表中字段的数据进行验证，数据如果不合法则更新和插入会失败，保证数据的有效性
 
 #### 2.9.2 对于已经存在的字段添加外键约束
 
@@ -1237,11 +1235,6 @@ show create table teacher;
 # 获取名称之后就可以根据名称来删除外键约束
 alter table teacher drop foreign key 外键名;
 ```
-
-#### 2.9.5 小结
-
-- 添加外键约束: `alter table 从表 add foreign key(外键字段) references 主表(主键字段);`
-- 删除外键约束: `alter table 表名 drop foreign key 外键名;`
 
 ### 2.10 演练-分组和聚合函数的组合使用
 
@@ -1461,12 +1454,12 @@ cur =conn.cursor()
 
 游标操作说明:
 
-- 使用游标执行SQL语句: `execute(operation [parameters ])` 执行SQL语句，返回受影响的行数，主要用于执行`insert、update、delete、select`等语句
+- 使用游标执行SQL语句: `execute(operation [parameters])` 执行SQL语句，返回受影响的行数，主要用于执行`insert、update、delete、select`等语句
 - 获取查询结果集中的一条数据:`cur.fetchone()`返回一个元组, 如 `(1, '张三')`
-- 获取查询结果集中的所有数据: `cur.fetchall()`返回一个元组,如`((1,'张三'),(2,'李四'))`
+- 获取查询结果集中的所有数据: `cur.fetchall()`返回一个元组, 如`((1,'张三'),(2,'李四'))`
 - 关闭游标: `cur.close()`, 表示和数据库操作完成
 
-4. `pymysql`完成数据的查询操作
+4. `pymysql`完成数据的**查询**操作
 
 ```py
 import pymysql
@@ -1497,7 +1490,7 @@ cursor.close()
 conn.close()
 ```
 
-5. pymysql完成对数据的增删改
+5. `pymysql`完成对数据的**增删改**
 
 ```py
 import pymysql
@@ -1677,23 +1670,9 @@ use jing_dong;
 
 # 查看goods表
 show create table goods;
-
-mysql root@(none):jing_dong> show create table goods;
-+-------+--------------------------------------------------------+
-| Table | Create Table                                           |
-+-------+--------------------------------------------------------+
-| goods | CREATE TABLE `goods` (                                 |
-|       |   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,       |
-|       |   `name` varchar(150) NOT NULL,                        |
-|       |   `cate_id` int(10) unsigned NOT NULL,                 |
-|       |   `brand_id` int(10) unsigned NOT NULL,                |
-|       |   `price` decimal(10,3) NOT NULL DEFAULT '0.000',      |
-|       |   `is_show` bit(1) NOT NULL DEFAULT b'1',              |
-|       |   `is_saleoff` bit(1) NOT NULL DEFAULT b'0',           |
-|       |   PRIMARY KEY (`id`)                                   |
-|       | ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 |
-+-------+--------------------------------------------------------+
 ```
+
+![20240501210130](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240501210130.png)
 
 说明:
 
@@ -1706,8 +1685,8 @@ mysql root@(none):jing_dong> show create table goods;
 说明:
 
 - **开启事务后执行修改命令，变更数据会保存到MySQL服务端的缓存文件中，而不维护到物理表中**
-- **MySQL数据库默认采用自动提交(`autocommit`)模式，如果没有显示的开启一个事务, 那么每条`sql`语句都会被当作一个事务执行提交的操作**
-- 当设置 `autocommit=0` 就是取消了自动提交事务模式，直到显示的执行 `commit` 和 `rollback` 表示该事务结束。
+- **MySQL数据库默认采用自动提交(`autocommit`)模式，如果没有显式的开启一个事务, 那么每条`sql`语句都会被当作一个事务执行提交的操作**
+- 当设置 `autocommit=0` 就是取消了自动提交事务模式，直到显式的执行 `commit` 和 `rollback` 表示该事务结束。
   - `set autocommit = 0` 表示取消自动提交事务模式，需要手动执行 `commit` 完成事务的提交
 
 ```shell
@@ -1825,11 +1804,14 @@ from pymysql import connect
 def main():
     # 创建Connection连接
     conn = connect(host='localhost',port=3306,database='python',user='root',password='mysql',charset='utf8')
+
     # 获得Cursor对象
     cursor = conn.cursor()
+
     # 插入10万次数据
     for i in range(100000):
         cursor.execute("insert into test_index values('ha-%d')" % i)
+
     # 提交数据
     conn.commit()
 
@@ -1842,14 +1824,19 @@ if __name__ == "__main__":
 ```shell
 # 开启运行时间监测：
 set profiling=1;
+
 # 查找第1万条数据ha-99999
 select * from test_index where title='ha-99999';
+
 # 查看执行的时间：
 show profiles;
+
 # 给title字段创建索引：
 alter table test_index add index (title);
+
 # 再次执行查询语句
 select * from test_index where title='ha-99999';
+
 # 再次查看执行的时间
 show profiles;
 ```
@@ -1884,7 +1871,9 @@ alter table teacher add index (name,age);
 ```shell
 # 下面的查询使用到了联合索引
 select * from stu where name='张三' # 这里使用了联合索引的name部分
+
 select * from stu where name='李四' and age=10 # 这里完整的使用联合索引，包括 name 和 age 部分 
+
 # 下面的查询没有使用到联合索引
 select * from stu where age=10 # 因为联合索引里面没有这个组合，只有 name | name age 这两种组合
 ```
@@ -1902,9 +1891,3 @@ select * from stu where age=10 # 因为联合索引里面没有这个组合，�
   - 对经常更新的表就避免对其进行过多索引的创建，对经常用于查询的字段应该创建索引，
   - 数据量小的表最好不要使用索引，因为由于数据较少，可能查询全部数据花费的时间比遍历索引的时间还要短，索引就可能不会产生优化效果。
   - 在一字段上相同值比较多不要建立索引，比如在学生表的"性别"字段上只有男，女两个不同值。相反的，在一个字段上不同值较多可是建立索引。
-
-#### 3.7.7 小结
-
-- 索引是加快数据库的查询速度的一种手段
-- 创建索引使用: `alter table 表名 add index 索引名[可选] (字段名, xxx);`
-- 删除索引使用: `alter table 表名 drop index 索引名;`

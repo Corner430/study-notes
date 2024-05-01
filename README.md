@@ -14,8 +14,9 @@
   - [MySQL](#mysql)
 - [9 设计模式](#9-设计模式)
 - [10 前端](#10-前端)
-  - [html 和 css](#html-和-css)
+  - [HTML 和 CSS](#html-和-css)
   - [javaScript](#javascript)
+- [References](#references)
 
 
 ## 1 Linux 运维
@@ -92,11 +93,16 @@
 
 ## 10 前端
 
-### html 和 css
+### HTML 和 CSS
 
-- [html学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/html和css/html学习笔记.md)
-- [css学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/html和css/css学习笔记.md)
+- [HTML学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/HTML学习笔记.md)
+- [CSS学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/CSS学习笔记.md)
 
 ### javaScript
 
 - [javaScript学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/javaScript/javaScript学习笔记.md)
+
+## References
+
+- [DragonV96/study-notes](https://github.com/DragonV96/study-notes)
+- [BloothOfYouth/Computer-Network-Notes](https://github.com/BloothOfYouth/Computer-Network-Notes)

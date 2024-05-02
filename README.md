@@ -15,7 +15,7 @@
 - [9 设计模式](#9-设计模式)
 - [10 前端](#10-前端)
   - [HTML 和 CSS](#html-和-css)
-  - [javaScript](#javascript)
+  - [JavaScript](#javascript)
 - [References](#references)
 
 
@@ -98,9 +98,9 @@
 - [HTML学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/HTML学习笔记.md)
 - [CSS学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/CSS学习笔记.md)
 
-### javaScript
+### JavaScript
 
-- [javaScript学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/javaScript/javaScript学习笔记.md)
+- [JavaScript学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/JavaScript/JavaScript学习笔记.md)
 
 ## References
 

@@ -1,5 +1,13 @@
 # CSS 学习笔记
 
+- [CSS 学习笔记](#css-学习笔记)
+  - [1 CSS 的介绍](#1-css-的介绍)
+  - [2 css 的引入方式](#2-css-的引入方式)
+  - [3 css 选择器](#3-css-选择器)
+  - [4 css 属性](#4-css-属性)
+    - [4.1 布局常用样式属性](#41-布局常用样式属性)
+    - [4.2 文本常用样式属性](#42-文本常用样式属性)
+
 ## 1 CSS 的介绍
 
 1. css 的定义
@@ -40,7 +48,7 @@
 
 代码示例:
 
-```css
+```html
 div{ 
     width:100px; 
     height:100px; 
@@ -66,8 +74,8 @@ css 是由两个主要的部分构成：**选择器和一条或多条样式规�
 
 示例代码:
 
-```css
-<div style="width:100px; height:100px; background:red ">hello</div>
+```html
+<div style="width: 100px; height: 100px; background: red">hello</div>
 ```
 
 - 优点：方便、直观。
@@ -79,13 +87,12 @@ css 是由两个主要的部分构成：**选择器和一条或多条样式规�
 
 示例代码:
 
-```css
+```html
 <head>
-   <style type="text/css">
-      h3{
-         color:red;
-      }
-   </style>
+    <style type="text/css">
+    h3 {
+        color: red;
+    }
 </head>
 ```
 
@@ -98,18 +105,64 @@ css 是由两个主要的部分构成：**选择器和一条或多条样式规�
 
 示例代码:
 
-```css
+```html
 <link rel="stylesheet" type="text/css" href="css/main.css">
 ```
 
-- 优点：使得css样式与html页面分离，便于整个页面系统的规划和维护，可重用性高。
-- 缺点：css代码由于分离到单独的css文件，容易出现css代码过于集中，若维护不当则极容易造成混乱。
+- 优点：使得 css 样式与 html 页面分离，便于整个页面系统的规划和维护，可重用性高。
+- 缺点：css 代码由于分离到单独的 css 文件，容易出现 css 代码过于集中，若维护不当则极容易造成混乱。
 
-4. css引入方式选择
+4. css 引入方式选择
 
 - 行内式几乎不用
-- 内嵌式在学习css样式的阶段使用
+- 内嵌式在学习 css 样式的阶段使用
 - 外链式在公司开发的阶段使用，可以对 css 样式和 html 页面分别进行开发。
+
+**示例代码**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 内嵌式 -->
+    <style>
+      /* 选择器, css 样式表可以由很多选择器组成, 选择器就是用来选择标签, 给标签添加样式 */
+      a {
+        color: green;
+      }
+      div {
+        width: 100px;
+        height: 100px;
+        background: blue;
+      }
+    </style>
+
+    <!-- 外链式 -->
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <!-- 行内式 -->
+    <p style="color: red">我是一个段落标签</p>
+
+    <a href="https://www.baidu.com">百度</a>
+
+    <div>我是一个段落标签</div>
+
+    <h1>一级标题</h1>
+  </body>
+</html>
+```
+
+其中 `main.css` 文件内容如下:
+
+```css
+h1 {
+  color: skyblue;
+}
+```
 
 ## 3 css 选择器
 
@@ -128,13 +181,13 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 
 3. 标签选择器
 
-根据标签来选择标签，以标签开头，此种选择器影响范围大，一般用来做一些通用设置。
+根据标签来选择标签，**以标签开头**，此种选择器影响范围大，一般用来做一些通用设置。
 
 示例代码
 
-```css
+```html
 <style type="text/css">
-    p{
+    p {
         color: red;
     }
 </style>
@@ -145,20 +198,37 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 
 4. 类选择器
 
-根据类名来选择标签，以 `.` 开头, 一个类选择器可应用于多个标签上，一个标签上也可以使用多个类选择器，多个类选择器需要使用空格分割，应用灵活，可复用，是css中应用最多的一种选择器。
+根据类名来选择标签，**以 `.` 开头**, 一个类选择器可应用于多个标签上，一个标签上也可以使用多个类选择器，多个类选择器需要使用空格分割，应用灵活，可复用，**是 css 中应用最多的一种选择器。**
 
 示例代码
 
-```css
-<style type="text/css">
-    .blue{color:blue}
-    .big{font-size:20px}
-    .box{width:100px;height:100px;background:gold} 
-</style>
-
-<div class="blue">这是一个div</div>
-<h3 class="blue big box">这是一个标题</h3>
-<p class="blue box">这是一个段落</p>
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style type="text/css">
+      .blue {
+        color: blue;
+      }
+      .big {
+        font-size: 20px;
+      }
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="blue">这是一个div</div>
+    <h3 class="blue big box">这是一个h3</h3>
+    <p class="blue box">这是一个段落</p>
+  </body>
+</html>
 ```
 
 5. 层级选择器(后代选择器)
@@ -167,49 +237,73 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 
 示例代码
 
-```css
-<style type="text/css">
-    div p{
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style type="text/css">
+      div p {
         color: red;
-    }
-    .con{width:300px;height:80px;background:green}
-    .con span{color:red}
-    .con .pink{color:pink}
-    .con .gold{color:gold}    
-</style>
+      }
+      .con {
+        width: 300px;
+        height: 80px;
+        background: green;
+      }
+      .con span {
+        color: red;
+      }
+      .con .pink {
+        color: pink;
+      }
+      .con .gold {
+        color: gold;
+      }
+    </style>
+  </head>
 
-<div>
-    <p>hello</p>
-</div>
+  <body>
+    <div>
+    <!-- 必须要完美匹配才能生效 -->
+      <p>hello world 受到影响</p>
+      <h1>一级标题不被影响</h1>
+    </div>
 
-<div class="con">
-    <span>哈哈</span>
-    <a href="#" class="pink">百度</a>
-    <a href="#" class="gold">谷歌</a>
-</div>
-<span>你好</span>
-<a href="#" class="pink">新浪</a>
+    <div class="con">
+        <span>我是span标签</span>
+        <a href="#">百度</a>
+        <a href="#" class="pink">百度</a>
+        <a href="#" class="gold">谷歌</a>
+    </div>
+    <span>你好</span>
+    <a href="#" class="pink">新浪不会受到影响</a>
+  </body>
+</html>
 ```
 
 > 注意: 这个层级关系不一定是父子关系，也有可能是祖孙关系，只要有后代关系都适用于这个层级选择器
 
-6. id选择器
+6. `id` 选择器
 
-根据id选择标签，以#开头, 元素的id名称不能重复，所以id选择器只能对应于页面上一个元素，不能复用，id名一般给程序使用，所以不推荐使用id作为选择器。
+根据 `id` 选择标签，以 `#` 开头, 元素的 `id` 名称不能重复，所以 `id` 选择器只能对应于页面上一个元素，不能复用，`id` 名一般给程序使用，所以**不推荐使用 `id` 作为选择器。**
 
 示例代码
 
-```css
+```html
 <style type="text/css">
-    #box{color:red} 
+    #box {
+    color: red;
+    }
 </style>
 
-<p id="box">这是一个段落标签</p>   <!-- 对应以上一条样式，其它元素不允许应用此样式 -->
-<p>这是第二个段落标签</p> <!-- 无法应用以上样式，每个标签只能有唯一的id名 -->
-<p>这是第三个段落标签</p> <!-- 无法应用以上样式，每个标签只能有唯一的id名  -->
+<p id="box">对应以上的样式, 其他元素不允许应用此样式</p>
+<p id="box">无法应用以上样式, 每个标签只能有唯一的 id 名</p>
 ```
 
-> 注意: 虽然给其它标签设置id=“box”也可以设置样式，但是不推荐这样做，因为id是唯一的，以后js通过id只能获取一个唯一的标签对象。
+> 注意: 虽然给其它标签设置 `id="box"` 也可以设置样式，但是不推荐这样做，因为 `id` 是唯一的，以后 `js` 通过 `id` 只能获取一个唯一的标签对象。
 
 7. 组选择器
 
@@ -217,13 +311,24 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 
 示例代码
 
-```css
-<style type="text/css">
-    .box1,.box2,.box3{width:100px;height:100px}
-    .box1{background:red}
-    .box2{background:pink}
-    .box2{background:gold}
-</style>
+```html
+    <style type="text/css">
+      .box1,
+      .box2,
+      .box3 {
+        width: 100px;
+        height: 100px;
+      }
+      .box1 {
+        background-color: red;
+      }
+      .box2 {
+        background-color: pink;
+      }
+      .box3 {
+        background-color: gold;
+      }
+    </style>
 
 <div class="box1">这是第一个div</div>
 <div class="box2">这是第二个div</div>
@@ -236,13 +341,20 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 
 示例代码
 
-```css
+```html
 <style type="text/css">
-    .box1{width:100px;height:100px;background:gold;}
-    .box1:hover{width:300px;}
+    .box1 {
+    width: 100px;
+    height: 100px;
+    background: gold;
+    }
+    .box1:hover {
+    width: 300px;
+    }
 </style>
 
-<div class="box1">这是第一个div</div>
+<div class="box1">第一个div</div>
+<div class="box2">第二个div</div>
 ```
 
 ## 4 css 属性

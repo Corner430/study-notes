@@ -17,17 +17,18 @@
 
 > css(Cascading Style Sheet)层叠样式表，它是用来美化页面的一种语言。
 
-没有使用css的效果图
+没有使用 css 的效果图
 
 ![css1](imgs/css1.png)
 
-使用css的效果图
+使用 css 的效果图
 
 ![css2](imgs/css2.png)
 
 2. css 的作用
-    1. 美化界面, 比如: 设置标签文字大小、颜色、字体加粗等样式。
-    2. 控制页面布局, 比如: 设置浮动、定位等样式。
+
+   1. 美化界面, 比如: 设置标签文字大小、颜色、字体加粗等样式。
+   2. 控制页面布局, 比如: 设置浮动、定位等样式。
 
 3. css 的基本语法
 
@@ -39,11 +40,11 @@
 
 样式规则：
 
-属性名1：属性值1;
+属性名 1：属性值 1;
 
-属性名2：属性值2;
+属性名 2：属性值 2;
 
-属性名3：属性值3;
+属性名 3：属性值 3;
 
 ...
 
@@ -52,11 +53,7 @@
 代码示例:
 
 ```html
-div{ 
-    width:100px; 
-    height:100px; 
-    background:gold; 
-}
+div{ width:100px; height:100px; background:gold; }
 ```
 
 说明
@@ -65,7 +62,7 @@ css 是由两个主要的部分构成：**选择器和一条或多条样式规�
 
 ## 2 css 的引入方式
 
-**css的三种引入方式**
+**css 的三种引入方式**
 
 - 行内式
 - 内嵌式（内部样式）
@@ -109,7 +106,7 @@ css 是由两个主要的部分构成：**选择器和一条或多条样式规�
 示例代码:
 
 ```html
-<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/main.css" />
 ```
 
 - 优点：使得 css 样式与 html 页面分离，便于整个页面系统的规划和维护，可重用性高。
@@ -178,7 +175,7 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 - 标签选择器
 - 类选择器
 - 层级选择器(后代选择器)
-- id选择器
+- id 选择器
 - 组选择器
 - 伪类选择器
 
@@ -190,9 +187,9 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 
 ```html
 <style type="text/css">
-    p {
-        color: red;
-    }
+  p {
+    color: red;
+  }
 </style>
 
 <div>hello</div>
@@ -236,7 +233,7 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 
 5. 层级选择器(后代选择器)
 
-根据层级关系选择后代标签，以**选择器1 选择器2**开头，主要应用在标签嵌套的结构中，减少命名。
+根据层级关系选择后代标签，以**选择器 1 选择器 2**开头，主要应用在标签嵌套的结构中，减少命名。
 
 示例代码
 
@@ -270,16 +267,16 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 
   <body>
     <div>
-    <!-- 必须要完美匹配才能生效 -->
+      <!-- 必须要完美匹配才能生效 -->
       <p>hello world 受到影响</p>
       <h1>一级标题不被影响</h1>
     </div>
 
     <div class="con">
-        <span>我是span标签</span>
-        <a href="#">百度</a>
-        <a href="#" class="pink">百度</a>
-        <a href="#" class="gold">谷歌</a>
+      <span>我是span标签</span>
+      <a href="#">百度</a>
+      <a href="#" class="pink">百度</a>
+      <a href="#" class="gold">谷歌</a>
     </div>
     <span>你好</span>
     <a href="#" class="pink">新浪不会受到影响</a>
@@ -297,9 +294,9 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 
 ```html
 <style type="text/css">
-    #box {
+  #box {
     color: red;
-    }
+  }
 </style>
 
 <p id="box">对应以上的样式, 其他元素不允许应用此样式</p>
@@ -315,23 +312,23 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 示例代码
 
 ```html
-    <style type="text/css">
-      .box1,
-      .box2,
-      .box3 {
-        width: 100px;
-        height: 100px;
-      }
-      .box1 {
-        background-color: red;
-      }
-      .box2 {
-        background-color: pink;
-      }
-      .box3 {
-        background-color: gold;
-      }
-    </style>
+<style type="text/css">
+  .box1,
+  .box2,
+  .box3 {
+    width: 100px;
+    height: 100px;
+  }
+  .box1 {
+    background-color: red;
+  }
+  .box2 {
+    background-color: pink;
+  }
+  .box3 {
+    background-color: gold;
+  }
+</style>
 
 <div class="box1">这是第一个div</div>
 <div class="box2">这是第二个div</div>
@@ -346,14 +343,14 @@ css 选择器是用来选择标签的，选出来以后给标签加样式。
 
 ```html
 <style type="text/css">
-    .box1 {
+  .box1 {
     width: 100px;
     height: 100px;
     background: gold;
-    }
-    .box1:hover {
+  }
+  .box1:hover {
     width: 300px;
-    }
+  }
 </style>
 
 <div class="box1">第一个div</div>
@@ -412,53 +409,49 @@ float: left; /* 或者使用 float: right; 设置元素右浮动 */
 
 ```html
 <style>
-    .box1{
-        width: 200px; 
-        height: 200px; 
-        background:yellow; 
-        border: 1px solid black;
-    }
+  .box1 {
+    width: 200px;
+    height: 200px;
+    background: yellow;
+    border: 1px solid black;
+  }
 
-    .box2{
-        /* 设置宽度 */
-        width: 100px;
-        /* 设置高度 */
-        height: 100px;
-        /* 设置背景色 */
-        background: red;
-        /* 设置四边边框 */
-        /* border: 10px solid black; */
-        border-top: 10px solid black;
-        border-left: 10px solid black;
-        border-right: 10px solid black;
-        border-bottom: 10px solid black;
-        /* 设置内边距， 内容到边框的距离，如果设置四边是上右下左 */
-        /* padding: 10px;   */
-        padding-left: 10px;
-        padding-top: 10px;
-        /* 设置外边距，设置元素边框到外界元素边框的距离 */
-        margin: 10px;
-        /* margin-top: 10px;
+  .box2 {
+    /* 设置宽度 */
+    width: 100px;
+    /* 设置高度 */
+    height: 100px;
+    /* 设置背景色 */
+    background: red;
+    /* 设置四边边框 */
+    /* border: 10px solid black; */
+    border-top: 10px solid black;
+    border-left: 10px solid black;
+    border-right: 10px solid black;
+    border-bottom: 10px solid black;
+    /* 设置内边距， 内容到边框的距离，如果设置四边是上右下左 */
+    /* padding: 10px;   */
+    padding-left: 10px;
+    padding-top: 10px;
+    /* 设置外边距，设置元素边框到外界元素边框的距离 */
+    margin: 10px;
+    /* margin-top: 10px;
         margin-left: 10px; */
-        float: left;
-    }
+    float: left;
+  }
 
-    .box3{
-        width: 48px; 
-        height: 48px; 
-        background:pink; 
-        border: 1px solid black;
-        float: left;
-    }
-
+  .box3 {
+    width: 48px;
+    height: 48px;
+    background: pink;
+    border: 1px solid black;
+    float: left;
+  }
 </style>
 
 <div class="box1">
-    <div class="box2">
-        padding 设置元素包含的内容和元素边框的距离
-    </div>
-    <div class="box3">
-    </div>
+  <div class="box2">padding 设置元素包含的内容和元素边框的距离</div>
+  <div class="box3"></div>
 </div>
 ```
 
@@ -472,7 +465,7 @@ color: red;
 font-size: 12px;
 
 /* 设置文字字体为微软雅黑，避免中文字不兼容 */
-font-family: 'Microsoft Yahei', '微软雅黑', sans-serif;
+font-family: "Microsoft Yahei", "微软雅黑", sans-serif;
 
 /* 设置文字加粗 */
 font-weight: bold;
@@ -497,36 +490,34 @@ font-style: italic;
 
 ```html
 <style>
-    p{
-       /* 设置字体大小  浏览器默认是 16px */
-       font-size:20px;
-       /* 设置字体 */
-       font-family: "Microsoft YaHei"; 
-       /* 设置字体加粗 */
-       font-weight: bold;
-       /* 设置字体颜色 */
-       color: red;
-       /* 增加掉下划线 */
-       text-decoration: underline;
-       /* 设置行高  */
-       line-height: 100px;
-       /* 设置背景色 */
-       background: green;
-       /* 设置文字居中 */
-       /* text-align: center; */
-       text-indent: 40px;
-    }
+  p {
+    /* 设置字体大小  浏览器默认是 16px */
+    font-size: 20px;
+    /* 设置字体 */
+    font-family: "Microsoft YaHei";
+    /* 设置字体加粗 */
+    font-weight: bold;
+    /* 设置字体颜色 */
+    color: red;
+    /* 增加掉下划线 */
+    text-decoration: underline;
+    /* 设置行高  */
+    line-height: 100px;
+    /* 设置背景色 */
+    background: green;
+    /* 设置文字居中 */
+    /* text-align: center; */
+    text-indent: 40px;
+  }
 
-    a{
-        /* 去掉下划线 */
-        text-decoration: none;
-    }
+  a {
+    /* 去掉下划线 */
+    text-decoration: none;
+  }
 </style>
 
 <a href="#">连接标签</a>
-<p>
-    你好，世界!
-</p>
+<p>你好，世界!</p>
 ```
 
 ## 5 css 元素溢出
@@ -539,27 +530,27 @@ font-style: italic;
 2. `hidden` 隐藏子标签溢出部分。
 3. `auto` 如果子标签溢出，则可以滚动查看其余的内容。
 
-2. 示例代码
+**示例代码**
 
 ```html
 <style>
-    .box1{
-        width: 100px;
-        height: 200px;
-        background: red;
-        /* 在父级上设置子元素溢出的部分如何显示 */
-        /* overflow: hidden; */
-        overflow: auto;
-    }
-    .box2{
-        width: 50px;
-        height: 300px;
-        background: yellow;
-    }
+  .box1 {
+    width: 100px;
+    height: 200px;
+    background: red;
+    /* 在父级上设置子元素溢出的部分如何显示 */
+    /* overflow: hidden; */
+    overflow: auto;
+  }
+  .box2 {
+    width: 50px;
+    height: 300px;
+    background: yellow;
+  }
 </style>
 
 <div class="box1">
-    <div class="box2">hello</div>
+  <div class="box2">hello</div>
 </div>
 ```
 
@@ -577,27 +568,25 @@ font-style: italic;
 
 ```html
 <style>
-    .box{
-        /* 将块元素转化为行内元素 */
-        display:inline;
-    } 
+  .box {
+    /* 将块元素转化为行内元素 */
+    display: inline;
+  }
 
-    .link01{
-        /* 将行内元素转化为块元素 */
-        display:block;
-        background: red;
+  .link01 {
+    /* 将行内元素转化为块元素 */
+    display: block;
+    background: red;
+  }
 
-    }
+  .con {
+    width: 200px;
+    height: 200px;
+    background: gold;
 
-    .con{
-        width:200px;
-        height:200px;
-        background:gold;
-
-        /* 将元素隐藏 */
-        display:none;
-    }
-
+    /* 将元素隐藏 */
+    display: none;
+  }
 </style>
 
 <div class="con"></div>
@@ -632,7 +621,7 @@ font-style: italic;
 设置盒子的宽高，此宽高是指盒子内容的宽高，不是盒子整体宽高
 
 ```css
-width: 200px;  /* 设置盒子的宽度，此宽度是指盒子内容的宽度，不是盒子整体宽度(难点) */ 
+width: 200px; /* 设置盒子的宽度，此宽度是指盒子内容的宽度，不是盒子整体宽度(难点) */
 height: 200px; /* 设置盒子的高度，此高度是指盒子内容的高度，不是盒子整体高度(难点) */
 ```
 
@@ -661,24 +650,24 @@ border: 10px solid red;
 设置盒子四边的内间距，可设置如下：
 
 ```css
-padding-top：20px;     /* 设置顶部内间距20px */ 
-padding-left: 30px;     /* 设置左边内间距30px */ 
-padding-right: 40px;    /* 设置右边内间距40px */ 
+padding-top：20px;     /* 设置顶部内间距20px */
+padding-left: 30px;     /* 设置左边内间距30px */
+padding-right: 40px;    /* 设置右边内间距40px */
 padding-bottom: 50px;   /* 设置底部内间距50px */
 ```
 
 上面的设置可以简写如下：
 
 ```css
-padding：20px 40px 50px 30px; /* 四个值按照顺时针方向，分别设置的是 上 右 下 左  
+padding：20px 40px 50px 30px; /* 四个值按照顺时针方向，分别设置的是 上 右 下 左
 四个方向的内边距值。 */
 ```
 
 `padding` 后面还可以跟 3 个值，2 个值和 1 个值，它们分别设置的项目如下：
 
 ```css
-padding: 20px 40px 50px; /* 设置顶部内边距为20px，左右内边距为40px，底部内边距为50px */ 
-padding: 20px 40px; /* 设置上下内边距为20px，左右内边距为40px*/ 
+padding: 20px 40px 50px; /* 设置顶部内边距为20px，左右内边距为40px，底部内边距为50px */
+padding: 20px 40px; /* 设置上下内边距为20px，左右内边距为40px*/
 padding: 20px; /* 设置四边内边距为20px */
 ```
 

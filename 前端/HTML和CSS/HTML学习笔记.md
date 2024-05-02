@@ -28,6 +28,8 @@ HTML 的全称为：HyperText Mark-up Language, 指的是超文本标记语言�
 
 > `!` + `tab` 快捷键可以生成 html 基本结构
 
+> `div.box1*3` + `enter` 可以生成三个 div 标签并指定类名为 `box1`
+
 ### 2.1 结构代码
 
 ```html

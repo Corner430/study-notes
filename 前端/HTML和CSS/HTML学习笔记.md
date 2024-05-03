@@ -30,6 +30,8 @@ HTML 的全称为：HyperText Mark-up Language, 指的是超文本标记语言�
 
 > `div.box1*3` + `enter` 可以生成三个 div 标签并指定类名为 `box1`
 
+> `div>div*2` + `enter` 可以生成一个父 div, 并嵌套两个子 div 标签
+
 ### 2.1 结构代码
 
 ```html

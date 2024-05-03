@@ -115,13 +115,13 @@ alert(oObj.name);
 
 ### 3.5 匈牙利命名风格
 
-- 对象o Object 比如：`oDiv`
-- 数组a Array 比如：`aItems`
-- 字符串s String 比如：`sUserName`
-- 整数i Integer 比如：`iItemCount`
-- 布尔值b Boolean 比如：`bIsComplete`
-- 浮点数f Float 比如：`fPrice`
-- 函数fn Function 比如：`fnHandler`
+- 对象`o` `Object` 比如：`oDiv`
+- 数组`a` `Array` 比如：`aItems`
+- 字符串`s` `String` 比如：`sUserName`
+- 整数`i` `Integer` 比如：`iItemCount`
+- 布尔值`b` `Boolean` 比如：`bIsComplete`
+- 浮点数`f` `Float` 比如：`fPrice`
+- 函数`fn`` Function` 比如：`fnHandler`
 
 ## 4 函数定义和调用
 
@@ -332,7 +332,7 @@ else{
 
 **说明:**
 
-上面的代码，如果把 javascript 写在元素的上面，就会出错，因为页面上从上往下加载执行的，javascript去页面上获取元素 div1 的时候，元素 div1 还没有加载。
+上面的代码，如果把 javascript 写在元素的上面，就会出错，因为页面上从上往下加载执行的，javascript去页面上获取元素 `div1` 的时候，元素 `div1` 还没有加载。
 
 **解决方法有两种:**
 
@@ -416,7 +416,7 @@ else{
 
 ### 8.2 innerHTML
 
-innerHTML可以读取或者设置标签包裹的内容
+`innerHTML`可以读取或者设置标签包裹的内容
 
 ```js
 <script type="text/javascript">
@@ -437,7 +437,7 @@ innerHTML可以读取或者设置标签包裹的内容
 
 1. 数组的介绍
 
-数组就是一组数据的集合，javascript 中，**数组里面的数据可以是不同类型的数据**，好比 python 里面的列表。
+数组就是一组数据的集合, javascript 中, **数组里面的数据可以是不同类型的数据**, 好比 python 里面的列表.
 
 2. 数组的定义
 
@@ -458,7 +458,6 @@ var aList = [[1,2,3],['a','b','c']];
 ```
 
 4. 数组的操作
-
     1. 获取数组的长度
     ```js
     var aList = [1,2,3,4];
@@ -487,8 +486,9 @@ var aList = [[1,2,3],['a','b','c']];
     2. `num`：可选，删除数组元素的个数。
     3. `elementN`：可选，在`start`索引位置要插入的新元素。
 
-此方法会删除从start索引开始的num个元素，并将elementN参数插入到start索引位置。
+此方法会删除从`start`索引开始的`num`个元素，并将`elementN`参数插入到`start`索引位置。
 
+```js
 var colors = ["red", "green", "blue"];
 colors.splice(0,1);  //删除第一项
 alert(colors);  //green,blue
@@ -498,3 +498,4 @@ alert(colors);  //green,yellow,organge,blue
 
 colors.splice(1, 1, "red", "purple");  //删除一项，插入两项数据
 alert(colors);  //green,red,purple,orange,blue
+```

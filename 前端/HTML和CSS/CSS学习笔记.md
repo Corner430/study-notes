@@ -423,6 +423,8 @@ float: left; /* 或者使用 float: right; 设置元素右浮动 */
     height: 100px;
     /* 设置背景色 */
     background: red;
+    /* 设置背景图片, 不重复显示图片，拉伸图片 */
+    background: url(images/logo.png) no-repeat center center;
     /* 设置四边边框 */
     /* border: 10px solid black; */
     border-top: 10px solid black;
@@ -491,33 +493,47 @@ font-style: italic;
 ```html
 <style>
   p {
-    /* 设置字体大小  浏览器默认是 16px */
-    font-size: 20px;
-    /* 设置字体 */
-    font-family: "Microsoft YaHei";
-    /* 设置字体加粗 */
-    font-weight: bold;
-    /* 设置字体颜色 */
+    /* 设置文字颜色为红色; */
     color: red;
-    /* 增加掉下划线 */
-    text-decoration: underline;
-    /* 设置行高  */
+    /* 设置文字大小为30px; */
+    font-size: 30px;
+
+    /* 设置文字加粗; */
+    font-weight: bold;
+
+    /* 设置文字字体为微软雅黑; */
+    font-family: "Microsoft YaHei";
+
+    /* 设置文字背景颜色为蓝色; */
+    background: blue;
+
+    /* 设置下划线; */
+    /* text-decoration: underline;
+    text-decoration: line-through; */
+    text-decoration: overline;
+
+    /* 设置行高为100px, 使文字垂直居中; */
     line-height: 100px;
-    /* 设置背景色 */
-    background: green;
-    /* 设置文字居中 */
+
+    /* 设置文字对齐方式为居中; */
     /* text-align: center; */
-    text-indent: 40px;
+
+    /* 设置文字缩进为30px; */
+    text-indent: 30px;
+  }
+
+  span {
+    color: green;
   }
 
   a {
-    /* 去掉下划线 */
     text-decoration: none;
   }
 </style>
 
-<a href="#">连接标签</a>
-<p>你好，世界!</p>
+<!-- span 标签可以给文本中的某个部分设置样式 -->
+<p>听说下雨天音乐和<span>辣条</span>更配</p>
+<a href="https://www.baidu.com">百度</a>
 ```
 
 ## 5 css 元素溢出
@@ -596,7 +612,7 @@ font-style: italic;
 <a href="#" class="link01">这是第二个链接</a>
 ```
 
-> 行内元素不能设置宽高，块元素或者行内块元素可以设置宽高。
+> 行内元素不能设置宽高，块元素或者行内块元素可以设置宽高。如果既想要设置宽高，又想要元素在一行显示，可以使用**浮动。**
 
 ## 7 盒子模型
 
@@ -634,8 +650,8 @@ border-top: 10px solid red;
 ```
 
 - `10px` 表示线框的粗细
-- `solid`表示线性
-- `red`表示边框的颜色
+- `solid` 表示线性
+- `red` 表示边框的颜色
 
 设置其它三个边的方法和上面一样，把上面的 `top` 换成 `left` 就是设置左边，换成 `right` 就是设置右边，换成 `bottom` 就是设置底边。
 
@@ -681,3 +697,20 @@ padding: 20px; /* 设置四边内边距为20px */
 
 - 盒子宽度 = `width` + `padding`左右 + `border`左右
 - 盒子高度 = `height `+ `padding`上下 + `border`上下
+
+代码示例
+
+```html
+<style>
+  .box {
+    width: 200px;
+    height: 200px;
+    background: red;
+    border: 10px solid black;
+    padding: 20px;
+    margin: 20px;
+  }
+</style>
+
+<div class="box">这是一个盒子</div>
+```

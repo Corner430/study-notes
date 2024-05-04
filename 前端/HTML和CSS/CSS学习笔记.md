@@ -714,3 +714,7 @@ padding: 20px; /* 设置四边内边距为20px */
 
 <div class="box">这是一个盒子</div>
 ```
+
+设计时候可以自行在浏览器中查看并调整盒子的真实尺寸。
+
+![20240503142034](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240503142034.png)

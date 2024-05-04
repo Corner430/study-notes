@@ -74,7 +74,7 @@
 
 - [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的学习笔记.md)
 - [计算机网络学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络学习笔记.md)
-- [TCP/IP网络编程学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/TCP-IP网络编程学习笔记.md)
+- [TCP/IP网络编程学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/TCP-IP网络编程/README.md)
 
 
 ## 8 数据库

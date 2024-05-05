@@ -66,6 +66,21 @@ public:
 };
 ```
 
+***js***
+```js
+var search = function (nums, target) {
+    let l = 0, r = nums.length - 1; // []
+    while (l <= r) {
+        let mid = (r + l) >> 1;
+        if (nums[mid] === target) return mid;
+        else if (nums[mid] < target)
+            l = mid + 1;
+        else r = mid - 1;
+    }
+    return -1;
+};
+```
+
 #### [35. 搜索插入位置](https://leetcode.cn/problems/search-insert-position/description/)
 
 ***python***
@@ -101,6 +116,22 @@ public:
         }
         return left;
     }
+};
+```
+
+***js***
+```js
+var searchInsert = function (nums, target) {
+    let left = 0, right = nums.length - 1;
+    while (left <= right) {
+        let mid = (left + right) >> 1;
+        if (nums[mid] === target)
+            return mid;
+        else if (nums[mid] < target)
+            left = mid + 1;
+        else right = mid - 1;
+    }
+    return left;
 };
 ```
 
@@ -181,6 +212,43 @@ public:
 };
 ```
 
+***js***
+```js
+var searchLeftBound = function (nums, target) {
+    while (left <= right) {
+        let mid = (left + right) >> 1;
+        if (nums[mid] >= target)
+            right = mid - 1;
+        else
+            left = mid + 1;
+    }
+    if (left < nums.length && nums[left] === target)
+        return left;
+    return -1;
+};
+
+var searchRightBound = function (nums, target) {
+    right = nums.length - 1;
+    while (left <= right) {
+        let mid = (left + right) >> 1;
+        if (nums[mid] <= target)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return right;
+};
+
+var searchRange = function (nums, target) {
+    left = 0;
+    right = nums.length - 1;
+    let leftBound = searchLeftBound(nums, target);
+    if (leftBound === -1) return [-1, -1];
+    return [leftBound, searchRightBound(nums, target)];
+};
+```
+
+
 #### [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/description/)
 
 ***python***
@@ -223,6 +291,24 @@ public:
 };
 ```
 
+***js***
+```js
+var mySqrt = function (x) {
+    if (x === 0) return x;
+    let left = 1, right = x;
+    while (left <= right) {
+        let mid = left + ((right - left) >> 1);
+        if (mid === Math.floor(x / mid))
+            return mid;
+        else if (mid < Math.floor(x / mid))
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return right;
+};
+```
+
 #### [367. 有效的完全平方数](https://leetcode-cn.com/problems/valid-perfect-square/description/)
 
 ***python***
@@ -261,16 +347,69 @@ public:
 };
 ```
 
+***js***
+```js
+var isPerfectSquare = function (num) {
+    let left = 1, right = num;
+    while (left <= right) {
+        let mid = left + ((right - left) >> 1);
+        if (mid * mid == num)
+            return true;
+        else if (mid * mid < num)
+            left = mid + 1;
+        else right = mid - 1;
+    }
+    return false;
+};
+```
+
 #### [27. 移除元素](https://leetcode-cn.com/problems/remove-element/description/)
 
 ***python***
 ```python
-
+class Solution(object):
+    def removeElement(self, nums, val):
+        left, right  = 0, len(nums) - 1
+        while left <= right:
+            while left <= right and nums[left] != val:
+                left += 1
+            while left <= right and nums[right] == val:
+                right -= 1
+            if left <= right:
+                nums[left] = nums[right]
+                left += 1
+                right -= 1
+        return left
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int left = 0, right = nums.size() - 1; // []
+        while (left <= right) {
+            while (left <= right && nums[left] != val)
+                left++;
+            while (left <= right && nums[right] == val)
+                right--;
+            if (left <= right)
+                nums[left++] = nums[right--];
+        }
+        return left;
+    }
+};
+```
 
+***js***
+```js
+var removeElement = function(nums, val) {
+    let slow = 0, fast = 0;
+    for(; fast < nums.length; fast++)
+        if (nums[fast] != val)
+            nums[slow++] = nums[fast];
+    return slow;
+};
 ```
 
 #### [26. 删除排序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/)
@@ -278,13 +417,52 @@ public:
 ***python***
 
 ```python
-
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        slow, fast = 0, 0
+        while fast < len(nums):
+            if fast < len(nums) - 1 and nums[fast] == nums[fast + 1]:
+                fast += 1
+                continue
+            else:
+                nums[slow] = nums[fast]
+                slow += 1
+                fast += 1
+        return slow
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int slow = 0, fast = 0;
+        while (fast < nums.size()) {
+            if (fast < nums.size() - 1 && nums[fast] == nums[fast + 1]){
+                fast++;
+                continue;
+            }
+            else
+                nums[slow++] = nums[fast];
+            fast++;
+        }
+        return slow;
+    }
+};
+```
 
+***js***
+```js
+var removeDuplicates = function(nums) {
+    let slow = 1, fast = 0;
+    while (fast < nums.length){
+        if (fast > 0 && nums[fast] != nums[fast - 1])
+            nums[slow++] = nums[fast];
+        fast++;
+    }
+    return slow;
+};
 ```
 
 #### [283. 移动零](https://leetcode-cn.com/problems/move-zeroes/description/)
@@ -292,13 +470,47 @@ public:
 ***python***
 
 ```python
-
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        slow, fast = 0, 0
+        while fast < len(nums):
+            if nums[fast]:
+                nums[slow] = nums[fast]
+                slow += 1
+            fast += 1
+        while slow < len(nums):
+            nums[slow] = 0
+            slow += 1
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int slow = 0, fast = 0;
+        for(; fast < nums.size(); fast++)
+            if(nums[fast])
+                nums[slow++] = nums[fast];
 
+        while(slow < nums.size())
+            nums[slow++] = 0;
+    }
+};
+```
+
+***js***
+```js
+var moveZeroes = function (nums) {
+    let slow = 0, fast = 0;
+    for (; fast < nums.length; fast++)
+        if (nums[fast] != 0)
+            nums[slow++] = nums[fast];
+
+    while (slow < nums.length)
+        nums[slow++] = 0;
+};
 ```
 
 #### [844. 比较含退格的字符串](https://leetcode-cn.com/problems/backspace-string-compare/description/)
@@ -312,6 +524,32 @@ public:
 ***cpp***
 
 ```cpp
+class Solution
+{
+public:
+    bool backspaceCompare(string s, string t)
+    {
+        modifyString(s);
+        modifyString(t);
+        return s == t;
+    }
+
+private:
+    void modifyString(string &s)
+    {
+        int slow = 0, fast = 0;
+        for (; fast < s.length(); ++fast)
+            if (s[fast] == '#' && slow > 0)
+                --slow;
+            else if (s[fast] != '#')
+                s[slow++] = s[fast];
+        s.resize(slow);
+    }
+};
+```
+
+***js***
+```js
 
 ```
 

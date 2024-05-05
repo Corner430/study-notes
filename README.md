@@ -47,6 +47,8 @@
 - [《C Primer Plus》](https://github.com/Corner430/study-notes/blob/main/book.md#c-primer-plus)
 - [《C++ Primer Plus》](https://github.com/Corner430/study-notes/blob/main/book.md#C-primer-plus-1)
 - [cpp 入门笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp入门笔记.md)
+- [cpp 中级笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp中级笔记.md)
+- [cpp 高级笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp高级笔记.md)
 
 ## 5 工具
 

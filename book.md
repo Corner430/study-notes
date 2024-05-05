@@ -10,6 +10,7 @@
 - [4 c/c++](#4-cc)
   - [C Primer Plus](#c-primer-plus)
   - [C++ Primer Plus](#c-primer-plus-1)
+  - [程序员的自我修养](#程序员的自我修养)
 - [5 python](#5-python)
   - [python编程 从入门到实践](#python编程-从入门到实践)
 - [6 数据结构与算法](#6-数据结构与算法)
@@ -42,6 +43,8 @@
 ### [C Primer Plus](https://onedrive.live.com/embed?resid=48C45A7DF562C5CE%2116650&authkey=!AG1o2X9uU1jlRPg&em=2)
 
 ### [C++ Primer Plus](https://onedrive.live.com/embed?resid=48C45A7DF562C5CE%2116654&authkey=!AN9E73XPaxkB9Ww&em=2)
+
+### [程序员的自我修养](https://onedrive.live.com/embed?resid=48C45A7DF562C5CE%2133200&authkey=!ACgj1SGPDCazCF8&em=2)
 
 ## 5 python
 

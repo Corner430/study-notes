@@ -518,7 +518,37 @@ var moveZeroes = function (nums) {
 ***python***
 
 ```python
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        def modify(S):
+            stack = []
+            for char in S:
+                if char != '#':
+                    stack.append(char)
+                elif stack:
+                    stack.pop()
+            return ''.join(stack)
 
+        return modify(s) == modify(t)
+
+
+# ----------------------------
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        return self.modifyString(s) == self.modifyString(t)
+    
+    def modifyString(self, s: str) -> str:
+        slow, fast = 0, 0
+        s_list = list(s)
+        while fast < len(s_list):
+            if s_list[fast] != '#':
+                s_list[slow] = s_list[fast]
+                slow += 1
+            elif slow > 0:
+                slow -= 1
+
+            fast += 1
+        return ''.join(s_list[:slow])
 ```
 
 ***cpp***
@@ -550,7 +580,22 @@ private:
 
 ***js***
 ```js
-
+var backspaceCompare = function (s, t) {
+    modify = function (s) {
+        let slow = 0, sArr = s.split('');
+        for (let fast = 0; fast < sArr.length; fast++) {
+            if (sArr[fast] != '#')
+                sArr[slow++] = sArr[fast];
+            else if (slow > 0)
+                slow--;
+        }
+        sArr.length = slow;
+        return sArr.join('');
+    }
+    s = modify(s);
+    t = modify(t);
+    return s == t;
+};
 ```
 
 #### [977. 有序数组的平方](https://leetcode-cn.com/problems/squares-of-a-sorted-array/description/)
@@ -564,6 +609,12 @@ private:
 ***cpp***
 
 ```cpp
+
+```
+
+***js***
+
+```js
 
 ```
 

@@ -15,6 +15,13 @@
       - [2.3.2.5 总结 `const` 和二级指针的类型转换公式：](#2325-总结-const-和二级指针的类型转换公式)
     - [2.3.3 const, 指针, 引用相结合](#233-const-指针-引用相结合)
   - [2.4 函数重载, inline函数, 参数带默认值的函数](#24-函数重载-inline函数-参数带默认值的函数)
+    - [2.4.1 函数重载](#241-函数重载)
+    - [2.4.2 C++ 和 C 语言代码之间如果互相调用？](#242-c-和-c-语言代码之间如果互相调用)
+      - [2.4.2.1 C++ 调用 C](#2421-c-调用-c)
+      - [2.4.2.2 C 调用 C++](#2422-c-调用-c)
+      - [2.4.2.3 面试题](#2423-面试题)
+    - [2.4.3 inline 函数](#243-inline-函数)
+    - [2.4.4 参数带默认值的函数](#244-参数带默认值的函数)
   - [2.5 函数模板](#25-函数模板)
 - [3 面向对象](#3-面向对象)
   - [3.1 this 指针](#31-this-指针)
@@ -724,7 +731,144 @@ int main(){
 
 ## 2.4 函数重载, inline函数, 参数带默认值的函数
 
-## 2.5 函数模板
+### 2.4.1 函数重载
+
+1. 为什么 C++ 支持函数重载，而 C 不支持？
+  - C++ 代码产生函数符号的时候，函数名+参数列表类型组成的！
+  - C 代码产生函数符号的时候，函数名来决定！
+2. 函数重载需要注意些什么？
+  - **作用域**, 如果有局部的函数声明，就不会再调用外部其它参数类型的重载，就会覆盖！！！**一组函数要称得上重载，一定先是处在同一个作用域当中的**
+  - `const` 或者 `volatile` 修饰的参数，如何影响形参类型？
+    ```cpp
+    #include<typeinfo>
+    int a = 10;
+    const int b = 10;
+    cout << typeid(a).name() << endl;  // int
+    cout << typeid(b).name() << endl;  // int
+    ```
+### 2.4.2 C++ 和 C 语言代码之间如果互相调用？
+
+**在 CPP 源码中，把 C 函数的声明放在 `extern "C"` 里面**
+
+> C 编译器不识别 `extern`
+
+#### 2.4.2.1 C++ 调用 C
+
+***main.cpp***
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+int sum(int a, int b);    // *UND* _Z3sumii
+
+int main() {
+  int ret = sum(10, 20);
+  cout << "ret: " << ret << endl;
+  return 0;
+}
+```
+
+***test.c***
+```c
+int sum(int a, int b) { // .text  sum
+  return a + b;
+}
+```
+
+如果得到链接错误，无法解析的外部符号，是因为各自编译时候，产生的符号不一样，C++ 产生的符号是 `_Z3sumii`，而 C 产生的符号是 `sum`，所以需要在 C++ 文件中通过 `extren "C"` 关键字声明一下 `sum` 函数
+
+```cpp
+extern "C" {
+  int sum(int a, int b);
+}
+```
+
+#### 2.4.2.2 C 调用 C++
+
+***main.c***
+
+```c
+#include <stdio.h>
+
+int sum(int, int);  // UND sum
+
+int main() {
+  int ret = sum(10, 20);
+  printf("ret: %d\n", ret);
+  return 0;
+}
+```
+
+***test.cpp***
+
+```cpp
+extern "C" {
+int sum(int a, int b) { // .text  sum_int_int
+  return a + b;
+}
+}
+```
+
+#### 2.4.2.3 面试题
+
+```cpp
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+int sum(int a, int b) { return a + b; }
+
+#ifdef __cplusplus
+}
+#endif
+
+/*
+只要是 C++ 编译器，都内置 __cplusplus 宏定义
+
+如果是 C 编译器，没有 __cplusplus 宏定义
+
+只要是 C++ 编译器进行编译，就会把 sum 函数放在 extern "C" 里面，更加灵活
+*/
+```
+
+### 2.4.3 inline 函数
+
+- `inline` 内联函数 和 普通函数的区别？
+  - `inline` 内联函数：在编译过程中，就没有函数的调用开销了，在函数的调用点直接把函数的代码进行展开处理了
+  - `incline` 函数不再生成相应的函数符号
+
+> inline只是建议编译器把函数处理为 内联函数，并不是所有的 inline 都会被编译器内联，例如递归
+
+> debug 版本上，inline 是不起作用的；只有在 release 版本才能出现。例如：`g++ -c run main.cpp -O2 && objdump -t main.o` 可以看到 `sum` 函数的符号已经没有了！
+
+```cpp
+int sum (int a, int b) { // *.o sum_int_int .text
+  return a + b;
+}
+
+int main(){
+  int a = 10;
+  int b = 20;
+  
+  int ret = sum(a, b);  // a + b
+  // 此处有标准的函数调用过程  参数压栈，函数栈帧的开辟和回退过程
+  // 有函数调用的开销，如果循环10000次，就会有10000次的函数调用开销，函数代码越少，越吃亏
+  // a + b : mov add mov
+}
+```
+
+### 2.4.4 参数带默认值的函数
+
+传参时候如果直接传输的**立即数**，从汇编的角度，会比传变量少一次 `mov` 指令
+
+```cpp
+int sum(int a, int b = 20);
+int sum(int a = 10, int b);
+// 这是合法的，等价于：
+int sum(int a = 10, int b = 20);
+```
 
 --------------
 

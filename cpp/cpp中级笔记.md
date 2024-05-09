@@ -8,6 +8,11 @@
   - [2.3 const, 指针和引用的结合](#23-const-指针和引用的结合)
     - [2.3.1 const 理解](#231-const-理解)
     - [2.3.2 const 和指针的结合](#232-const-和指针的结合)
+      - [2.3.2.1 const 和一级指针的结合](#2321-const-和一级指针的结合)
+      - [2.3.2.2 总结 `const` 和一级指针的类型转换公式：](#2322-总结-const-和一级指针的类型转换公式)
+      - [2.3.2.3 const 和 二级指针的结合](#2323-const-和-二级指针的结合)
+      - [2.3.2.4 应用（面试题）](#2324-应用面试题)
+      - [2.3.2.5 总结 `const` 和二级指针的类型转换公式：](#2325-总结-const-和二级指针的类型转换公式)
     - [2.3.3 const, 指针, 引用相结合](#233-const-指针-引用相结合)
   - [2.4 函数重载, inline函数, 参数带默认值的函数](#24-函数重载-inline函数-参数带默认值的函数)
   - [2.5 函数模板](#25-函数模板)
@@ -492,47 +497,230 @@ int main() {
 - 不能作为左值
 
 `const` 修饰的量常出现的错误是：
-1. 常量不能再作为左值
-2. 不能把常量的地址泄露给一个普通的指针或者普通的引用变量
+1. 常量不能再作为左值 <= 直接修改常量的值
+2. 不能把常量的地址泄露给一个普通的指针或者普通的引用变量 <= 可以间接修改常量的值
 
+#### 2.3.2.1 const 和一级指针的结合
+
+**共两种情况**
+
+**C++ 的语言规范：`const` 修饰的是离它最近的类型**
+
+```cpp
+// 距离const最近的是 int, 所以后面的 *p 是常量表达式
+
+const int *p; // => *p = 20; 是错误的.  p = &b; 是正确的
+
+int const *p; // 同上
+
+// -------------------------
+
+// 距离 const 最近的是 int *, 所以后面的 p 是常量表达式
+
+int * const p;  // => p = &b; 是错误的. *p = 20; 是正确的
+
+const int *const p; // p 和 *p 都不可以修改
+
+// -------------------------------
+// 示例 1
+int main(){
+  const int a = 10;
+  // int *p = &a;  // 错误
+  const int *p = &a;  // 正确, 因为 *p 是常量表达式
+  // int *const p = &a;  // 错误, 因为 p 是常量表达式, 而 *p 不是
+}
+
+// -------------------------------
+// 示例 2
+int main() {
+  int a = 10;
+  int *p1 = &a;
+  const int *p2 = &a; // 这是合法的 const int * <= int *
+  int *const p3 = &a; // 这是合法的 int * <= int * , 此处原因参见示例 3
+  
+  int *p4 = p3; // int * <= int * , 原因同上
+  return 0;
+}
+
+// -------------------------------
+// 示例 3
+int main() {
+  int *q1 = nullptr;
+
+  // const 如果右边没有指针 * 的话，const 是不参与类型的, 这里作用是不能让 q2 当作左值传给二级指针
+  int *const q2 = nullptr;
+  cout << typeid(q1).name() << endl;  // int *
+  cout << typeid(q2).name() << endl;  // int *
+
+  return 0;
+}
+
+// 示例 4 （面试题）
+int main() {
+  int a = 10;
+  cosnt int *p = &a;
+  int *q = p; // int * <= const int *
+  // 问：q 指向 a, a 可以改动，有什么问题？
+  // 答：这和 a 没关系，你就是去掉 a 那一行，让 p 指 nullptr, 这也一样不行
+}
+```
+
+#### 2.3.2.2 总结 `const` 和一级指针的类型转换公式：
+
+```cpp
+int *    <=     const int * // 错误
+const int *     <=      int * // 正确
+
+int ** <= int * const * // 错误
+int * const * <= int ** // 正确
+```
+
+#### 2.3.2.3 const 和 二级指针的结合
+
+**共三种情况**
+
+```cpp
+const int **q;  // const 最近的类型是 int, 那么 修饰的常量表达式是 **q
+
+int *const* q;  // const 最近的类型是 int *, 那么 修饰的常量表达式是 *q
+
+int **const q;  // const 最近的类型是 int **, 那么 修饰的常量表达式是 q
+```
+
+
+```cpp
+int main() {
+  int a = 10;
+  int *p = &a;
+  const int **q = &p;  // const int ** <= int ** 错误, 同样的和 a 没关系 , 原因如下: 
+  /*
+  const int **q = &p;
+    *q <=> p    // 这是一块内存
+    const int b = 20;
+    *q = &b;    // const int * <= const int *
+    这就把 p 指向了 b, 这样就可以通过 p 间接修改 b 的值了
+  */
+   
+  // 改为 const int *p = &a; 就是正确的
+  // 或者改为 const int *const *q = &p; 也是正确的
+  return 0;
+}
+```
+
+
+#### 2.3.2.4 应用（面试题）
+
+1. 选择错误的代码
+
+```cpp
+// A.
+int a = 10;
+const int *p = &a;
+int *q = p;
+
+// 分析：int * <= const int * // 错误
+
+// B.
+int a = 10;
+int *const p = &a;
+int *q = p;
+
+// 分析：int * <= int * // 正确
+
+// C.
+int a = 10;
+int *const p = &a;
+int *const q = p;
+
+// 分析：int * <= int * // 正确
+
+// D.
+int a = 10;
+int *const p = &a;
+const int *q = p;
+
+// 分析：const int * <= int * // 正确
+```
+
+2. 选择错误的代码
+
+```cpp
+// A.
+int a = 10;
+int *p = &a;        // int * <= int *
+const int **q = &p; // const int ** <= int **         错误
+
+// B.
+int a = 10;
+int *p = &a;          // int * <= int *
+int *const *q = &p;   // int * const * <= int **  等价于 const * <= int *       正确
+
+// C.
+int a = 10;
+int *p = &a;
+int **const q = &p;  // int ** <= int **  正确
+
+// D.
+int a = 10;
+int *const p = &a;  // int * <= int *
+int **q = &p;       // int ** <= int * const *  等价于 int * <= const int *  错误
+
+// E.
+int a = 10;
+const int *p = &a;    // const int * <= int *
+int *const *q = &p;   // int * const * <= const int **
+
+// 两步分析
+// 1. const * <= int *  正确
+// 2. int * <= const int *  错误
+```
+
+
+#### 2.3.2.5 总结 `const` 和二级指针的类型转换公式：
+
+```cpp
+int ** <= const int ** // 错误
+const int ** <= int ** // 错误
+```
+
+**两边必须都要有 `const`**
 
 ### 2.3.3 const, 指针, 引用相结合
 
 ```cpp
 int main(){
   // 写一句代码，在内存的 0x0018ff44 处写一个 4 字节的 10
+  int *p = (int *)0x0018ff44;
+  int *&&p = (int *)0x0018ff44;
   int *const &p = (int *)0x0018ff44;
 
 // ----------------------------------
 
   int a = 10;
   int *p = &a;
-  // const int *&q = p; // 不能这样写，因为 p 是一个int *, q 是一个 const int *
   int *&q = p; // 等价于 int **q = &p; 
+  // const int *&q = p; // 等价于 const int **q = &p;   const int ** = int **   错误
 
 // --------------------------------
   int a = 10;
   int *const p = &a;
-  int *&q = p; // 这是错误的，不能把const
-               // 修饰的指针泄露给别的指针，这样就可以间接修改const内容了
-  // 把上一句可以转成 int **q = *p; 来分析
+  int *&q = p; // 等价于 int **q = &p;
+              // int ** <= int * const * 等价于 int * <= const *  错误
+      // *q 会修改 p 的值
 
 // ---------------------------------
   int a = 10;
   const int *p = &a;
-  int *&q = p;  // 也是错误的
-  // 分析: int **q = *p; int ** <= const int **
+  int *&q = p;  // int ** <= const int **  错误
 
 // ---------------------------------
   int a = 10;
   int *p = &a;
-  const int *&q = p;  // 错误
-  // const int **q = &p; // const int** <= int**
+  const int *&q = p;  // const int ** <= int **  错误
 
   return 0;
 }
 ```
-
 
 ## 2.4 函数重载, inline函数, 参数带默认值的函数
 

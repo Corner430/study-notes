@@ -828,19 +828,127 @@ var totalFruit = function (fruits) {
 ***python***
 
 ```python
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        need = {}
+        for c in t:
+            if c in need:
+                need[c] += 1
+            else:
+                need[c] = 1
+        left, right, start_index = 0, 0, 0
+        length = 100001
+        invalid = len(need)
 
+        while right < len(s):
+            # 扩大窗口
+            if s[right] in need:
+                need[s[right]] -= 1
+                if need[s[right]] == 0:
+                    invalid -= 1
+            right += 1
+
+            while invalid == 0:
+                # 缩小窗口
+                if s[left] in need:
+                    need[s[left]] += 1
+                    if need[s[left]] > 0:
+                        invalid += 1
+                        if right - left < length: # 收获结果
+                            start_index = left
+                            length = right - left
+                left += 1
+        return "" if length == 100001 else s[start_index:start_index + length]
+        
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char, int> umap;
+        for (char c : t)
+            umap[c]++;
+        int left = 0, right = 0; // [)
+        int invalid = umap.size();
+        int start_index = 0, length = 100001;
+        while (right < s.size()) {
+            // 扩大窗口
+            auto it = umap.find(s[right++]);
+            if (it != umap.end()) {
+                --it->second;
+                if (it->second == 0)
+                    invalid--;
+            }
 
+            // 收缩窗口
+            while (invalid == 0) {
+                auto it = umap.find(s[left]);
+                if (it != umap.end()) {
+                    ++it->second;
+                    if (it->second > 0) {
+                        invalid++;
+                        if (right - left < length) { // 收获结果
+                            start_index = left;
+                            length = right - left;
+                        }
+                    }
+                }
+                ++left;
+            }
+        }
+        return length == 100001 ? "" : s.substr(start_index, length);
+    }
+};
 ```
 
 ***js***
 
 ```js
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {string}
+ */
+var minWindow = function (s, t) {
+    let umap = new Map();
+    for (let c of t) {
+        umap.set(c, (umap.get(c) || 0) + 1);
+    }
+    let left = 0, right = 0;
+    let invalid = umap.size;
+    let start_index = 0, length = 100001;
 
+    while (right < s.length) {
+        // 扩大窗口
+        let char = s[right++];
+        if (umap.has(char)) {
+            umap.set(char, umap.get(char) - 1);
+            if (umap.get(char) === 0) {
+                invalid--;
+            }
+        }
+
+        // 收缩窗口
+        while (invalid === 0) {
+            let charLeft = s[left];
+            if (umap.has(charLeft)) {
+                umap.set(charLeft, umap.get(charLeft) + 1);
+                if (umap.get(charLeft) > 0) {
+                    invalid++;
+                    if (right - left < length) { // 收获结果
+                        start_index = left;
+                        length = right - left;
+                    }
+                }
+            }
+            left++;
+        }
+    }
+    return length === 100001 ? "" : s.substr(start_index, length);
+};
 ```
 
 #### [59. 螺旋矩阵 II](https://leetcode-cn.com/problems/spiral-matrix-ii/description/)
@@ -848,13 +956,113 @@ var totalFruit = function (fruits) {
 ***python***
 
 ```python
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        res = [[0] * n for _ in range(n)] # 二维数组
+        left_bound, right_bound = 0, n - 1
+        up_bound, down_bound = 0, n - 1
+        count = 1
 
+        while count <= n * n:
+            # 上边
+            for j in range(left_bound, right_bound + 1):
+                res[up_bound][j] = count
+                count += 1
+            up_bound += 1
+
+            # 右边
+            for i in range(up_bound, down_bound + 1):
+                res[i][right_bound] = count
+                count += 1
+            right_bound -= 1
+
+            # 下边
+            for j in range(right_bound, left_bound - 1, - 1):
+                res[down_bound][j] = count
+                count += 1
+            down_bound -= 1
+
+            # 左边
+            for i in range(down_bound, up_bound - 1, -1):
+                res[i][left_bound] = count
+                count += 1
+            left_bound += 1
+
+        return res
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> res(n, vector<int>(n));
+        int leftBound = 0, rightBound = n - 1;
+        int upBound = 0, downBound = n - 1;
+        int count = 1;
+        while (count <= n * n) {
+            // 上边
+            for (int j = leftBound; j <= rightBound; ++j)
+                res[upBound][j] = count++;
+            upBound++;
 
+            // 右边
+            for (int i = upBound; i <= downBound; ++i)
+                res[i][rightBound] = count++;
+            rightBound--;
+
+            // 下边
+            for (int j = rightBound; j >= leftBound; --j)
+                res[downBound][j] = count++;
+            downBound--;
+
+            // 左边
+            for (int i = downBound; i >= upBound; --i)
+                res[i][leftBound] = count++;
+            leftBound++;
+        }
+        return res;
+    }
+};
+```
+
+***js***
+
+```js
+/**
+ * @param {number} n
+ * @return {number[][]}
+ */
+var generateMatrix = function (n) {
+    let res = new Array(n).fill().map(() => new Array(n).fill(0));
+    let leftBound = 0, rightBound = n - 1;
+    let upBound = 0, downBound = n - 1;
+    let count = 1;
+
+    while (count <= n * n) {
+        // 上边
+        for (let j = leftBound; j <= rightBound; j++)
+            res[upBound][j] = count++;
+        upBound++;
+
+        // 右边
+        for (let i = upBound; i <= downBound; i++)
+            res[i][rightBound] = count++;
+        rightBound--;
+
+        // 下边
+        for (let j = rightBound; j >= leftBound; j--)
+            res[downBound][j] = count++;
+        downBound--;
+
+        // 左边
+        for (let i = downBound; i >= upBound; i--)
+            res[i][leftBound] = count++;
+        leftBound++;
+    }
+    return res;
+};
 ```
 
 #### [54. 螺旋矩阵](https://leetcode-cn.com/problems/spiral-matrix/description/)
@@ -862,41 +1070,224 @@ var totalFruit = function (fruits) {
 ***python***
 
 ```python
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        res = []
+        m, n = len(matrix), len(matrix[0])
+        up_bound, down_bound = 0, m - 1
+        left_bound, right_bound = 0, n - 1
 
+        while up_bound <= down_bound and left_bound <= right_bound:
+            # 上边
+            for j in range(left_bound, right_bound + 1):
+                res.append(matrix[up_bound][j])
+            up_bound += 1
+            if up_bound > down_bound:
+                break
+            
+            # 右边
+            for i in range(up_bound, down_bound + 1):
+                res.append(matrix[i][right_bound])
+            right_bound -= 1
+            if left_bound > right_bound:
+                break
+            
+            # 下边
+            for j in range(right_bound, left_bound - 1, -1):
+                res.append(matrix[down_bound][j])
+            down_bound -= 1
+
+            # 左边
+            for i in range(down_bound, up_bound - 1, -1):
+                res.append(matrix[i][left_bound])
+            left_bound += 1
+        return res
+            
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+  public:
+  vector<int> spiralOrder(vector<vector<int>>& matrix) {
+    vector<int> res;
+    int m = matrix.size(), n = matrix[0].size();  // 行 列
+    int up_bound = 0, down_bound = m - 1;
+    int left_bound = 0, right_bound = n - 1;
+    while (up_bound <= down_bound && left_bound <= right_bound)
+    {
+      // 上
+      for (int j = left_bound; j <= right_bound; j++)
+        res.push_back(matrix[up_bound][j]);
+      up_bound++;
+      if (up_bound > down_bound) break;
 
+      // 右
+      for (int i = up_bound; i <= down_bound; i++)
+        res.push_back(matrix[i][right_bound]);
+      right_bound--;
+      if (left_bound > right_bound) break;
+
+      // 下
+      for (int j = right_bound; j >= left_bound; j--)
+        res.push_back(matrix[down_bound][j]);
+      down_bound--;
+
+      // 左
+      for (int i = down_bound; i >= up_bound; i--)
+        res.push_back(matrix[i][left_bound]);
+      left_bound++;
+    }
+    return res;
+  }
+};
+```
+
+***js***
+
+```js
+/**
+ * @param {number[][]} matrix
+ * @return {number[]}
+ */
+var spiralOrder = function (matrix) {
+    let res = [];
+    let m = matrix.length, n = matrix[0].length;
+    let upBound = 0, downBound = m - 1;
+    let leftBound = 0, rightBound = n - 1;
+
+    while (upBound <= downBound && leftBound <= rightBound) {
+        // 上
+        for (let j = leftBound; j <= rightBound; j++) {
+            res.push(matrix[upBound][j]);
+        }
+        upBound++;
+        if (upBound > downBound) break;
+
+        // 右
+        for (let i = upBound; i <= downBound; i++) {
+            res.push(matrix[i][rightBound]);
+        }
+        rightBound--;
+        if (leftBound > rightBound) break;
+
+        // 下
+        for (let j = rightBound; j >= leftBound; j--) {
+            res.push(matrix[downBound][j]);
+        }
+        downBound--;
+
+        // 左
+        for (let i = downBound; i >= upBound; i--) {
+            res.push(matrix[i][leftBound]);
+        }
+        leftBound++;
+    }
+    return res;
+};
 ```
 
 #### [剑指Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/description/)
 
-***python***
-
-```python
-
-```
-
-***cpp***
-
-```cpp
-
-```
+同 [54. 螺旋矩阵](#54-螺旋矩阵)
 
 #### [167. 两数之和 II - 输入有序数组](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
 
 ***python***
 
 ```python
+# 左右指针
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        left, right = 0, len(numbers) - 1
+        while left < right:
+            sum = numbers[left] + numbers[right]
+            if sum == target:
+                return [left + 1, right + 1]
+            elif sum < target:
+                left += 1
+            else:
+                right -= 1
+        return [-1, -1]
 
+# 哈希
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        umap = {}
+        for i, num in enumerate(numbers):
+            if target - num in umap:
+                return [umap[target - num] + 1, i + 1]
+            umap[num] = i
 ```
 
 ***cpp***
 
 ```cpp
+// 左右指针
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        int left = 0, right = numbers.size() - 1;
+        while(left < right){
+            int sum = numbers[left] + numbers[right];
+            if(target == sum) return vector<int> {left+1,right+1};
+            else if(target < sum) right--;
+            else left++;
+        }
+        return vector<int> {-1,-1};
+    }
+};
 
+// 哈希
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        unordered_map<int, int> umap;
+        for (int i = 0 ; i < numbers.size(); i++){
+            auto it = umap.find(target - numbers[i]);
+            if(it != umap.end()) return vector<int> {it->second + 1, i + 1};
+            umap[numbers[i]] = i;
+        }
+        return vector<int> {-1, -1};
+    }
+};
+```
+
+***js***
+
+```js
+/**
+ * @param {number[]} numbers
+ * @param {number} target
+ * @return {number[]}
+ */
+// 左右指针
+var twoSum = function (numbers, target) {
+    let left = 0, right = numbers.length - 1;
+    while (left < right) {
+        let sum = numbers[left] + numbers[right];
+        if (target === sum) {
+            return [left + 1, right + 1];
+        } else if (target < sum) {
+            right--;
+        } else {
+            left++;
+        }
+    }
+    return [-1, -1];
+};
+
+// 哈希
+var twoSum = function (numbers, target) {
+    let umap = new Map();
+    for (let i = 0; i < numbers.length; i++) {
+        if (umap.has(target - numbers[i])) {
+            return [umap.get(target - numbers[i]) + 1, i + 1];
+        }
+        umap.set(numbers[i], i);
+    }
+};
 ```
 
 #### [344. 反转字符串](https://leetcode-cn.com/problems/reverse-string/description/)
@@ -904,13 +1295,46 @@ var totalFruit = function (fruits) {
 ***python***
 
 ```python
-
+class Solution:
+    def reverseString(self, s: List[str]) -> None:
+        """
+        Do not return anything, modify s in-place instead.
+        """
+        left, right = 0, len(s) - 1
+        while left < right:
+            s[left], s[right] = s[right], s[left]
+            left += 1
+            right -= 1
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+        int i = 0, j = s.size() - 1;
+        while (i < j)
+            swap(s[i++], s[j--]);
+    }
+};
+```
 
+***js***
+
+```js
+/**
+ * @param {character[]} s
+ * @return {void} Do not return anything, modify s in-place instead.
+ */
+var reverseString = function (s) {
+    let i = 0, j = s.length - 1;
+    while (i < j) {
+        [s[i], s[j]] = [s[j], s[i]];
+        i++;
+        j--;
+    }
+};
 ```
 
 #### [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/description/)
@@ -918,13 +1342,106 @@ var totalFruit = function (fruits) {
 ***python***
 
 ```python
+class Solution:
+    def extend(self, s: str, i: int, j: int) -> int:
+        res = 0
+        while i >= 0 and j < len(s) and s[i] == s[j]:
+            if i != j:
+                res += 2
+            else:
+                res += 1
+            i -= 1
+            j += 1
+        return res
 
+    def longestPalindrome(self, s: str) -> str:
+        length = 1
+        start_index = 0
+        for i in range(len(s)):
+            length1 = self.extend(s, i, i)
+            length2 = self.extend(s, i, i + 1)
+            length = max(length, length1, length2)
+            if length == length1:
+                start_index = i - (length1 - 1) // 2
+            elif length == length2:
+                start_index = i - length2 // 2 + 1
+        return s[start_index : start_index + length]
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+private:
+  int extend(string &s, int i, int j) {
+    int res = 0;
+    while (i >= 0 && j < s.size() && s[i] == s[j]) {
+      if (i != j)
+        res += 2;
+      else
+        res++;
+      i--;
+      j++;
+    }
+    return res;
+  }
 
+public:
+  string longestPalindrome(string s) {
+    int length = 1;
+    int startIndex = 0;
+    for (int i = 0; i < s.size(); i++) {
+      int length1 = extend(s, i, i);
+      int length2 = extend(s, i, i + 1);
+      length = max({length, length1, length2});
+      if (length == length1)
+        startIndex = i - (length1 - 1) / 2;
+      else if (length == length2)
+        startIndex = i - length2 / 2 + 1;
+    }
+    return s.substr(startIndex, length);
+  }
+};
+```
+
+***js***
+
+```js
+/**
+ * @param {string} s
+ * @return {string}
+ */
+
+var extend = function (s, i, j) {
+    let res = 0;
+    while (i >= 0 && j < s.length && s[i] === s[j]) {
+        if (i !== j) {
+            res += 2;
+        } else {
+            res += 1;
+        }
+        i--;
+        j++;
+    }
+    return res;
+}
+
+var longestPalindrome = function (s) {
+    let length = 1;
+    let startIndex = 0;
+    for (let i = 0; i < s.length; i++) {
+        let length1 = extend(s, i, i);
+        let length2 = extend(s, i, i + 1);
+        let lengthTemp = Math.max(length, length1, length2);
+        if (lengthTemp === length1) {
+            startIndex = i - Math.floor((length1 - 1) / 2);
+        } else if (lengthTemp === length2) {
+            startIndex = i - Math.floor(length2 / 2) + 1;
+        }
+        length = lengthTemp;
+    }
+    return s.substring(startIndex, startIndex + length);
+};
 ```
 
 #### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/description/)
@@ -932,12 +1449,44 @@ var totalFruit = function (fruits) {
 ***python***
 
 ```python
-
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return head
+        p = head
+        while p.next:
+            if p.next.val == p.val:
+                p.next = p.next.next
+            else:
+                p = p.next
+        return head
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if (!head)
+            return head;
+        ListNode* p = head;
+        while (p->next) {
+            if (p->next->val == p->val) {
+                ListNode* del = p->next;
+                p->next = del->next;
+                delete del;
+            }else
+                p = p->next;
+        }
+        return head;
+    }
+};
+```
+
+***js***
+
+```js
 
 ```
 

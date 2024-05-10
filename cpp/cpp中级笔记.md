@@ -22,14 +22,12 @@
       - [2.4.2.3 面试题](#2423-面试题)
     - [2.4.3 inline 函数](#243-inline-函数)
     - [2.4.4 参数带默认值的函数](#244-参数带默认值的函数)
-  - [2.5 函数模板](#25-函数模板)
 - [3 面向对象](#3-面向对象)
   - [3.1 this 指针](#31-this-指针)
-  - [3.2 对象深构造和浅构造](#32-对象深构造和浅构造)
-  - [3.3 对象的声明周期，对象的应用优化](#33-对象的声明周期对象的应用优化)
-  - [3.4 带右值引用参数的拷贝构造和operator=](#34-带右值引用参数的拷贝构造和operator)
-  - [3.5 普通，static，const三类成员方法](#35-普通staticconst三类成员方法)
-  - [3.6 OOP思想，面向对象语言特征描述](#36-oop思想面向对象语言特征描述)
+  - [3.2 对象构造和深浅拷贝](#32-对象构造和深浅拷贝)
+  - [3.3 初始化列表](#33-初始化列表)
+  - [3.4 普通，static，const三类成员方法](#34-普通staticconst三类成员方法)
+  - [3.5 指向类成员（成员变量和成员方法）的指针](#35-指向类成员成员变量和成员方法的指针)
 - [4 模板](#4-模板)
   - [4.1 函数模板和类模板](#41-函数模板和类模板)
   - [4.2 vector容器模板实现](#42-vector容器模板实现)
@@ -874,18 +872,175 @@ int sum(int a = 10, int b = 20);
 
 # 3 面向对象
 
+OOP 语言的四大特征：
+- 抽象
+- 封装/隐藏
+- 继承
+- 多态
+
+> 类体内实现的方法，自动处理成 `inline` 内联函数
+
+> 对象的内存大小，只和成员变量有关，所有对象共享一套成员方法
+
 ## 3.1 this 指针
 
-## 3.2 对象深构造和浅构造
+[`this` 指针](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#2532-this%E6%8C%87%E9%92%88%E6%A6%82%E5%BF%B5)
 
-## 3.3 对象的声明周期，对象的应用优化
+类的成员方法一经编译，所有的方法参数，都会加一个 `this` 指针，接收调用该方法的对象的地址
 
-## 3.4 带右值引用参数的拷贝构造和operator=
+## 3.2 对象构造和深浅拷贝
 
-## 3.5 普通，static，const三类成员方法
+- [构造函数和析构函数](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#2521-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0)
+  - 构造函数可以提供重载，但析构不可以，因为析构函数是不带参数的
+  - 析构函数可以自行调用（但不建议）
+  - `new obj` 进行 `delete obj` 的时候会自行先进行 `obj->~ClassName()`，之后进行 `free(obj)`
+- [深拷贝与浅拷贝](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#2525-%E6%B7%B1%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B5%85%E6%8B%B7%E8%B4%9D)
+- [赋值运算符重载](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#2554-%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD)
 
-## 3.6 OOP思想，面向对象语言特征描述
+C++11 中可以删除默认的拷贝构造函数和赋值运算符重载函数
 
+```cpp
+class A {
+public:
+  A() = default;
+  A(const A&) = delete;   // 删除
+  A& operator=(const A&) = delete;   // 删除
+};
+```
+
+## 3.3 初始化列表
+
+- [初始化列表](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#2526-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8)
+
+```cpp
+class B {
+public:
+  B(int a) : B_a(a) {}
+
+private:
+  int B_a;
+};
+
+class A {
+public:
+  A(int a, int b, int c) : A_a(a), A_b(b), A_c(c) {}  // 并初始化成员对象
+
+private:
+  int A_a;
+  int A_b;
+  B A_c;  // 成员对象
+};
+
+int main() {
+  A a(1, 2, 3);
+  return 0;
+}
+```
+
+**写在初始化列表和写在函数体内的区别：**
+
+```cpp
+// 写在初始化列表等价于
+B A_c(c);   // 指定构造
+
+// 写在函数体内等价于
+B A_c;  // 默认构造
+A_c = c;  // 赋值操作
+```
+
+**成员变量的初始化和它们定义的顺序有关，和构造函数初始化列表中出现的先后顺序无关**！示例
+
+```cpp
+class Test {
+public:
+  Test(int data = 10) : mb(data), ma(mb) {}
+  void show() { cout << "ma: " << ma << "\tmb: " << mb << endl; }
+
+private:
+  int ma;
+  int mb;
+};
+
+int main() {
+  est t;T
+  t.show();
+  return 0;
+}
+
+// 输出为： ma: 0   mb: 10
+```
+
+## 3.4 普通，static，const三类成员方法
+
+[静态成员 static](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#2528-%E9%9D%99%E6%80%81%E6%88%90%E5%91%98)
+
+通过静态成员，**可以实现查看所有通过这个类所做的事情**，例如一共创建了多少个对象，只需要在构造函数中设定 `++` 就好了。**但这样并不直观，这必须通过对象名来调用，而不能通过类名调用，所以还要结合静态函数，就可以通过类名来调用**
+
+> 普通成员方法和静态成员方法的区别：
+> - 静态成员方法没有 `this` 指针
+> - 所以**不可能**访问依赖当前对象的成员变量
+> - 用类名调用静态成员方法，用对象名调用普通成员方法
+
+--------------------
+
+[const 常对象](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#2534-const%E4%BF%AE%E9%A5%B0%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0)
+
+- 可以进行重载，因为本质上参数列表不同
+- 常对象只能调用常函数，原因详见[2.3.2 const 和指针的结合](#232-const-和指针的结合)
+
+```cpp
+const className *this // 常成员方法
+className *this // 非常成员方法
+```
+
+> 只要是只读操作的成员方法，一律实现成 `const` 常成员方法
+
+## 3.5 指向类成员（成员变量和成员方法）的指针
+
+```cpp
+class Test {
+public:
+  void func() { cout << "call Test::func" << endl; };
+  static void static_func() { cout << "Test::static_func" << endl; };
+  int ma;
+  static int mb;
+};
+
+int Test::mb;
+
+int main() {
+  Test t1;
+  Test *t2 = new Test();
+
+#if 0
+  // 指向成员变量的指针
+  // int *p = &Test::ma; // 报错："int Test::*" 类型的值不能用于初始化 "int *"
+  // 类型的实体
+  int Test::*p = &Test::ma; // 类外定义一个 Test 作用域的指针
+  int *q = &Test::mb;       // static 可以用普通指针指向
+
+  t1.*p = 20; // 依赖于对象
+  t2->*p = 30;
+  cout << t1.ma << endl << t2->ma << endl;
+
+  *q = 40; // 不依赖于对象
+  cout << Test::mb << endl;
+#endif
+
+  // 指向成员方法的指针
+  // void (*pfunc)() = &Test::func; // 报错 "void (Test::*)()"
+  // 类型的值不能用于初始化 "void (*)()" 类型的实体
+  void (Test::*pfunc)() = &Test::func;
+  void (*qfunc)() = &Test::static_func; // 不依赖于对象
+
+  (t1.*pfunc)();
+  (t2->*pfunc)();
+  (*qfunc)(); // 不依赖于对象
+
+  delete t2;
+  return 0;
+}
+```
 
 ---------------
 

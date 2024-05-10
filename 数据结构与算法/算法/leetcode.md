@@ -790,6 +790,8 @@ public:
 };
 ```
 
+***js***
+
 ```js
 /**
  * @param {number[]} fruits
@@ -832,6 +834,12 @@ var totalFruit = function (fruits) {
 ***cpp***
 
 ```cpp
+
+```
+
+***js***
+
+```js
 
 ```
 

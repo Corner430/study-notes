@@ -603,19 +603,64 @@ var backspaceCompare = function (s, t) {
 ***python***
 
 ```python
-
+class Solution:
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        res = [0] * len(nums)
+        nums = [num * num for num in nums]
+        i, j, k = 0, len(nums) - 1, len(nums) - 1
+        while k >= 0:
+            if nums[i] >= nums[j]:
+                res[k] = nums[i]
+                i += 1
+            else:
+                res[k] = nums[j]
+                j -= 1
+            k -= 1
+        return res
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        for (int& num : nums)
+            num = num * num;
 
+        vector<int> res(nums.size());
+        for (int i = 0, j = nums.size() - 1, k = j; k >= 0; --k)
+            nums[i] >= nums[j] ? res[k] = nums[i++] : res[k] = nums[j--];
+
+        return res;
+    }
+};
 ```
 
 ***js***
 
 ```js
-
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortedSquares = function (nums) {
+    // 将 nums 数组中的每个元素取平方，并生成一个新的数组
+    nums = nums.map(num => num * num)
+    let res = new Array(nums.length);
+    let i = 0, j = nums.length - 1, k = nums.length - 1;
+    while (k >= 0) {
+        if (nums[i] >= nums[j]) {
+            res[k] = nums[i];
+            i++;
+        } else {
+            res[k] = nums[j];
+            j--;
+        }
+        k--;
+    }
+    return res;
+};
 ```
 
 #### [209. 长度最小的子数组](https://leetcode-cn.com/problems/minimum-size-subarray-sum/description/)
@@ -623,13 +668,65 @@ var backspaceCompare = function (s, t) {
 ***python***
 
 ```python
-
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        left, right = 0, 0  # [)
+        sum = 0
+        res = len(nums) + 1
+        while right < len(nums):
+            while right < len(nums) and sum < target:
+                sum += nums[right]
+                right += 1
+            while sum >= target:
+                res = min(res, right - left)
+                sum -= nums[left]
+                left += 1
+        return 0 if res == len(nums) + 1 else res
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int res = INT32_MAX;
+        int sum = 0;
+        for (size_t i = 0, j = 0; i < nums.size(); ++i) {
+            sum += nums[i];
+            while (sum >= target) {
+                int subLength = i - j + 1;
+                res = res < subLength ? res : subLength;
+                sum -= nums[j++];
+            }
+        }
+        return res == INT32_MAX ? 0 : res;
+    }
+};
+```
 
+***js***
+
+```js
+/**
+ * @param {number} target
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minSubArrayLen = function (target, nums) {
+    let left = 0, right = 0;    // [)
+    let sum = 0;
+    let res = nums.length + 1;
+    while (right < nums.length) {
+        sum += nums[right];
+        right++;
+        while (sum >= target) {
+            res = Math.min(res, right - left);  // 注意是Math.min()
+            sum -= nums[left++];
+        }
+    }
+    return res === nums.length + 1 ? 0 : res;
+};
 ```
 
 #### [904. 水果成篮](https://leetcode-cn.com/problems/fruit-into-baskets/description/)
@@ -637,13 +734,91 @@ var backspaceCompare = function (s, t) {
 ***python***
 
 ```python
-
+class Solution:
+    def totalFruit(self, fruits: List[int]) -> int:
+        fruit_map = {}
+        left, right = 0, 0
+        temp_res, res = 0, 0
+        for fruit in fruits:
+            if fruit in fruit_map:
+                fruit_map[fruit] += 1
+            else:
+                fruit_map[fruit] = 1
+            
+            if len(fruit_map) <= 2:
+                temp_res += 1
+                res = max(res, temp_res)
+            else:
+                while len(fruit_map) > 2:
+                    fruit_map[fruits[left]] -= 1
+                    if fruit_map[fruits[left]] == 0:
+                        del fruit_map[fruits[left]]
+                    left += 1
+                temp_res = right - left + 1
+            right += 1
+        return res
 ```
 
 ***cpp***
 
 ```cpp
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        unordered_map<int, int> umap;
+        int res = 0, temp_res = 0;
+        int left = 0, right = 0;
+        while (right < fruits.size()) {
+            ++umap[fruits[right]]; // 加入元素
+            right++;
 
+            if (umap.size() <= 2) { // 收获结果
+                temp_res += 1;
+                res = max(res, temp_res);
+            } else {    // 收缩窗口
+                while (umap.size() > 2) {
+                    --umap[fruits[left]];
+                    if (umap[fruits[left]] == 0)
+                        umap.erase(fruits[left]);
+                    ++left;
+                }
+                temp_res = right - left;
+            }
+        }
+        return res;
+    }
+};
+```
+
+```js
+/**
+ * @param {number[]} fruits
+ * @return {number}
+ */
+var totalFruit = function (fruits) {
+    const fruitMap = new Map();
+    let res = 0, tempRes = 0;
+    let slow = 0, fast = 0;
+    for (const fruit of fruits) {
+        fruitMap.set(fruit, (fruitMap.get(fruit) || 0) + 1);
+
+        if (fruitMap.size <= 2) {
+            tempRes += 1;
+            res = Math.max(res, tempRes);
+        } else {
+            while (fruitMap.size > 2) {
+                fruitMap.set(fruits[slow], fruitMap.get(fruits[slow]) - 1);
+                if (fruitMap.get(fruits[slow]) === 0) {
+                    fruitMap.delete(fruits[slow]);
+                }
+                slow += 1;
+            }
+            tempRes = fast - slow + 1;
+        }
+        fast += 1;
+    }
+    return res;
+};
 ```
 
 #### [76. 最小覆盖子串](https://leetcode-cn.com/problems/minimum-window-substring/description/)

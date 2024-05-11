@@ -1,34 +1,47 @@
 - [1 数组](#1-数组)
-  - [1.1 二分查找](#11-二分查找)
-    - [704. 二分查找](#704-二分查找)
-    - [35. 搜索插入位置](#35-搜索插入位置)
-    - [34. 在排序数组中查找元素的第一个和最后一个位置](#34-在排序数组中查找元素的第一个和最后一个位置)
-    - [69. x 的平方根](#69-x-的平方根)
-    - [367. 有效的完全平方数](#367-有效的完全平方数)
-    - [27. 移除元素](#27-移除元素)
-    - [26. 删除排序数组中的重复项](#26-删除排序数组中的重复项)
-    - [283. 移动零](#283-移动零)
-    - [844. 比较含退格的字符串](#844-比较含退格的字符串)
-    - [977. 有序数组的平方](#977-有序数组的平方)
-    - [209. 长度最小的子数组](#209-长度最小的子数组)
-    - [904. 水果成篮](#904-水果成篮)
-    - [76. 最小覆盖子串](#76-最小覆盖子串)
-    - [59. 螺旋矩阵 II](#59-螺旋矩阵-ii)
-    - [54. 螺旋矩阵](#54-螺旋矩阵)
-    - [剑指Offer 29. 顺时针打印矩阵](#剑指offer-29-顺时针打印矩阵)
-    - [167. 两数之和 II - 输入有序数组](#167-两数之和-ii---输入有序数组)
-    - [344. 反转字符串](#344-反转字符串)
-    - [5. 最长回文子串](#5-最长回文子串)
-    - [83. 删除排序链表中的重复元素](#83-删除排序链表中的重复元素)
-    - [剑指 Offer 57. 和为s的两个数字](#剑指-offer-57-和为s的两个数字)
-    - [剑指 Offer II 006. 排序数组中两个数字之和](#剑指-offer-ii-006-排序数组中两个数字之和)
+  - [704. 二分查找](#704-二分查找)
+  - [35. 搜索插入位置](#35-搜索插入位置)
+  - [34. 在排序数组中查找元素的第一个和最后一个位置](#34-在排序数组中查找元素的第一个和最后一个位置)
+  - [69. x 的平方根](#69-x-的平方根)
+  - [367. 有效的完全平方数](#367-有效的完全平方数)
+  - [27. 移除元素](#27-移除元素)
+  - [26. 删除排序数组中的重复项](#26-删除排序数组中的重复项)
+  - [283. 移动零](#283-移动零)
+  - [844. 比较含退格的字符串](#844-比较含退格的字符串)
+  - [977. 有序数组的平方](#977-有序数组的平方)
+  - [209. 长度最小的子数组](#209-长度最小的子数组)
+  - [904. 水果成篮](#904-水果成篮)
+  - [76. 最小覆盖子串](#76-最小覆盖子串)
+  - [59. 螺旋矩阵 II](#59-螺旋矩阵-ii)
+  - [54. 螺旋矩阵](#54-螺旋矩阵)
+  - [剑指Offer 29. 顺时针打印矩阵](#剑指offer-29-顺时针打印矩阵)
+  - [167. 两数之和 II - 输入有序数组](#167-两数之和-ii---输入有序数组)
+  - [344. 反转字符串](#344-反转字符串)
+  - [5. 最长回文子串](#5-最长回文子串)
+- [2 链表](#2-链表)
+  - [83. 删除排序链表中的重复元素](#83-删除排序链表中的重复元素)
+  - [203.移除链表元素](#203移除链表元素)
+  - [707. 设计链表](#707-设计链表)
+  - [206.反转链表](#206反转链表)
+  - [92. 反转链表 II](#92-反转链表-ii)
+  - [25. K 个一组翻转链表](#25-k-个一组翻转链表)
+  - [24. 两两交换链表中的节点](#24-两两交换链表中的节点)
+  - [19.删除链表的倒数第N个节点](#19删除链表的倒数第n个节点)
+  - [面试题 02.07. 链表相交](#面试题-0207-链表相交)
+  - [141. 环形链表](#141-环形链表)
+  - [142.环形链表II](#142环形链表ii)
+  - [21. 合并两个有序链表](#21-合并两个有序链表)
+  - [23. 合并 K 个升序链表](#23-合并-k-个升序链表)
+  - [86. 分隔链表](#86-分隔链表)
+  - [876. 链表的中间结点](#876-链表的中间结点)
+  - [234. 回文链表](#234-回文链表)
 
 
 ## 1 数组
 
-### 1.1 二分查找
+### 704. 二分查找
 
-#### [704. 二分查找](https://leetcode.cn/problems/binary-search/description/)
+[704. 二分查找](https://leetcode.cn/problems/binary-search/description/)
 
 ***python***
 ```python
@@ -81,7 +94,9 @@ var search = function (nums, target) {
 };
 ```
 
-#### [35. 搜索插入位置](https://leetcode.cn/problems/search-insert-position/description/)
+### 35. 搜索插入位置
+
+[35. 搜索插入位置](https://leetcode.cn/problems/search-insert-position/description/)
 
 ***python***
 ```python
@@ -135,7 +150,9 @@ var searchInsert = function (nums, target) {
 };
 ```
 
-#### [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/)
+### 34. 在排序数组中查找元素的第一个和最后一个位置
+
+[34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/)
 
 ***python***
 ```python
@@ -249,7 +266,9 @@ var searchRange = function (nums, target) {
 ```
 
 
-#### [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/description/)
+### 69. x 的平方根
+
+[69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/description/)
 
 ***python***
 ```python
@@ -309,7 +328,9 @@ var mySqrt = function (x) {
 };
 ```
 
-#### [367. 有效的完全平方数](https://leetcode-cn.com/problems/valid-perfect-square/description/)
+### 367. 有效的完全平方数
+
+[367. 有效的完全平方数](https://leetcode-cn.com/problems/valid-perfect-square/description/)
 
 ***python***
 ```python
@@ -363,7 +384,9 @@ var isPerfectSquare = function (num) {
 };
 ```
 
-#### [27. 移除元素](https://leetcode-cn.com/problems/remove-element/description/)
+### 27. 移除元素
+
+[27. 移除元素](https://leetcode-cn.com/problems/remove-element/description/)
 
 ***python***
 ```python
@@ -412,7 +435,9 @@ var removeElement = function(nums, val) {
 };
 ```
 
-#### [26. 删除排序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/)
+### 26. 删除排序数组中的重复项
+
+[26. 删除排序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/)
 
 ***python***
 
@@ -465,7 +490,9 @@ var removeDuplicates = function(nums) {
 };
 ```
 
-#### [283. 移动零](https://leetcode-cn.com/problems/move-zeroes/description/)
+### 283. 移动零
+
+[283. 移动零](https://leetcode-cn.com/problems/move-zeroes/description/)
 
 ***python***
 
@@ -513,7 +540,9 @@ var moveZeroes = function (nums) {
 };
 ```
 
-#### [844. 比较含退格的字符串](https://leetcode-cn.com/problems/backspace-string-compare/description/)
+### 844. 比较含退格的字符串
+
+[844. 比较含退格的字符串](https://leetcode-cn.com/problems/backspace-string-compare/description/)
 
 ***python***
 
@@ -598,7 +627,9 @@ var backspaceCompare = function (s, t) {
 };
 ```
 
-#### [977. 有序数组的平方](https://leetcode-cn.com/problems/squares-of-a-sorted-array/description/)
+### 977. 有序数组的平方
+
+[977. 有序数组的平方](https://leetcode-cn.com/problems/squares-of-a-sorted-array/description/)
 
 ***python***
 
@@ -663,7 +694,9 @@ var sortedSquares = function (nums) {
 };
 ```
 
-#### [209. 长度最小的子数组](https://leetcode-cn.com/problems/minimum-size-subarray-sum/description/)
+### 209. 长度最小的子数组
+
+[209. 长度最小的子数组](https://leetcode-cn.com/problems/minimum-size-subarray-sum/description/)
 
 ***python***
 
@@ -729,7 +762,9 @@ var minSubArrayLen = function (target, nums) {
 };
 ```
 
-#### [904. 水果成篮](https://leetcode-cn.com/problems/fruit-into-baskets/description/)
+### 904. 水果成篮
+
+[904. 水果成篮](https://leetcode-cn.com/problems/fruit-into-baskets/description/)
 
 ***python***
 
@@ -823,7 +858,9 @@ var totalFruit = function (fruits) {
 };
 ```
 
-#### [76. 最小覆盖子串](https://leetcode-cn.com/problems/minimum-window-substring/description/)
+### 76. 最小覆盖子串
+
+[76. 最小覆盖子串](https://leetcode-cn.com/problems/minimum-window-substring/description/)
 
 ***python***
 
@@ -951,7 +988,9 @@ var minWindow = function (s, t) {
 };
 ```
 
-#### [59. 螺旋矩阵 II](https://leetcode-cn.com/problems/spiral-matrix-ii/description/)
+### 59. 螺旋矩阵 II
+
+[59. 螺旋矩阵 II](https://leetcode-cn.com/problems/spiral-matrix-ii/description/)
 
 ***python***
 
@@ -1065,7 +1104,9 @@ var generateMatrix = function (n) {
 };
 ```
 
-#### [54. 螺旋矩阵](https://leetcode-cn.com/problems/spiral-matrix/description/)
+### 54. 螺旋矩阵
+
+[54. 螺旋矩阵](https://leetcode-cn.com/problems/spiral-matrix/description/)
 
 ***python***
 
@@ -1188,11 +1229,15 @@ var spiralOrder = function (matrix) {
 };
 ```
 
-#### [剑指Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/description/)
+### 剑指Offer 29. 顺时针打印矩阵
+
+[剑指Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/description/)
 
 同 [54. 螺旋矩阵](#54-螺旋矩阵)
 
-#### [167. 两数之和 II - 输入有序数组](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
+### 167. 两数之和 II - 输入有序数组
+
+[167. 两数之和 II - 输入有序数组](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
 
 ***python***
 
@@ -1290,7 +1335,9 @@ var twoSum = function (numbers, target) {
 };
 ```
 
-#### [344. 反转字符串](https://leetcode-cn.com/problems/reverse-string/description/)
+### 344. 反转字符串
+
+[344. 反转字符串](https://leetcode-cn.com/problems/reverse-string/description/)
 
 ***python***
 
@@ -1337,7 +1384,9 @@ var reverseString = function (s) {
 };
 ```
 
-#### [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/description/)
+### 5. 最长回文子串
+
+[5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/description/)
 
 ***python***
 
@@ -1444,7 +1493,13 @@ var longestPalindrome = function (s) {
 };
 ```
 
-#### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/description/)
+----------------------------
+
+## 2 链表
+
+### 83. 删除排序链表中的重复元素
+
+[83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/description/)
 
 ***python***
 
@@ -1487,13 +1542,604 @@ public:
 ***js***
 
 ```js
+var deleteDuplicates = function (head) {
+     if (!head || !head.next) 
+        return head;
 
+    let p = head;
+    while (p.next) {
+        if (p.next.val === p.val) {
+            p.next = p.next.next;
+        } else {
+            p = p.next;
+        }
+    }
+    return head;
+};
 ```
 
-#### [剑指 Offer 57. 和为s的两个数字](https://leetcode-cn.com/problems/he-wei-sde-liang-ge-shu-zi-lcof/description/)
 
-[]()
+### 203.移除链表元素
 
-#### [剑指 Offer II 006. 排序数组中两个数字之和](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
+[203.移除链表元素](https://leetcode.cn/problems/remove-linked-list-elements/description/)
 
-[]()
+***python***
+```python
+class Solution:
+    def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
+        dummyHead = ListNode(0, head);
+        p = dummyHead;
+        while p.next:
+            if p.next.val == val:
+                p.next = p.next.next
+            else:
+                p = p.next
+        return dummyHead.next
+```
+
+***cpp***
+```cpp
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode* dummyHead = new ListNode(0, head);
+        ListNode* p = dummyHead;
+        while (p->next) {
+            if (p->next->val == val) {
+                ListNode* temp = p->next;
+                p->next = temp->next;
+                delete temp;
+            } else
+                p = p->next;
+        }
+        return dummyHead->next;
+    }
+};
+```
+
+***js***
+```js
+var removeElements = function (head, val) {
+    const dummyHead = new ListNode(0, head);
+    let p = dummyHead;
+    while (p.next) {
+        if (p.next.val === val) {
+            const temp = p.next;
+            p.next = temp.next;
+            temp.next = null; // Optional: Helps in garbage collection
+        } else {
+            p = p.next;
+        }
+    }
+    return dummyHead.next;
+};
+```
+
+### 707. 设计链表
+
+[707. 设计链表](https://leetcode.cn/problems/design-linked-list/description/)
+
+***python***
+```python
+class ListNode:
+    def __init__(self, val = 0,next = None):
+        self.val = val
+        self.next = next
+
+class MyLinkedList:
+
+    def __init__(self):
+        self.head = None
+        self.size = 0
+
+    def get(self, index: int) -> int:
+        if index < 0 or index >= self.size:
+            return -1
+        p = self.head
+        for _ in range(index):
+            p = p.next
+        return p.val
+
+    def addAtHead(self, val: int) -> None:
+        self.head = ListNode(val, self.head)
+        self.size += 1
+
+    def addAtTail(self, val: int) -> None:
+        p = self.head
+        while p.next:
+            p = p.next
+        p.next = ListNode(val)
+        self.size += 1
+
+    def addAtIndex(self, index: int, val: int) -> None:
+        if index < 0 or index > self.size:
+            return
+        p = self.head
+        for _ in range(index - 1):
+            p = p.next
+        p.next = ListNode(val, p.next)
+        self.size += 1
+
+    def deleteAtIndex(self, index: int) -> None:
+        if index < 0 or index >= self.size:
+            return
+        p = self.head
+        for _ in range(index - 1):
+            p = p.next
+        p.next = p.next.next
+        self.size -= 1
+
+
+
+# Your MyLinkedList object will be instantiated and called as such:
+# obj = MyLinkedList()
+# param_1 = obj.get(index)
+# obj.addAtHead(val)
+# obj.addAtTail(val)
+# obj.addAtIndex(index,val)
+# obj.deleteAtIndex(index)
+```
+
+***cpp***
+```cpp
+class MyLinkedList {
+private:
+    // 定义链表
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode() : val(0), next(nullptr) {}
+        ListNode(int x) : val(x), next(nullptr) {}
+        ListNode(int x, ListNode* next) : val(x), next(next) {}
+    };
+
+    ListNode* _dummyHead;
+    int _size;
+
+public:
+    MyLinkedList() {
+        _dummyHead = new ListNode();
+        _size = 0;
+    }
+
+    int get(int index) {
+        if (index < 0 || index >= _size)
+            return -1;
+        ListNode* p = _dummyHead->next;
+        while (index--)
+            p = p->next;
+        return p->val;
+    }
+
+    void addAtHead(int val) {
+        ListNode* p = new ListNode(val, _dummyHead->next);
+        _dummyHead->next = p;
+        ++_size;
+    }
+
+    void addAtTail(int val) {
+        ListNode* p = _dummyHead;
+        while (p->next)
+            p = p->next;
+        p->next = new ListNode(val);
+        ++_size;
+    }
+
+    void addAtIndex(int index, int val) {
+        ListNode* p = _dummyHead;
+        if (index < 0 || index > _size)
+            return;
+        while (index--)
+            p = p->next;
+        ListNode* temp = new ListNode(val, p->next);
+        p->next = temp;
+        ++_size;
+    }
+
+    void deleteAtIndex(int index) {
+        if (index < 0 || index >= _size)
+            return;
+        ListNode* p = _dummyHead;
+        while (index--)
+            p = p->next;
+        ListNode* temp = p->next;
+        p->next = p->next->next;
+        delete temp;
+        --_size;
+    }
+};
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList* obj = new MyLinkedList();
+ * int param_1 = obj->get(index);
+ * obj->addAtHead(val);
+ * obj->addAtTail(val);
+ * obj->addAtIndex(index,val);
+ * obj->deleteAtIndex(index);
+ */
+```
+
+***js***
+```js
+var ListNode = function (val = 0, next = null) {
+    this.val = val;
+    this.next = next;
+};
+
+var MyLinkedList = function () {
+    this._dummyHead = new ListNode();
+    this._size = 0;
+};
+
+/** 
+ * @param {number} index
+ * @return {number}
+ */
+MyLinkedList.prototype.get = function (index) {
+    if (index < 0 || index >= this._size)
+        return -1;
+    let p = this._dummyHead.next;
+    while (index--)
+        p = p.next;
+    return p.val;
+};
+
+/** 
+ * @param {number} val
+ * @return {void}
+ */
+MyLinkedList.prototype.addAtHead = function (val) {
+    const p = new ListNode(val, this._dummyHead.next);
+    this._dummyHead.next = p;
+    this._size++;
+};
+
+/** 
+ * @param {number} val
+ * @return {void}
+ */
+MyLinkedList.prototype.addAtTail = function (val) {
+    let p = this._dummyHead;
+    while (p.next)
+        p = p.next;
+    p.next = new ListNode(val);
+    this._size++;
+};
+
+/** 
+ * @param {number} index 
+ * @param {number} val
+ * @return {void}
+ */
+MyLinkedList.prototype.addAtIndex = function (index, val) {
+    if (index < 0 || index > this._size)
+        return;
+    let p = this._dummyHead;
+    while (index--)
+        p = p.next;
+    const temp = new ListNode(val, p.next);
+    p.next = temp;
+    this._size++;
+};
+
+/** 
+ * @param {number} index
+ * @return {void}
+ */
+MyLinkedList.prototype.deleteAtIndex = function (index) {
+    if (index < 0 || index >= this._size)
+        return;
+    let p = this._dummyHead;
+    while (index--)
+        p = p.next;
+    p.next = p.next.next;
+    this._size--;
+};
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * var obj = new MyLinkedList()
+ * var param_1 = obj.get(index)
+ * obj.addAtHead(val)
+ * obj.addAtTail(val)
+ * obj.addAtIndex(index,val)
+ * obj.deleteAtIndex(index)
+ */
+```
+
+### 206.反转链表
+
+[206.反转链表](https://leetcode.cn/problems/reverse-linked-list/description/)
+
+***python***
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+# 逐个节点反转
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        pre, cur = None, head
+        while cur:
+            temp = cur.next
+            cur.next = pre
+            pre = cur
+            cur = temp
+        return pre
+
+# 递归
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if head == None or head.next == None:
+            return head
+        
+        last = self.reverseList(head.next)
+        head.next.next = head
+        head.next = None
+        return last
+```
+
+***cpp***
+```cpp
+// 逐个翻转每个节点的指向
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *pre = nullptr;
+        ListNode *cur = head;
+        while (cur)
+        {
+            ListNode *temp = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = temp;
+        }
+        return pre;
+    }
+};
+
+// 递归
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head==nullptr || head->next == nullptr) return head;
+        ListNode *last = reverseList(head->next);
+        head->next->next = head;
+        head->next = nullptr;
+        return last;
+    }
+};
+```
+
+***js***
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+// 逐个节点反转
+var reverseList = function (head) {
+    let pre = null;
+    let cur = head;
+    while (cur) {
+        const temp = cur.next;
+        cur.next = pre;
+        pre = cur;
+        cur = temp;
+    }
+    return pre;
+};
+
+// 递归
+var reverseList = function (head) {
+    if (head === null || head.next === null)
+        return head;
+
+    const last = reverseList(head.next);
+    head.next.next = head;
+    head.next = null;
+    return last;
+};
+```
+
+### 92. 反转链表 II
+
+[92. 反转链表 II](https://leetcode.cn/problems/reverse-linked-list-ii/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 25. K 个一组翻转链表
+
+[25. K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 24. 两两交换链表中的节点
+
+[24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 19.删除链表的倒数第N个节点
+
+[19.删除链表的倒数第N个节点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 面试题 02.07. 链表相交
+
+[面试题 02.07. 链表相交](https://leetcode.cn/problems/intersection-of-two-linked-lists-lcci/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 141. 环形链表
+
+[141. 环形链表](https://leetcode.cn/problems/linked-list-cycle/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 142.环形链表II
+
+[142.环形链表II](https://leetcode.cn/problems/linked-list-cycle-ii/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 21. 合并两个有序链表
+
+[21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 23. 合并 K 个升序链表
+
+[23. 合并 K 个升序链表](https://leetcode.cn/problems/merge-k-sorted-lists/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 86. 分隔链表
+
+[86. 分隔链表](https://leetcode.cn/problems/partition-list/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 876. 链表的中间结点
+
+[876. 链表的中间结点](https://leetcode.cn/problems/middle-of-the-linked-list/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```
+
+### 234. 回文链表
+[234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+***js***
+```js
+```

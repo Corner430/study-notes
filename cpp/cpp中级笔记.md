@@ -30,9 +30,12 @@
   - [3.5 指向类成员（成员变量和成员方法）的指针](#35-指向类成员成员变量和成员方法的指针)
 - [4 模板](#4-模板)
   - [4.1 函数模板和类模板](#41-函数模板和类模板)
-  - [4.2 vector容器模板实现](#42-vector容器模板实现)
-  - [4.3 容器空间配置器allocator](#43-容器空间配置器allocator)
-  - [4.4 SGI STL二级空间配置器allocator和内存池实现原理](#44-sgi-stl二级空间配置器allocator和内存池实现原理)
+    - [4.1.1 函数模板](#411-函数模板)
+    - [4.1.2 类模板](#412-类模板)
+  - [4.2 容器空间配置器allocator](#42-容器空间配置器allocator)
+    - [4.2.1 allocator 解决的问题](#421-allocator-解决的问题)
+    - [4.2.2 容器空间配置器 allocator 的使用](#422-容器空间配置器-allocator-的使用)
+    - [4.2.3 vector 容器的实现](#423-vector-容器的实现)
 - [5 运算符重载](#5-运算符重载)
   - [5.1 string 类](#51-string-类)
   - [5.2 容器迭代器 iterator](#52-容器迭代器-iterator)
@@ -1048,11 +1051,109 @@ int main() {
 
 ## 4.1 函数模板和类模板
 
-## 4.2 vector容器模板实现
+### 4.1.1 函数模板
 
-## 4.3 容器空间配置器allocator
+[函数模板](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#312-%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF)
 
-## 4.4 SGI STL二级空间配置器allocator和内存池实现原理
+- 函数模板是不进行编译的，因为类型不知道。模板函数才是要被编译器所编译的
+- 在函数调用点，编译器用用户指定的类型，从原模板**实例化一份**函数代码出来，仅会有**一份**
+- 模板的实参推演：自动类型推导
+- 模板的特例化（专用化/具体化）：对于某些特定的类型，需要特殊处理，可以通过特例化来实现，**即模板的重载，本质上并不是重载，编译产生的函数名符号不一致**
+- 重载时：普通函数 > 特例化 > 函数模板
+
+> 模板代码是不能在一个文件中定义，在另外一个文件中使用的。
+> **模板代码调用之前，一定要看到模板定义的地方**，这样的话，模板才能够进行正常的实例化，产生能够被编译器编译的代码
+> - 所以模板代码都是放在头文件当中的，然后在源代码进行 `include`
+> - 也并非不能解决，可以提前告诉编译器，进行指定类型的模板实例化，这样可以分文件编写（**不推荐**）
+>   ```cpp
+>   template bool compare<int>(int, int);
+>   template bool compare<double>(double, double);
+>   ```
+
+
+**模板的非类型参数示例**
+
+```cpp
+template <typename T, int SIZE>
+void print(T arr) {
+  for (int i = 0; i < SIZE; i++)
+    cout << arr[i] << " ";
+  cout << endl;
+}
+
+int main() {
+  int arr[] = {1, 34, 5, 6, 7};
+  print<const int *, sizeof(arr) / sizeof(arr[0])>(arr);
+  return 0;
+}
+```
+
+### 4.1.2 类模板
+
+[类模板](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#3131-%E7%B1%BB%E6%A8%A1%E6%9D%BF%E8%AF%AD%E6%B3%95)
+
+- 构造和析构函数名不用加 `<T>`, 其它出现模板的地方都加上类型参数列表
+- 类模板可以加**默认类型参数**，例如：
+  ```cpp
+  template <typename T = int>
+  class Test {
+  public:
+    Test(T a) : ma(a) {}
+    void show() { cout << "ma: " << ma << endl; }
+
+  private:
+    T ma;
+  };
+  int main(){
+    Test<> t(10);  // 默认类型参数
+    t.show();
+    return 0;
+  }
+  ```
+
+## 4.2 容器空间配置器allocator
+
+### 4.2.1 allocator 解决的问题
+
+[类模板案例](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#3139-%E7%B1%BB%E6%A8%A1%E6%9D%BF%E6%A1%88%E4%BE%8B)
+
+**需求：**
+1. 需要把内存开辟和对象构造分开处理
+2. 析构容器有效的元素，然后释放 `_first` 指针指向的堆内存
+3. 只需要析构对象。要把对象的析构和内存释放分离开
+
+> 定义容器时候，希望只是开辟内存，不进行对象的构造。现在都是开辟内存和对象构造一起的，这样当需要添加元素时就变成了赋值操作。删除元素时，就变成了析构操作，并且调用 `delete` 释放内存，而我们并不想要释放这块内存，只想要释放该对象指向的外部堆内存
+
+### 4.2.2 容器空间配置器 allocator 的使用
+
+- 内存开辟
+- 内存释放
+- 对象构造
+- 对象析构
+
+```cpp
+template <typename T>
+struct Allocator {
+  T* allocate(size_t size) {  // 负责内存开辟
+    return (T *)malloc(sizeof(T) * size);
+  }
+
+  void deallocate(void *p) {  // 负责内存释放
+    free(p);
+  }
+
+  void construct(T *p, const T &val) {  // 负责对象构造
+    new (p) T(val); // 定位 new
+  }
+
+  void destroy(T *p) {  // 负责对象析构
+    p->~T();  // ~T() 析构函数
+  }
+};
+```
+
+### 4.2.3 vector 容器的实现
+
 
 
 --------------------

@@ -48,6 +48,7 @@
 - [《C++ Primer Plus》](https://github.com/Corner430/study-notes/blob/main/book.md#C-primer-plus-1)
 - [《深入理解计算机系统》](https://github.com/Corner430/study-notes/blob/main/book.md#深入理解计算机系统)
 - [《程序员的自我修养》](https://github.com/Corner430/study-notes/blob/main/book.md#程序员的自我修养)
+- [STL 源码剖析](https://github.com/Corner430/study-notes/blob/main/book.md#STL-源码剖析)
 - [《深入理解计算机系统》第 7 章 链接 笔记](https://github.com/Corner430/study-notes/blob/main/cpp/深入理解计算机系统笔记.md)
 - [《程序员的自我修养》笔记](https://github.com/Corner430/study-notes/blob/main/cpp/程序员的自我修养笔记.md)
 - [cpp 入门笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp入门笔记.md)

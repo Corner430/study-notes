@@ -35,7 +35,9 @@
   - [4.2 容器空间配置器allocator](#42-容器空间配置器allocator)
     - [4.2.1 allocator 解决的问题](#421-allocator-解决的问题)
     - [4.2.2 容器空间配置器 allocator 的使用](#422-容器空间配置器-allocator-的使用)
-    - [4.2.3 vector 容器的实现](#423-vector-容器的实现)
+    - [4.2.3 RAII(Resource Acquisition Is Initialization, 资源获取即初始化)](#423-raiiresource-acquisition-is-initialization-资源获取即初始化)
+    - [4.2.4 三法则和零法则](#424-三法则和零法则)
+    - [4.2.6 vector 容器的实现](#426-vector-容器的实现)
 - [5 运算符重载](#5-运算符重载)
   - [5.1 string 类](#51-string-类)
   - [5.2 容器迭代器 iterator](#52-容器迭代器-iterator)
@@ -1152,9 +1154,224 @@ struct Allocator {
 };
 ```
 
-### 4.2.3 vector 容器的实现
+### 4.2.3 RAII(Resource Acquisition Is Initialization, 资源获取即初始化)
 
+```cpp
+void process(int *arr) noexcept(false); // 声明，不抛出异常
 
+// 1. 内存泄漏
+/*
+void array_test(const size_t size) {
+  int *arr = new int[size];
+  process(arr); // 异常
+  delete[] arr; // 跳过，内存泄漏
+}
+*/
+
+// 2. try-catch 捕获异常释放内存
+/*
+void array_test(const size_t size) {
+  int *arr = new int[size];
+  try {
+    process(arr);
+  } catch (...) {
+    delete[] arr;
+    return;
+  }
+  delete[] arr;
+}
+*/
+
+// 3.
+// 如果同时有好几个资源需要释放，为了节省下来代码行数甚至可能需要用上让代码逻辑更凌乱的
+// goto 语句。
+
+/* ------------------------------------------------------
+# RAII(Resource Acquisition Is Initialization, 资源获取即初始化), 即
+作用域界定的资源管理 (Scope-Bound Resource Management，SBRM)
+
+可以利用C++的对象生存期概念以及析构函数这两个工具来实现
+*/
+
+// 示例 动态数组
+struct dyn_array {
+  size_t size = 0;
+  int *ptr = nullptr;
+
+  dyn_array() = default; // Default(empty) initialization
+  explicit dyn_array(const size_t size)
+      : size(size), ptr(new int[size]) {} // Initialize with a given size
+  ~dyn_array() noexcept {
+    cout << "~dyn_array()" << endl;
+    delete[] ptr;
+  } // Free the memory, noexcept 表示该函数不会抛出异常
+};
+
+void array_test(const size_t size) {
+  dyn_array darr(size);
+  process(darr.ptr);
+} // Memory freed no matter how this function exits
+
+/*
+用这样的抽象就可以简化资源管理的操作。
+因为C++对象有明确的生存期，
+这个函数无论是正常退出还是因抛出异常而退出，
+对象darr的作用域（生存期）都将结束，
+导致其析构函数被调用，资源成功释放，省去了各种手动判断释放资源的步骤。
+*/
+
+int main() {
+  array_test(3);
+  return 0;
+}
+```
+
+### 4.2.4 三法则和零法则
+
+- **三法则**：如果手动实现了析构函数，那么很有可能编译器自动生成的复制构造/复制赋值运算符并不能达到想要的效果，所以需要三个函数全都实现（**析构，拷贝构造，赋值运算符重载**）
+- **零法则**：如果你并不需要自己实现析构函数，那么就一个特殊函数都不要实现，让编译器帮你做完所有事情。
+
+### 4.2.6 vector 容器的实现
+
+```cpp
+#include <cstdlib> // Include the <cstdlib> header for the 'rand()' function
+#include <iostream>
+
+using namespace std;
+
+// 定义一个模板类 Allocator，负责内存的开辟和释放，对象的构造和析构
+template <typename T> class Allocator {
+public:
+  T *allocate(int size) { // 负责开辟内存
+    return (T *)malloc(sizeof(T) * size);
+  }
+  void deallocator(void *ptr) { // 负责释放内存
+    free(ptr);
+  }
+  void construct(T *ptr, const T &val) { // 负责对象构造
+    new (ptr) T(val);                    // 定位 new
+  }
+  void destroy(T *ptr) { // 负责对象析构
+    ptr->~T();           // 显式调用析构函数
+  }
+};
+
+template <typename T, typename Alloc = Allocator<T>> class vector {
+public:
+  vector(int size = 10) {
+    // 需要把内存开辟和对象构造分开
+    // _first = new T[size];
+    _first = _allocator.allocate(size);
+    _last = _first;
+    _end = _first + size;
+  }
+
+  ~vector() {
+    // 析构容器有效的元素，然后释放 _first 指向的堆内存
+    // delete[] _first;
+    for (T *p = _first; p != _last; ++p) // 把有效元素析构
+      _allocator.destroy(p);
+    _allocator.deallocator(_first); // 释放堆内存
+    _first = _last = _end = nullptr;
+  }
+
+  vector(const vector<T> &rhs) { // 拷贝构造
+    int size = rhs._end - rhs._first;
+    _first = _allocator.allocate(size);
+    int len = rhs._last - rhs._first;
+    for (int i = 0; i < len; i++)
+      // _first[i] = rhs._first[i];
+      _allocator.construct(_first + i, rhs._first[i]);
+    _last = _first + len;
+    _end = _first + size;
+  }
+
+  vector<T> &operator=(const vector<T> &rhs) { // 赋值运算符重载
+    if (this == &rhs)                          // 防止自赋值
+      return *this;
+    // delete[] _first;
+    for (T *p = _first; p != _last; ++p) // 把有效元素析构
+      _allocator.destroy(p);
+    _allocator.deallocator(_first); // 释放堆内存
+
+    int size = rhs._end - rhs._first;
+    _first = _allocator.allocate(size);
+    int len = rhs._last - rhs._first;
+    for (int i = 0; i < len; i++)
+      // _first[i] = rhs._first[i];
+      _allocator.construct(_first + i, rhs._first[i]);
+    _last = _first + len;
+    _end = _first + size;
+    return *this;
+  }
+
+  void push_back(const T &val) { // 尾插
+    if (full())
+      expand();
+    // *_last++ = val;
+    _allocator.construct(_last++, val);
+  }
+
+  void pop_back() { // 尾删
+    if (empty())
+      return;
+    // --_last;
+    --_last;
+    _allocator.destroy(_last);
+  }
+
+  T back() const { // 返回尾元素
+    return *(_last - 1);
+  }
+
+  bool full() const { return _last == _end; }
+  bool empty() const { return _last == _first; }
+  int size() const { return _last - _first; }
+
+private:
+  T *_first;        // 指向数组的第一个元素
+  T *_last;         // 指向数组的最后一个元素的后继位置
+  T *_end;          // 指向数组空间的后继位置
+  Alloc _allocator; // 容器的空间配置器对象
+
+  void expand() { // 容器的二倍扩容接口
+    int size = _end - _first;
+    // T *new_first = new T[size * 2];
+    T *new_first = _allocator.allocate(size * 2);
+    for (int i = 0; i < size; i++)
+      // new_first[i] = _first[i];
+      _allocator.construct(new_first + i, _first[i]);
+    // delete[] _first;
+    for (T *p = _first; p != _last; ++p)
+      _allocator.destroy(p);
+    _allocator.deallocator(_first);
+
+    _first = new_first;
+    _last = _first + size;
+    _end = _first + size * 2;
+  }
+};
+
+class Test {
+public:
+  Test() { cout << "Test()" << endl; }
+  ~Test() { cout << "~Test()" << endl; }
+  Test(const Test &) { cout << "Test(const Test&)" << endl; }
+};
+
+int main() {
+  Test t1, t2, t3;
+  cout << "--------------------------------------" << endl;
+  vector<Test> vec;
+  vec.push_back(t1);
+  vec.push_back(t2);
+  vec.push_back(t3);
+  cout << "--------------------------------------" << endl;
+  vec.pop_back(); // 只需要析构对象，把析构对象和释放内存分开
+  cout << "--------------------------------------" << endl;
+  return 0;
+}
+```
 
 --------------------
 

@@ -35,6 +35,7 @@
   - [86. 分隔链表](#86-分隔链表)
   - [876. 链表的中间结点](#876-链表的中间结点)
   - [234. 回文链表](#234-回文链表)
+  - [1553. 吃掉 N 个橘子的最少天数](#1553-吃掉-n-个橘子的最少天数)
 
 
 ## 1 数组
@@ -1959,14 +1960,118 @@ var reverseList = function (head) {
 
 ***python***
 ```python
+# 迭代法
+class Solution:
+    def reverseBetween(
+        self, head: Optional[ListNode], left: int, right: int
+    ) -> Optional[ListNode]:
+        if left == right:
+            return head
+        dummyHead = ListNode(0, head)
+        p = dummyHead
+        for _ in range(left - 1):
+            p = p.next
+        # 此时 p 指向 left 的前驱
+        pre, cur = p.next, p.next.next
+        for _ in range(right - left):
+            temp = cur.next
+            cur.next = pre
+            pre = cur
+            cur = temp
+        p.next.next = cur
+        p.next = pre
+        return dummyHead.next
+
+# 递归
+class Solution:
+    backup = None  # right 的后继
+
+    def reverse(self, q, count, right):
+        if count == right:
+            self.backup = q.next
+            return q
+        count += 1
+        last = self.reverse(q.next, count, right)
+        q.next.next = q  # 调转指向
+        q.next = self.backup  # 指向 right 的后继
+        return last
+
+    def reverseBetween(
+        self, head: Optional[ListNode], left: int, right: int
+    ) -> Optional[ListNode]:
+        if left == right:
+            return head
+        dummyHead = ListNode(0, head)
+        p = dummyHead
+        for _ in range(1, left):
+            p = p.next
+        # 此时 p 指向 left 的前驱
+        p.next = self.reverse(p.next, left, right)
+        return dummyHead.next
 ```
 
 ***cpp***
 ```cpp
+// 迭代法
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        if (left == right)
+            return head;
+
+        ListNode* dummyHead = new ListNode(0, head);
+        ListNode* p = dummyHead;
+        int count = left - 1;
+        while (count--) // p 指向 left 的前驱
+            p = p->next;
+        ListNode* pre = p->next;
+        ListNode* cur = pre->next;
+        count = right - left;
+        while (count--) {
+            ListNode* count = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = count;
+        }
+        p->next->next = cur;
+        p->next = pre;
+        return dummyHead->next;
+    }
+};
+
+// 递归
+class Solution {
+public:
+    ListNode* backup = nullptr;     // right 的后继
+    ListNode* reverse(ListNode* q, int& count, const int& right) {
+        if (count == right) {
+            backup = q->next;
+            return q;
+        }
+        ++count;
+        ListNode* last = reverse(q->next, count, right);
+        q->next->next = q;      // 调转指向
+        q->next = backup;       // 指向 right 的后继
+        return last;
+    }
+
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        if (left == right)
+            return head;
+        ListNode* dummyHead = new ListNode(0, head);
+        ListNode* p = dummyHead;
+        for (int count = 1; count < left; count++)
+            p = p->next;
+        // 此时 p 指向 left 的前驱
+        p->next = reverse(p->next, left, right);
+        return dummyHead->next;
+    }
+};
 ```
 
 ***js***
 ```js
+
 ```
 
 ### 25. K 个一组翻转链表
@@ -1975,10 +2080,60 @@ var reverseList = function (head) {
 
 ***python***
 ```python
+class Solution:
+    def reverse(self, head: ListNode, tail: ListNode):  # [)
+        pre, cur = None, head
+        while cur != tail:
+            temp = cur.next
+            cur.next = pre
+            pre = cur
+            cur = temp
+        return pre
+
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        p = q = head
+        for _ in range(k):
+            if q == None:
+                return head
+            q = q.next
+        # 此时 q 指向下一组的头节点
+        last = self.reverse(p, q)
+        p.next = self.reverseKGroup(q, k)
+        return last
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+private:
+  ListNode* reverse(ListNode* a, ListNode* b) { // [)
+    ListNode* pre = nullptr;
+    ListNode *cur = a, *next = a;
+    while (cur != b) {
+      next = cur->next;
+      cur->next = pre;
+      pre = cur;
+      cur = next;
+    }
+    return pre;
+  }
+
+public:
+  ListNode* reverseKGroup(ListNode* head, int k) {
+    if (head == nullptr) return head;
+    ListNode *a, *b;
+    a = b = head;
+    for (int i = 0; i < k; i++) {
+      if (b == nullptr) return head;
+      b = b->next;
+    }
+
+    // 此时 b 指向下一组的头节点
+    ListNode* newHead = reverse(a, b);
+    a->next = reverseKGroup(b, k);
+    return newHead;
+  }
+};
 ```
 
 ***js***
@@ -2142,4 +2297,61 @@ var reverseList = function (head) {
 
 ***js***
 ```js
+```
+
+
+
+### 1553. 吃掉 N 个橘子的最少天数
+
+[1553. 吃掉 N 个橘子的最少天数](https://leetcode.cn/problems/minimum-number-of-days-to-eat-n-oranges/description/)
+
+***python***
+
+```python
+class Solution:
+    memo = {0: 0, 1: 1, 2: 2}
+
+    def minDays(self, n: int) -> int:
+        if n in self.memo:
+            return self.memo[n]
+
+        self.memo[n] = min(self.minDays(n // 2) + n % 2, self.minDays(n // 3) + n % 3) + 1
+        return self.memo[n]
+```
+
+***cpp***
+
+```cpp
+// 动态规划超时
+class Solution {
+public:
+    int minDays(int n) {
+        if (n == 1 || n == 2)  return n;
+        if (n == 3) return 2;
+        vector<int> dp(n + 1);
+        dp[1] = 1, dp[2] = 2, dp[3] = 2;
+        for (int i = 4; i <= n; i++) {
+            int res1 = i, res2 = i;
+            if (i % 2 == 0)
+                res1 = dp[i / 2] + 1;
+            if (i % 3 == 0)
+                res2 = dp[i / 3] + 1;
+            dp[i] = min({res1, res2, dp[i - 1] + 1});
+        }
+        return dp[n];
+    }
+};
+
+// memo
+class Solution {
+public:
+    unordered_map<int, int> umap{{1, 1}, {2, 2}};
+
+    int minDays(int n) {
+        if (umap.count(n))
+            return umap[n];
+        int d2 = n % 2, d3 = n % 3;
+        return umap[n] = min(d2 + minDays(n / 2), d3 + minDays(n / 3)) + 1;
+    }
+};
 ```

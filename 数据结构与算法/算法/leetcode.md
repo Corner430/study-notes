@@ -2146,10 +2146,36 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dummyHead = ListNode(0, head)
+        p = dummyHead
+        while p.next and p.next.next:
+            temp = p.next
+            p.next = temp.next
+            temp.next = temp.next.next
+            p.next.next = temp
+            p = temp
+        return dummyHead.next
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode* dummyHead = new ListNode(0, head);
+        ListNode* p = dummyHead;
+        while (p->next && p->next->next) {
+            ListNode* temp = p->next;
+            p->next = temp->next;
+            temp->next = temp->next->next;
+            p->next->next = temp;
+            p = temp;
+        }
+        return dummyHead->next;
+    }
+};
 ```
 
 ***js***
@@ -2162,10 +2188,41 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummyHead = ListNode(0, head)
+        slow, fast = dummyHead, head
+        for _ in range(n):
+            fast = fast.next
+        while fast:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return dummyHead.next
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+  ListNode *removeNthFromEnd(ListNode *head, int n) {
+    ListNode *dummyHead = new ListNode(0, head);
+    ListNode *fast = dummyHead;
+    ListNode *slow = dummyHead;
+    while (n-- >= 0) // 走 n + 1 步
+      fast = fast->next;
+
+    while (fast) {
+      fast = fast->next;
+      slow = slow->next;
+    }
+
+    ListNode *del = slow->next;
+    slow->next = del->next;
+    delete del;
+    return dummyHead->next;
+  }
+};
 ```
 
 ***js***
@@ -2178,10 +2235,103 @@ public:
 
 ***python***
 ```python
+# 方法一：提前记载各自长度
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        p = headA
+        countA = countB = 0
+        while p:
+            p = p.next
+            countA += 1
+
+        p = headB
+        while p:
+            p = p.next
+            countB += 1
+
+        if countA == 0 or countB == 0:
+            return None
+        p, q = headA, headB
+
+        if countA < countB:
+            p, q = q, p
+        # 此时 p 指向长链表
+        for _ in range(abs(countA - countB)):
+            p = p.next
+        while p != q:
+            p = p.next
+            q = q.next
+
+        return p
+
+# 优雅解法，尾连接
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        p, q = headA, headB
+        while p != q:
+            if p == None:
+                p = headB
+            else:
+                p = p.next
+
+            if q == None:
+                q = headA
+            else:
+                q = q.next
+
+        return q
 ```
 
 ***cpp***
 ```cpp
+// 方法一：提前记载各自长度
+class Solution {
+public:
+    ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
+        ListNode* p = headA;
+        int countA = 0, countB = 0;
+        while (p) {
+            p = p->next;
+            ++countA;
+        }
+        p = headB;
+        while (p) {
+            p = p->next;
+            ++countB;
+        }
+        if (countA == 0 || countB == 0)
+            return nullptr;
+        p = headA;
+        ListNode* q = headB;
+        if (countA < countB)
+            swap(q, p);
+        // 此时 p 指向长链表
+        int temp = abs(countA - countB);
+        while (temp--)
+            p = p->next;
+        while (p != q) {
+            p = p->next;
+            q = q->next;
+        }
+        return q;
+    }
+};
+
+// 巧妙，尾连接
+class Solution {
+public:
+    ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
+        ListNode *p = headA, *q = headB;
+        while (p != q) {
+            if (p == nullptr) p = headB;
+            else p = p->next;
+
+            if (q == nullptr) q = headA;
+            else q = q->next;
+        }
+        return q;
+    }
+};
 ```
 
 ***js***
@@ -2194,10 +2344,31 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        fast = slow = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                return True
+        return False
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode *fast = head, *slow = head;
+        while (fast && fast->next){
+            fast = fast->next->next;
+            slow = slow->next;
+            if (fast == slow) return true;
+        }
+        return false;
+    }
+};
 ```
 
 ***js***
@@ -2210,10 +2381,46 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        fast = slow = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+
+            if fast == slow:
+                p, q = fast, head
+                while p != q:
+                    p = p.next
+                    q = q.next
+                return q
+        return None
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    ListNode* detectCycle(ListNode* head) {
+        ListNode *fast = head, *slow = head;
+
+        while (fast && fast->next) {
+            fast = fast->next->next;
+            slow = slow->next;
+
+            if (fast == slow) {
+                ListNode* p = fast;
+                ListNode* q = head;
+                while (q != p) {
+                    q = q->next;
+                    p = p->next;
+                }
+                return q;
+            }
+        }
+        return nullptr;
+    }
+};
 ```
 
 ***js***
@@ -2226,10 +2433,44 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        dummyHead = ListNode(0, list1)
+        p, q = dummyHead, list2
+        while p.next and q:
+            if q.val <= p.next.val:
+                cur = q
+                q = q.next
+                cur.next = p.next
+                p.next = cur
+            p = p.next
+
+        if q:
+            p.next = q
+        return dummyHead.next
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode* dummyHead = new ListNode(0, list1);
+        ListNode *p = dummyHead, *q = list2;
+        while (p->next && q) {
+            if (q->val <= p->next->val) {
+                ListNode* cur = q;
+                q = q->next;
+                cur->next = p->next;
+                p->next = cur;
+            }
+            p = p->next;
+        }
+        if (q)
+            p->next = q;
+        return dummyHead->next;
+    }
+};
 ```
 
 ***js***
@@ -2242,10 +2483,58 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        p = dummyHead = ListNode(0)
+        heap = []
+        for i in range(len(lists)):
+            if lists[i]:
+                heapq.heappush(heap, (lists[i].val, i))
+                lists[i] = lists[i].next
+
+        while heap:
+            val, idx = heapq.heappop(heap)
+            p.next = ListNode(val)
+            p = p.next
+            if lists[idx]:
+                heapq.heappush(heap, (lists[idx].val, idx))
+                lists[idx] = lists[idx].next
+
+        return dummyHead.next
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    struct compare { // 小顶堆
+        bool operator()(const ListNode* const& l, const ListNode* const& r) {
+            return l->val > r->val;
+        }
+    };
+
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if (lists.empty())
+            return nullptr;
+        ListNode* dummyHead = new ListNode(0);
+        ListNode* p = dummyHead;
+
+        priority_queue<ListNode*, vector<ListNode*>, compare> pq;
+        for (auto head : lists) // 将 k 个头结点入队
+            if (head)
+                pq.push(head);
+
+        while (!pq.empty()) {
+            ListNode* cur = pq.top();
+            pq.pop();
+            if (cur->next)
+                pq.push(cur->next);
+            p->next = cur;
+            p = p->next;
+        }
+        return dummyHead->next;
+    }
+};
 ```
 
 ***js***
@@ -2262,6 +2551,28 @@ public:
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+  ListNode *partition(ListNode *head, int x) {
+    ListNode *dummyHead = new ListNode(0, head);
+    ListNode *p = dummyHead;
+    while (p->next && p->next->val < x)
+      p = p->next;
+
+    ListNode *q = p->next;
+    while (q && q->next) {
+      if (q->next->val < x) {
+        ListNode *temp = q->next;
+        q->next = temp->next;
+        temp->next = p->next;
+        p->next = temp;
+        p = temp;
+      } else
+        q = q->next;
+    }
+    return dummyHead->next;
+  }
+};
 ```
 
 ***js***

@@ -39,10 +39,11 @@
     - [4.2.4 三法则和零法则](#424-三法则和零法则)
     - [4.2.6 vector 容器的实现](#426-vector-容器的实现)
 - [5 运算符重载](#5-运算符重载)
-  - [5.1 string 类](#51-string-类)
-  - [5.2 容器迭代器 iterator](#52-容器迭代器-iterator)
-  - [5.3 智能指针](#53-智能指针)
-  - [5.4 operator new 和 operator delete](#54-operator-new-和-operator-delete)
+  - [5.1 基本运算符重载](#51-基本运算符重载)
+  - [5.2 string 类](#52-string-类)
+  - [5.3 容器迭代器 iterator](#53-容器迭代器-iterator)
+  - [5.4 智能指针](#54-智能指针)
+  - [5.5 operator new 和 operator delete](#55-operator-new-和-operator-delete)
 - [6 STL](#6-stl)
   - [6.1 顺序容器](#61-顺序容器)
   - [6.2 适配器](#62-适配器)
@@ -1377,13 +1378,72 @@ int main() {
 
 # 5 运算符重载
 
-## 5.1 string 类
+## 5.1 基本运算符重载
 
-## 5.2 容器迭代器 iterator
+[运算符重载](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#255-%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD)
 
-## 5.3 智能指针
+**示例**
+```cpp
+#include <iostream>
 
-## 5.4 operator new 和 operator delete
+using namespace std;
+
+class CComplex {
+public:
+  CComplex(int real = 0, int imag = 0) : mreal(real), mimag(imag) {} // 构造函数
+  // CComplex operator+(const CComplex &c) { // 重载+运算符
+  //   return CComplex(c.mreal + mreal, c.mimag + mimag);
+  // }
+
+private:
+  int mreal;
+  int mimag;
+  friend CComplex operator+(const CComplex &lhs,
+                            const CComplex &rhs); // 声明全局函数为友元
+  friend istream &operator>>(istream &in, CComplex &c);
+  friend ostream &operator<<(ostream &out, const CComplex &c);
+};
+
+CComplex operator+(const CComplex &lhs, const CComplex &rhs) {
+  // 重载全局函数 + 运算符
+  return CComplex(lhs.mreal + rhs.mreal, lhs.mimag + rhs.mimag);
+}
+
+istream &operator>>(istream &in, CComplex &c) { // 重载全局输入运算符
+  in >> c.mreal >> c.mimag;
+  return in;
+}
+
+ostream &operator<<(ostream &out, const CComplex &c) { // 重载全局输出运算符
+  out << c.mreal << "+" << c.mimag << "i";
+  return out;
+}
+
+int main() {
+  CComplex c1(1, 2), c2(3, 4);
+  CComplex c3 = c1 + c2; // 等价于 c3 = c1.operator+(c2);
+  CComplex c4 = c1 + 20;
+  CComplex c5 =
+      20 + c1; // error: no match for 'operator+' (operand types are 'int'
+               // and 'CComplex'). 编译错误，因为没有重载全局函数
+
+  CComplex c6;
+  cin >> c6;
+  cout << c6 << endl;
+  return 0;
+}
+```
+
+## 5.2 string 类
+
+[string容器](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#331-string%E5%AE%B9%E5%99%A8)
+
+## 5.3 容器迭代器 iterator
+
+## 5.4 智能指针
+
+## 5.5 operator new 和 operator delete
+
 
 -----------------
 

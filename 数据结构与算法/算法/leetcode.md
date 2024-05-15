@@ -35,6 +35,26 @@
   - [86. 分隔链表](#86-分隔链表)
   - [876. 链表的中间结点](#876-链表的中间结点)
   - [234. 回文链表](#234-回文链表)
+- [3 哈希表](#3-哈希表)
+  - [242.有效的字母异位词](#242有效的字母异位词)
+  - [383. 赎金信](#383-赎金信)
+  - [49. 字母异位词分组](#49-字母异位词分组)
+  - [438. 找到字符串中所有字母异位词](#438-找到字符串中所有字母异位词)
+  - [349. 两个数组的交集](#349-两个数组的交集)
+  - [350. 两个数组的交集 II](#350-两个数组的交集-ii)
+  - [202. 快乐数](#202-快乐数)
+  - [1. 两数之和](#1-两数之和)
+  - [454. 四数相加II](#454-四数相加ii)
+  - [15. 三数之和](#15-三数之和)
+  - [18. 四数之和](#18-四数之和)
+- [4 字符串](#4-字符串)
+  - [344. 反转字符串](#344-反转字符串-1)
+  - [541. 反转字符串II](#541-反转字符串ii)
+  - [替换数字（第八期模拟笔试）](#替换数字第八期模拟笔试)
+  - [151. 翻转字符串里的单词](#151-翻转字符串里的单词)
+  - [55. 右旋字符串（第八期模拟笔试）](#55-右旋字符串第八期模拟笔试)
+  - [28. 找出字符串中第一个匹配项的下标](#28-找出字符串中第一个匹配项的下标)
+  - [459.重复的子字符串](#459重复的子字符串)
   - [1553. 吃掉 N 个橘子的最少天数](#1553-吃掉-n-个橘子的最少天数)
 
 
@@ -2547,31 +2567,48 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        p = dummyHead = ListNode(0, head)
+        while p.next and p.next.val < x:
+            p = p.next
+
+        q = p.next
+        while q and q.next:
+            if q.next.val < x:
+                cur = q.next
+                q.next = cur.next
+                cur.next = p.next
+                p.next = cur
+                p = cur
+            else:
+                q = q.next
+        return dummyHead.next
 ```
 
 ***cpp***
 ```cpp
 class Solution {
 public:
-  ListNode *partition(ListNode *head, int x) {
-    ListNode *dummyHead = new ListNode(0, head);
-    ListNode *p = dummyHead;
-    while (p->next && p->next->val < x)
-      p = p->next;
+    ListNode* partition(ListNode* head, int x) {
+        ListNode* dummyHead = new ListNode(0, head);
+        ListNode* p = dummyHead;
+        while (p->next && p->next->val < x)
+            p = p->next;
 
-    ListNode *q = p->next;
-    while (q && q->next) {
-      if (q->next->val < x) {
-        ListNode *temp = q->next;
-        q->next = temp->next;
-        temp->next = p->next;
-        p->next = temp;
-        p = temp;
-      } else
-        q = q->next;
+        ListNode* q = p->next; // 此时 q 指向右半节点的头，p 指向左半节点的头
+        while (q && q->next)
+            if (q->next->val < x) {
+                ListNode* cur = q->next;
+                q->next = cur->next;
+                cur->next = p->next;
+                p->next = cur;
+                p = cur;
+            } else
+                q = q->next;
+
+        return dummyHead->next;
     }
-    return dummyHead->next;
-  }
 };
 ```
 
@@ -2585,10 +2622,28 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        fast = slow = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+        return slow
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode *fast = head, *slow = head;
+        while (fast && fast->next) {
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+        return slow;
+    }
+};
 ```
 
 ***js***
@@ -2600,16 +2655,368 @@ public:
 
 ***python***
 ```python
+# 借用空间
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        p = head
+        arr = []
+        while p:
+            arr.append(p.val)
+            p = p.next
+        left, right = 0, len(arr) - 1
+        while left <= right:
+            if arr[left] != arr[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+
+# 递归 (dfs)
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        self.p = head
+        def dfs(head: Optional[ListNode]) -> bool:
+            if head is None:
+                return True
+
+            if not dfs(head.next):
+                return False
+
+            if self.p.val != head.val:
+                return False
+
+            self.p = self.p.next
+            return True
+
+        return dfs(head)
+
+# 双指针 + 反转链表
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        slow = fast = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+        if fast:
+            slow = slow.next
+
+        # 翻转后半部分链表
+        pre, cur = None, slow
+        while cur:
+            temp = cur.next
+            cur.next = pre
+            pre = cur
+            cur = temp
+
+        while pre:
+            if pre.val != head.val:
+                return False
+            pre = pre.next
+            head = head.next
+        return True
 ```
 
 ***cpp***
 ```cpp
+// 借用空间
+class Solution {
+  public:
+  bool isPalindrome(ListNode *head) {
+    vector<int> vec;
+    ListNode *p = head;
+    while (p) {
+      vec.push_back(p->val);
+      p = p->next;
+    }
+    int left = 0, right = vec.size() - 1;
+    while (left < right)
+      if (vec[left++] != vec[right--]) return false;
+    return true;
+  }
+};
+
+// 递归 （dfs）
+class Solution {
+private:
+    ListNode* p, *headback;
+    bool dfs(ListNode* head) {
+        if (head == nullptr || (p != headback && p == head))   // 剪枝，到中间就返回
+            return true;
+
+        bool res1 = dfs(head->next);
+        bool res2 = head->val == p->val;
+        p = p->next;
+        return res1 && res2;
+    }
+
+public:
+    bool isPalindrome(ListNode* head) {
+        headback = p = head;
+        return dfs(head);
+    }
+};
+
+// 双指针 + 反转链表
+class Solution {
+public:
+  bool isPalindrome(ListNode *head) {
+    ListNode *slow = head, *fast = head;
+    while (fast && fast->next) {
+      slow = slow->next;
+      fast = fast->next->next;
+    }
+    if (fast) slow = slow->next;
+
+    // 翻转后半部分链表
+    ListNode *pre = nullptr, *cur = slow, *nex = slow;
+    while (cur) {
+      nex = cur->next;
+      cur->next = pre;
+      pre = cur;
+      cur = nex;
+    }
+    while (pre) {
+      if (pre->val != head->val) return false;
+      pre = pre->next;
+      head = head->next;
+    }
+    return true;
+  }
+};
 ```
 
 ***js***
 ```js
 ```
 
+------------------------------
+
+## 3 哈希表
+
+### 242.有效的字母异位词
+
+[242.有效的字母异位词](https://leetcode.cn/problems/valid-anagram/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 383. 赎金信
+
+[383. 赎金信](https://leetcode.cn/problems/ransom-note/description/)
+
+***python***
+```python
+```
+
+
+***cpp***
+```cpp
+```
+
+### 49. 字母异位词分组
+
+[49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 438. 找到字符串中所有字母异位词
+
+[438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 349. 两个数组的交集
+
+[349. 两个数组的交集](https://leetcode.cn/problems/intersection-of-two-arrays/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 350. 两个数组的交集 II
+
+[350. 两个数组的交集 II](https://leetcode.cn/problems/intersection-of-two-arrays-ii/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 202. 快乐数
+
+[202. 快乐数](https://leetcode.cn/problems/happy-number/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 1. 两数之和
+
+[1. 两数之和](https://leetcode.cn/problems/two-sum/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 454. 四数相加II
+
+[454. 四数相加II](https://leetcode.cn/problems/4sum-ii/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 15. 三数之和
+
+[15. 三数之和](https://leetcode.cn/problems/3sum/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 18. 四数之和
+
+[18. 四数之和](https://leetcode.cn/problems/4sum/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+
+----------------------------------------
+
+## 4 字符串
+
+### 344. 反转字符串
+
+[344. 反转字符串](https://leetcode.cn/problems/reverse-string/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 541. 反转字符串II
+
+[541. 反转字符串II](https://leetcode.cn/problems/reverse-string-ii/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 替换数字（第八期模拟笔试）
+
+[替换数字（第八期模拟笔试）](https://kamacoder.com/problempage.php?pid=1064)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 151. 翻转字符串里的单词
+
+[151. 翻转字符串里的单词](https://leetcode.cn/problems/reverse-words-in-a-string/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 55. 右旋字符串（第八期模拟笔试）
+
+[55. 右旋字符串（第八期模拟笔试）](https://kamacoder.com/problempage.php?pid=1065)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 28. 找出字符串中第一个匹配项的下标
+
+[28. 找出字符串中第一个匹配项的下标](https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 459.重复的子字符串
+
+[459.重复的子字符串](https://leetcode.cn/problems/repeated-substring-pattern/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+
+---------------------------------
 
 
 ### 1553. 吃掉 N 个橘子的最少天数

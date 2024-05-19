@@ -2799,10 +2799,44 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        arr = [0] * 26
+        for c in s:
+            arr[ord(c) - ord('a')] += 1     # ord() 用来获取字符的 ASCII 码
+
+        for c in t:
+            arr[ord(c) - ord('a')] -= 1
+
+        for num in arr:
+            if num:
+                return False
+
+        return True
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.size() != t.size())
+            return false;
+        int a[26] = {0};
+        for (char ch : s)
+            ++a[ch - 'a'];
+        for (char ch : t)
+            --a[ch - 'a'];
+        
+        for (int i = 0; i < 26; ++i)
+            if (a[i])
+                return false;
+        
+        return true;
+    }
+};
 ```
 
 ### 383. 赎金信
@@ -2811,11 +2845,42 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+        arr = [0] * 26
+        for c in magazine:
+            arr[ord(c) - ord("a")] += 1
+
+        for c in ransomNote:
+            arr[ord(c) - ord("a")] -= 1
+
+        for num in arr:
+            if num < 0:
+                return False
+
+        return True
 ```
 
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        int record[26] = {0};
+        for (char ch : magazine)
+            ++record[ch - 'a'];
+        
+        for (char ch : ransomNote)
+            --record[ch - 'a'];
+        
+        for (int i = 0; i < 26; ++i)
+            if (record[i] < 0)
+                return false;
+        
+        return true;
+    }
+};
 ```
 
 ### 49. 字母异位词分组
@@ -2824,10 +2889,35 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        umap = {}
+        for string in strs:
+            sorted_str = "".join(sorted(string))    # 排序后的字符串作为 key
+            if sorted_str not in umap:
+                umap[sorted_str] = []
+            umap[sorted_str].append(string)
+
+        return list(umap.values())  # 返回字典的值, 并转换为列表
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> umap;
+        for (const string& str : strs) {
+            string temp = str;
+            sort(temp.begin(), temp.end());
+            umap[temp].emplace_back(str);
+        }
+        vector<vector<string>> res;
+        for (auto it = umap.begin(); it != umap.end(); ++it)
+            res.push_back(it->second);
+        return res;
+    }
+};
 ```
 
 ### 438. 找到字符串中所有字母异位词
@@ -2836,10 +2926,73 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        umap = {}
+        res = []
+        for c in p:
+            if c not in umap:
+                umap[c] = 0
+            umap[c] += 1
+
+        invalid = len(umap)
+        left = right = 0  # [)
+        while right < len(s):
+            c = s[right]  # 扩大窗口
+            right += 1
+            if c in umap:
+                umap[c] -= 1
+                if umap[c] == 0:
+                    invalid -= 1
+
+            if right - left == len(p):
+                if invalid == 0:
+                    res.append(left)  # 收结果
+                d = s[left]
+                left += 1  # 收缩窗口
+                if d in umap:
+                    if umap[d] == 0:
+                        invalid += 1
+                    umap[d] += 1
+
+        return res
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        vector<int> res;
+        if (s.size() < p.size())
+            return res;
+        unordered_map<char, int> umap;
+        for (const char& c : p)
+            ++umap[c];
+        int invalid = umap.size();
+        int left = 0, right = 0; // [)
+        while (right < s.size()) {
+            char c = s[right++]; // 扩大窗口
+            if (umap.find(c) != umap.end()) {
+                --umap[c];
+                if (umap[c] == 0)
+                    --invalid;
+            }
+
+            if (right - left == p.size()) {
+                if (invalid == 0)
+                    res.emplace_back(left); // 收结果
+                char d = s[left++];         // 缩小窗口
+                if (umap.find(d) != umap.end()) {
+                    if (umap[d] == 0)
+                        ++invalid;
+                    ++umap[d];
+                }
+            }
+        }
+        return res;
+    }
+};
 ```
 
 ### 349. 两个数组的交集
@@ -2848,10 +3001,38 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        my_set = set(nums1)
+        res = []
+
+        for num in nums2:
+            if num in my_set:
+                res.append(num)
+                my_set.remove(num)
+
+        return res
 ```
 
 ***cpp***
 ```cpp
+class Solution{
+public:
+    vector<int> intersection(vector<int> &nums1, vector<int> &nums2){
+        unordered_set<int> mySet;
+        vector<int> res;
+
+        for (int num1 : nums1)
+            mySet.insert(num1);
+        for (int num2 : nums2)
+            if (mySet.find(num2) != mySet.end()){
+                res.emplace_back(num2);
+                mySet.erase(num2);
+            }
+
+        return res;
+    }
+};
 ```
 
 ### 350. 两个数组的交集 II
@@ -2860,10 +3041,43 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        umap = {}
+        res = []
+        for num in nums1:
+            if num not in umap:
+                umap[num] = 0
+            umap[num] += 1
+
+        for num in nums2:
+            if num in umap and umap[num]:
+                res.append(num)
+                umap[num] -= 1
+
+        return res
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int, int> umap;
+        vector<int> res;
+        for (int num : nums1)
+            ++umap[num];
+
+        for (int num : nums2) {
+            auto it = umap.find(num);
+            if (it != umap.end() && it->second) {
+                res.push_back(num);
+                --(it->second);
+            }
+        }
+        return res;
+    }
+};
 ```
 
 ### 202. 快乐数
@@ -2872,10 +3086,41 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        num_set = set()
+        while n != 1:
+            num_set.add(n)
+            sum_of_digits = 0
+            while n:
+                sum_of_digits += (n % 10) * (n % 10)
+                n //= 10
+            if sum_of_digits in num_set:
+                return False
+            n = sum_of_digits
+        return True
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    bool isHappy(int n) {
+        unordered_set<int> uset;
+        while (n != 1) {
+            uset.insert(n);
+            int sum = 0;
+            while (n) {
+                sum += (n % 10) * (n % 10);
+                n /= 10;
+            }
+            if (uset.count(sum))
+                return false;
+            n = sum;
+        }
+        return true;
+    }
+};
 ```
 
 ### 1. 两数之和
@@ -2884,10 +3129,30 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        umap = {}
+        for idx, num in enumerate(nums):
+            if target - num in umap:
+                return [umap[target - num], idx]
+            umap[num] = idx
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+  vector<int> twoSum(vector<int> &nums, int target) {
+    unordered_map<int, int> umap;
+    for (int i = 0; i < nums.size(); i++) {
+      auto it = umap.find(target - nums[i]);
+      if (it != umap.end())
+        return {it->second, i};
+      umap.insert({nums[i], i});
+    }
+    return {-1, -1};
+  }
+};
 ```
 
 ### 454. 四数相加II
@@ -2896,10 +3161,50 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def fourSumCount(
+        self, nums1: List[int], nums2: List[int], nums3: List[int], nums4: List[int]
+    ) -> int:
+        umap = {}
+        res = 0
+        for n1 in nums1:
+            for n2 in nums2:
+                temp = n1 + n2
+                if temp not in umap:
+                    umap[temp] = 0
+                umap[temp] += 1
+
+        for n3 in nums3:
+            for n4 in nums4:
+                temp = -n3 -n4
+                if temp in umap:
+                    res += umap[temp]
+
+        return res
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3,
+                     vector<int>& nums4) {
+        unordered_map<int, int> umap;
+        int res = 0;
+        for (int num1 : nums1)
+            for (int num2 : nums2)
+                ++umap[num1 + num2];
+
+        for (int num3 : nums3)
+            for (int num4 : nums4) {
+                auto it = umap.find(-num3 - num4);
+                if (it != umap.end())
+                    res += it->second;
+            }
+
+        return res;
+    }
+};
 ```
 
 ### 15. 三数之和
@@ -2908,10 +3213,66 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        nums.sort()
+        i = 0
+        while i < len(nums):
+            if nums[i] > 0:
+                break
+            left, right = i + 1, len(nums) - 1
+            while left < right:
+                if nums[i] + nums[left] == -nums[right]:
+                    res.append([nums[i], nums[left], nums[right]])
+                    while left < right and nums[left] == nums[left + 1]:
+                        left += 1
+                    while left < right and nums[right] == nums[right - 1]:
+                        right -= 1
+                    left += 1
+                    right -= 1
+                elif nums[i] + nums[left] < -nums[right]:
+                    left += 1
+                else:
+                    right -= 1
+            while i < len(nums) - 1 and nums[i] == nums[i + 1]:
+                i += 1
+            i += 1
+        return res
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> res;
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] > 0)
+                break;
+            int left = i + 1, right = nums.size() - 1;
+            while (left < right) {
+                if (nums[i] + nums[left] == -nums[right]) {
+                    res.push_back(
+                        vector<int>{nums[i], nums[left], nums[right]});
+                    while (left < right && nums[left] == nums[left + 1])
+                        ++left;
+                    while (left < right && nums[right] == nums[right - 1])
+                        --right;
+                    ++left;
+                    --right;
+                } else if (nums[i] + nums[left] < -nums[right])
+                    ++left;
+                else
+                    --right;
+            }
+            while (i < nums.size() - 1 && nums[i] == nums[i + 1])
+                ++i;
+        }
+        return res;
+    }
+};
 ```
 
 ### 18. 四数之和
@@ -2920,10 +3281,90 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        res = []
+        nums.sort()
+        i, j = 0, 1
+        while i < len(nums):
+            sum = nums[i]
+            if sum > 0 and sum > target:    # 剪枝
+                return res
+            j = i + 1
+            while j < len(nums):
+                sum = nums[i] + nums[j]
+                if sum > 0 and sum > target:    # 剪枝
+                    break
+                left, right = j + 1, len(nums) - 1
+                while left < right:
+                    if nums[i] + nums[j] == target - nums[left] - nums[right]:
+                        res.append([nums[i], nums[j], nums[left], nums[right]])
+                        while left < right and nums[left] == nums[left + 1]:
+                            left += 1
+                        while left < right and nums[right] == nums[right - 1]:
+                            right -= 1
+                        left += 1
+                        right -= 1
+                    elif nums[i] + nums[j] < target - nums[left] - nums[right]:
+                        left += 1
+                    else:
+                        right -= 1
+                while j < len(nums) - 1 and nums[j] == nums[j + 1]:
+                    j += 1
+                j += 1
+            while i < len(nums) - 1 and nums[i] == nums[i + 1]:
+                i += 1
+            i += 1
+        return res
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> res;
+        sort(nums.begin(), nums.end());
+
+        for (int i = 0; i < (int)nums.size() - 3; i++) {
+            int sum = nums[i];
+            if (sum > 0 && sum > target) // 剪枝
+                return res;
+            if (i > 0 && nums[i] == nums[i - 1])
+                continue;
+
+            for (int j = i + 1; j < (int)nums.size() - 2; ++j) {
+                sum = nums[i] + nums[j];
+                if (sum > 0 && sum > target) // 剪枝
+                    break;
+                if (j > i + 1 && nums[j] == nums[j - 1])
+                    continue;
+
+                int left = j + 1;
+                int right = nums.size() - 1;
+                while (left < right) {
+                    if ((long)nums[i] + nums[j] <
+                        (long)target - nums[left] - nums[right])
+                        ++left;
+                    else if ((long)nums[i] + nums[j] >
+                             (long)target - nums[left] - nums[right])
+                        --right;
+                    else {
+                        res.emplace_back(vector<int>{nums[i], nums[j],
+                                                     nums[left], nums[right]});
+                        ++left;
+                        --right;
+                        while (left < right && nums[left] == nums[left - 1])
+                            ++left;
+                        while (left < right && nums[right] == nums[right + 1])
+                            --right;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
 ```
 
 
@@ -2937,10 +3378,28 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def reverseString(self, s: List[str]) -> None:
+        """
+        Do not return anything, modify s in-place instead.
+        """
+        left, right = 0, len(s) - 1
+        while left < right:
+            s[left], s[right] = s[right], s[left]
+            left += 1
+            right -= 1
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+        int left = 0, right = s.size() - 1;
+        while (left < right)
+            swap(s[left++], s[right--]);
+    }
+};
 ```
 
 ### 541. 反转字符串II
@@ -2949,10 +3408,46 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def reverseStr(self, s: str, k: int) -> str:
+        def reverseString(s: str, left, right) -> str:
+            s_list = list(s)
+            while left < right:
+                s_list[left], s_list[right] = s_list[right], s_list[left]
+                left += 1
+                right -= 1
+            return "".join(s_list)
+
+        left, right = 0, k  # [)
+        for _ in range(len(s) // (2 * k)):
+            s = reverseString(s, left, right - 1)
+            left += 2 * k
+            right += 2 * k
+
+        if right >= len(s):
+            s = reverseString(s, left, len(s) - 1)
+        else:
+            s = reverseString(s, left, right - 1)
+        return s
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    string reverseStr(string s, int k) {
+        int count = s.size() / (2 * k);
+        int left, right;
+        for (left = 0, right = k; count; --count) {
+            reverse(s.begin() + left, s.begin() + right);
+            left += (2 * k);
+            right = left + k;
+        }
+        right > s.size() ? reverse(s.begin() + left, s.end())
+                         : reverse(s.begin() + left, s.begin() + right);
+        return s;
+    }
+};
 ```
 
 ### 替换数字（第八期模拟笔试）
@@ -2973,10 +3468,39 @@ public:
 
 ***python***
 ```python
+s = input()
+
+res = ""
+for ch in s:
+    if ch.isdigit():
+        res += "number"
+    else:
+        res += ch
+
+print(res)
 ```
 
 ***cpp***
 ```cpp
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+  string s;
+  cin >> s;
+
+  string res;
+  for (auto ch : s) {
+    if (isdigit(ch))
+      res += "number";
+    else
+      res.push_back(ch);
+  }
+  cout << res;
+  return 0;
+}
 ```
 
 ### 55. 右旋字符串（第八期模拟笔试）

@@ -54,6 +54,7 @@
   - [151. 翻转字符串里的单词](#151-翻转字符串里的单词)
   - [55. 右旋字符串（第八期模拟笔试）](#55-右旋字符串第八期模拟笔试)
   - [28. 找出字符串中第一个匹配项的下标](#28-找出字符串中第一个匹配项的下标)
+    - [KMP](#kmp)
   - [459.重复的子字符串](#459重复的子字符串)
   - [1553. 吃掉 N 个橘子的最少天数](#1553-吃掉-n-个橘子的最少天数)
 
@@ -3456,10 +3457,39 @@ public:
 
 ***python***
 ```python
+s = input()
+
+res = ""
+for ch in s:
+    if ch.isdigit():
+        res += "number"
+    else:
+        res += ch
+
+print(res)
 ```
 
 ***cpp***
 ```cpp
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+  string s;
+  cin >> s;
+
+  string res;
+  for (auto ch : s) {
+    if (isdigit(ch))
+      res += "number";
+    else
+      res.push_back(ch);
+  }
+  cout << res;
+  return 0;
+}
 ```
 
 ### 151. 翻转字符串里的单词
@@ -3509,34 +3539,212 @@ int main() {
 
 ***python***
 ```python
+def rotate_string(s, k):
+    k %= len(s)  # Ensure k is within the bounds of the string length
+    s = s[::-1]  # Reverse the entire string
+    s = s[:k][::-1] + s[k:][::-1]  # Reverse the first k characters and the remaining characters separately
+    return s
+
+# Input
+k = int(input())
+s = input()
+
+# Output the rotated string
+print(rotate_string(s, k))
+
 ```
 
 ***cpp***
 ```cpp
+#include <algorithm>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+  int k;
+  string s;
+  cin >> k >> s;
+  k %= s.size();
+  reverse(s.begin(), s.end());
+  reverse(s.begin(), s.begin() + k);
+  reverse(s.begin() + k, s.end());
+  cout << s << endl;
+  return 0;
+}
 ```
 
 ### 28. 找出字符串中第一个匹配项的下标
+
+#### KMP
+
+`search(char pat[], char txt[])` 函数用于在字符串 `txt` 中查找字符串 `pat`，假设 `txt.size() > pat.size()`
+
+KMP 算法对 `pat[]` 进行预处理，得到 `next[]` 数组，`next[i]` 表示 `pat[0..i]` 的**最长真前缀后缀匹配长度**，所谓**真**是指不允许包含整个字符串的前缀
+
+**预处理（求 `next[]` 数组）算法**
+- 计算 `next[]` 中的值。为此，跟踪前一个索引的最长前缀后缀值得长度（使用 `len` 变量）
+- `next[0]` 和 `len` 都初始化为 `0`
+- 如果 `pat[len]` 和 `pat[i]` 匹配，将 `len` 加 `1`，并将增加后的值赋给 `lps[i]`
+- 如果 `pat[i]` 和 `pat[len]` 不匹配并且 `len` 不为 `0`，我们将 `len` 更新为 `lps[len-1]`
+
+
+**KMP 算法的实现**
+
+使用 `next[]` 中的值来决定下一个要匹配的字符，不匹配那些我们知道无论如何都会匹配的字符
+
+- `txt[i]` 和 `pat[j]` 做匹配
+- 如果**匹配**，`i` 和 `j` 都加 `1`
+- 如果 `j = pat.size()`，说明找到了匹配项，重置 `j = next[j - 1]` 继续匹配
+- 如果**不匹配**，`j = next[j - 1]`
+
+```cpp
+class KMP {
+public:
+  vector<int> KMPSearch(string txt, string pat) {
+    vector<int> res;
+    vector<int> next = getNext(pat);
+    int i = 0, j = 0;
+    while (txt.size() - i >= pat.size() - j) {
+      if (pat[j] == txt[i]) {
+        ++i;
+        ++j;
+      }
+      if (j == pat.size()) {
+        res.push_back(i - j);
+        j = next[j - 1];
+      } else if (i < txt.size() && pat[j] != txt[i]) {
+        if (j)
+          j = next[j - 1];
+        else
+          ++i;
+      }
+    }
+    return res;
+  }
+
+private:
+  vector<int> getNext(const string &pat) {
+    vector<int> next(pat.size());
+    next[0] = 0;
+    int len = 0, i = 1;
+
+    while (i < pat.size())
+      if (pat[i] == pat[len])
+        next[i++] = ++len;
+      else if (len) // if (pat[i] != pat[len] && len != 0)
+        len = next[len - 1];
+      else // if (pat[i] != pat[len] && len == 0)
+        next[i++] = 0;
+    return next;
+  }
+};
+```
+
+-----------------------------------
+
 
 [28. 找出字符串中第一个匹配项的下标](https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/description/)
 
 ***python***
 ```python
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        def getNext(pat: str):
+            next = [0] * len(pat)
+            length, i = 0, 1
+            while i < len(pat):
+                if pat[i] == pat[length]:
+                    length += 1
+                    next[i] = length
+                    i += 1
+                else:
+                    if length:
+                        length = next[length - 1]
+                    else:
+                        next[i] = 0
+                        i += 1
+            return next
+
+        next = getNext(needle)
+        i, j = 0, 0
+        while i < len(haystack):
+            if haystack[i] == needle[j]:
+                i += 1
+                j += 1
+            if j == len(needle):
+                return i - j
+            elif i < len(haystack) and haystack[i] != needle[j]:
+                if j:
+                    j = next[j - 1]
+                else:
+                    i += 1
+        return -1
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        vector<int> next(needle.size());
+        getNext(needle, next);
+        int i = 0, j = 0;
+        while (haystack.size() - i >= needle.size() - j) {
+            if (haystack[i] == needle[j]) {
+                ++i;
+                ++j;
+            }
+            if (needle.size() == j)
+                return i - j;
+            else if (i < haystack.size() && haystack[i] != needle[j]) {
+                if (j)
+                    j = next[j - 1];
+                else
+                    ++i;
+            }
+        }
+        return -1;
+    }
+
+private:
+    void getNext(const string& pat, vector<int>& next) {
+        next[0] = 0;
+        int len = 0, i = 1;
+        while (i < pat.size())
+            if (pat[i] == pat[len])
+                next[i++] = ++len;
+            else if (len)
+                len = next[len - 1];
+            else
+                next[i++] = len;
+    }
+};
 ```
 
 ### 459.重复的子字符串
 
 [459.重复的子字符串](https://leetcode.cn/problems/repeated-substring-pattern/description/)
 
+`s` repeated => `s` in `s + s`
+`s` no in `s + s` => `s` not repeated
+
 ***python***
 ```python
+class Solution:
+    def repeatedSubstringPattern(self, s: str) -> bool:
+        return (s + s).find(s, 1) != len(s)
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    bool repeatedSubstringPattern(string s) {
+        return (s + s).find(s, 1) != s.size();
+    }
+};
 ```
 
 

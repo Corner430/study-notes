@@ -42,17 +42,19 @@
   - [5.1 基本运算符重载](#51-基本运算符重载)
   - [5.2 string 类](#52-string-类)
   - [5.3 容器迭代器 iterator](#53-容器迭代器-iterator)
-  - [5.4 智能指针](#54-智能指针)
+  - [5.4 迭代器失效问题](#54-迭代器失效问题)
   - [5.5 operator new 和 operator delete](#55-operator-new-和-operator-delete)
+  - [5.6 operator new 和 operator delete 重载实现对象池](#56-operator-new-和-operator-delete-重载实现对象池)
 - [6 STL](#6-stl)
   - [6.1 顺序容器](#61-顺序容器)
   - [6.2 适配器](#62-适配器)
-  - [6.3 有序关联容器](#63-有序关联容器)
-  - [6.4 无序关联容器](#64-无序关联容器)
-  - [6.5 大数据 top k和查重问题求解、布隆过滤器](#65-大数据-top-k和查重问题求解布隆过滤器)
-  - [6.6 函数对象、function和 lambda表达式](#66-函数对象function和-lambda表达式)
-  - [6.7 迭代器](#67-迭代器)
-  - [6.8 泛型算法](#68-泛型算法)
+  - [6.3 关联容器](#63-关联容器)
+    - [6.3.1 无序关联容器（链式哈希表）](#631-无序关联容器链式哈希表)
+    - [6.3.2 有序关联容器（红黑树）](#632-有序关联容器红黑树)
+  - [近容器](#近容器)
+  - [6.6 迭代器](#66-迭代器)
+  - [6.5 函数对象（类似 C 的函数指针）](#65-函数对象类似-c-的函数指针)
+  - [6.7 泛型算法](#67-泛型算法)
 - [7 继承与多态](#7-继承与多态)
   - [7.1 静态绑定和动态绑定](#71-静态绑定和动态绑定)
   - [7.2 多态](#72-多态)
@@ -1448,10 +1450,225 @@ int main() {
 
 - `auto` 关键字可以自动推导类型
 
-## 5.4 智能指针
+- 不同容器的迭代器是不能相互比较的，这是因为迭代器的迭代的容器对象不同
+
+## 5.4 迭代器失效问题
+
+1. 删除、增加、扩容操作都会导致迭代器失效
+2. 当容器调用 `erase` 或 `insert` 方法后，**当前位置到容器末尾元素的迭代器都会失效，前面的正常**
+3. 如果操作导致了容器扩容，**那么原来的迭代器都会失效**，因为容器重新分配了内存
+
+解决方案：
+```cpp
+iterator
+insert(const_iterator __position, value_type&& __x)
+{ return _M_insert_rval(__position, std::move(__x)); }
+
+// 使用 it 接住返回值
+it = vec.insert(it, *it - 1);
+it = vec.erase(it);
+```
+
+> 要考虑接住返回值之后，迭代器指向的位置
+
+```cpp
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+  vector<int> vec;
+  for (int i = 0; i < 20; i++)
+    vec.push_back(rand() % 100 + 1);
+
+  for (auto it = vec.begin(); it != vec.end(); ++it)
+    cout << *it << " ";
+  cout << endl;
+
+  // // 把 vec 容器中所有的偶数全部删除
+  // auto it = vec.begin();
+  // for (; it != vec.end(); ++it) {
+  //   if (*it % 2 == 0) {
+  //     it = vec.erase(it);
+  //     --it; // 如果不加这句，第一次调用 erase 之后
+  //     // 会导致 迭代器 的失效问题，非法操作，不可续期的错误
+  //   }
+  // }
+
+  // 给 vec 容器中所有的偶数前面添加一个小于它的奇数
+  auto it = vec.begin();
+  for (; it != vec.end(); ++it) {
+    if (*it % 2 == 0){
+      it = vec.insert(it, *it - 1);
+      ++it;
+    }
+  }
+
+  for (auto it = vec.begin(); it != vec.end(); ++it)
+    cout << *it << " ";
+  cout << endl;
+
+  return 0;
+}
+```
 
 ## 5.5 operator new 和 operator delete
 
+```cpp
+_GLIBCXX_NODISCARD void* operator new(std::size_t) _GLIBCXX_THROW (std::bad_alloc)
+  __attribute__((__externally_visible__));
+_GLIBCXX_NODISCARD void* operator new[](std::size_t) _GLIBCXX_THROW (std::bad_alloc)
+  __attribute__((__externally_visible__));
+void operator delete(void*) _GLIBCXX_USE_NOEXCEPT
+  __attribute__((__externally_visible__));
+void operator delete[](void*) _GLIBCXX_USE_NOEXCEPT
+  __attribute__((__externally_visible__));
+```
+
+`new` 和 `delete` 也是函数，可以重载
+
+1. `malloc` 和 `new` 的区别
+  - `malloc` 是按字节开辟内存，`new` 开辟内存时需要指定类型，所以 `malloc` 返回的都是 `void *` 类型
+  - `malloc` 只负责开辟内存，`new` 还负责对象的构造
+  - `malloc` 开辟内存失败返回 `nullptr`，`new` 开辟内存失败抛出异常 `std::bad_alloc`
+2. `free` 和 `delete` 的区别
+  - `delete`: 调用析构函数，之后 `free` 内存
+3. `new` 和 `delete` 能混用吗？ C++ 为什么区分单个元素和数组的内存分配和释放？
+  - `new` 和 `delete` 能否混用，取决于是否会调用构造和析构函数
+  - > 自定义的类 类型，有析构函数，为了调用正确的析构函数，那么开辟对象数组的时候，**会自动多开辟 4 个字节，用来存储对象的个数**
+
+```cpp
+int main() {
+  try { // 此时没有任何问题，因为不涉及到对象的析构
+    int *p = new int;
+    delete[] p;
+
+    int *q = new int[10];
+    delete q;
+  } catch (const bad_alloc &err) {
+    cerr << err.what() << endl;
+  }
+  return 0;
+}
+
+
+class Test {
+public:
+  Test(int data = 10) : ptr(new int(data)) { cout << "Test()" << endl; }
+  ~Test() {
+    delete ptr;
+    cout << "~Test()" << endl;
+  }
+
+private:
+  int *ptr;
+};
+
+int main() {
+  Test *p1 = new Test();
+  delete p1;
+  // delete[] p1; // 段错误
+
+  Test *p2 = new Test[5];
+  delete[] p2;
+  // delete p2;  // 段错误  // Test[0] 对象析构，直接 free
+
+  return 0;
+}
+```
+
+![20240519232817](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240519232817.png)
+
+## 5.6 operator new 和 operator delete 重载实现对象池
+
+```cpp
+#include <iostream>
+using namespace std;
+
+template <typename T> class Queue {
+public:
+  Queue() { _front = _rear = new QueueItem(); }
+  ~Queue() {
+    QueueItem *cur = _front;
+    while (cur != nullptr) {
+      QueueItem *next = cur->_next;
+      delete cur;
+      cur = next;
+    }
+  }
+
+  void push(const T &val) {
+    QueueItem *item = new QueueItem(val);
+    _rear->_next = item;
+    _rear = item;
+  }
+
+  void pop() {
+    if (empty())
+      return;
+    QueueItem *first = _front->_next;
+    _front->_next = first->_next;
+    if (_front->_next == nullptr)
+      _rear = _front;
+    delete first;
+  }
+
+  T front() const {
+    if (empty())
+      throw out_of_range("Queue is empty");
+    return _front->_next->_data;
+  }
+
+  bool empty() const { return _front == _rear; }
+
+private:
+  struct QueueItem {
+    QueueItem(T data = T()) : _data(data), _next(nullptr) {}
+    T _data;
+    QueueItem *_next;
+
+    static QueueItem *_itemPool;
+    static const int POOL_ITEM_SIZE = 10000;
+
+    void *operator new(size_t size) {
+      if (_itemPool == nullptr) {
+        _itemPool = (QueueItem *)new char[POOL_ITEM_SIZE * sizeof(QueueItem)];
+        QueueItem *p = _itemPool;
+        for (; p < _itemPool + POOL_ITEM_SIZE - 1; ++p)
+          p->_next = p + 1;
+        p->_next = nullptr;
+      }
+      QueueItem *p = _itemPool;
+      _itemPool = _itemPool->_next;
+      return p;
+    }
+
+    void operator delete(void *ptr) {
+      QueueItem *p = (QueueItem *)ptr;
+      p->_next = _itemPool;
+      _itemPool = p;
+    }
+  };
+
+  QueueItem *_front;
+  QueueItem *_rear;
+};
+
+template <typename T>
+typename Queue<T>::QueueItem *Queue<T>::QueueItem::_itemPool = nullptr;
+
+int main() {
+  Queue<int> que;
+  for (int i = 0; i < 20000; i++) {
+    que.push(i);
+    que.pop();
+  }
+  cout << que.empty() << endl;
+
+  return 0;
+}
+```
 
 -----------------
 
@@ -1459,33 +1676,88 @@ int main() {
 
 ## 6.1 顺序容器
 
-- `vector`
-- `deque`
-- `list`
+- [vector](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#332-vector%E5%AE%B9%E5%99%A8)
+  - vector: 向量容器
+  - 底层数据结构：动态开辟的数组，每次以原来空间大小的 2 倍进行扩容
+
+--------------------------
+
+- [deque](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#333-deque%E5%AE%B9%E5%99%A8)
+  - deque：双端队列容器
+  - 底层数据结构：动态开辟的二维数组，一维数组从 2 开始，以 2 倍的方式扩容，每次扩容后，原来第二维的数组，从新的一维数组的中间开始（oldsize/2）存放，上下都预留相同的空行，方便支持 deque 的首尾元素添加
+
+> - deque **底层内存是否连续**？
+>   - 不连续，因为 deque 是由多个一维数组组成的，每个一维数组都是连续的，但是一维数组之间不连续
+
+--------------------------
+
+- [list](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#337-list%E5%AE%B9%E5%99%A8)
+  - list: 链表容器
+  - 底层数据结构：双向的循环列链表
 
 ## 6.2 适配器
 
-- `stack`
-- `queue`
-- `priority_queue`
+1. 适配器底层没有自己的数据结构，它是另外一个容器的封装，它的方法，全部由底层依赖的容器进行实现
+2. 没有实现自己的迭代器
 
-## 6.3 有序关联容器
+**示例**
+```cpp
+template <typename T, typename Container = deque<T>> class Stack {
+public:
+  void push(const T &val) { con.push_back(val); }
+  void pop() { con.pop_back(); }
+  T top() const { return con.back(); }
 
-- `set/multiset`
-- `map/multimap`
+private:
+  Container con;
+};
+```
 
-## 6.4 无序关联容器
+----------------------------------------------
+
+- [stack](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#335-stack%E5%AE%B9%E5%99%A8), **底层依赖于 deque**
+
+
+- [queue](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#336-queue-%E5%AE%B9%E5%99%A8), **底层依赖于 deque**
+
+
+- `priority_queue`, **底层依赖于 vector**
+
+> **为什么这样设计**？
+> 
+> 1. vector 的**初始内存效率**太低了！扩容时：1->2->4->8->16..., 而 deque 的每一个一维数组的大小是 `4096/sizeof(T)`
+> 2. queue 需要 deque 支持首尾元素的添加和删除的效率
+> 3. vector 需要大片的连续内存，而 deque 只需要分段的内存，当存储大量数据时，deque 的利用率更高
+> 4. priority_queue 底层默认把数据组成一个大根堆结构，在一个**内存连续的数组**上进行操作，所以选择 vector，方便进行随机访问
+
+
+## 6.3 关联容器
+
+### 6.3.1 无序关联容器（链式哈希表）
 
 - `unordered_set/unordered_multiset`
 - `unordered_map/unordered_multimap`
 
-## 6.5 大数据 top k和查重问题求解、布隆过滤器
+### 6.3.2 有序关联容器（红黑树）
 
-## 6.6 函数对象、function和 lambda表达式
+- `set/multiset`
+- `map/multimap`
 
-## 6.7 迭代器
+## 近容器
 
-## 6.8 泛型算法
+数组, string, bitset(位容器)
+
+## 6.6 迭代器
+iterator 和 const_iterator
+reverse_iterator 和 const_reverse_iterator
+
+## 6.5 函数对象（类似 C 的函数指针）
+
+greater, less
+
+## 6.7 泛型算法
+
+sort, find, find_if, binary_search, for_each
 
 ---------------
 

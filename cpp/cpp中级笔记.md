@@ -51,16 +51,24 @@
   - [6.3 关联容器](#63-关联容器)
     - [6.3.1 无序关联容器（链式哈希表）](#631-无序关联容器链式哈希表)
     - [6.3.2 有序关联容器（红黑树）](#632-有序关联容器红黑树)
-  - [近容器](#近容器)
-  - [6.6 迭代器](#66-迭代器)
+  - [6.4 迭代器](#64-迭代器)
   - [6.5 函数对象（类似 C 的函数指针）](#65-函数对象类似-c-的函数指针)
-  - [6.7 泛型算法](#67-泛型算法)
+  - [6.6 泛型算法](#66-泛型算法)
+    - [6.6.1 绑定器 和 lambda 表达式](#661-绑定器-和-lambda-表达式)
 - [7 继承与多态](#7-继承与多态)
-  - [7.1 静态绑定和动态绑定](#71-静态绑定和动态绑定)
-  - [7.2 多态](#72-多态)
-  - [7.3 vfptr和vftable、vbptr和vbtable](#73-vfptr和vftablevbptr和vbtable)
-  - [7.4 抽象类和虚基类](#74-抽象类和虚基类)
-  - [7.5 四种类型强转](#75-四种类型强转)
+  - [7.1 继承的本质和原理](#71-继承的本质和原理)
+  - [7.2 派生类的构造过程](#72-派生类的构造过程)
+  - [7.3 重载、覆盖、隐藏](#73-重载覆盖隐藏)
+  - [7.4 静态绑定和动态绑定](#74-静态绑定和动态绑定)
+  - [7.5 多态](#75-多态)
+  - [7.6 vfptr和vftable](#76-vfptr和vftable)
+  - [7.7 抽象类的设计原理](#77-抽象类的设计原理)
+  - [7.8 多重继承以及问题](#78-多重继承以及问题)
+  - [7.9 虚基类](#79-虚基类)
+  - [7.10 vbptr和vbtable](#710-vbptr和vbtable)
+  - [7.11 RTTI](#711-rtti)
+  - [7.12 四种类型强转](#712-四种类型强转)
+  - [7.13 继承多态常见面试题分享](#713-继承多态常见面试题分享)
 - [8 C++11](#8-c11)
   - [8.1 auto、foreach、智能指针、lambda表达式](#81-autoforeach智能指针lambda表达式)
   - [8.2 右值引用、std::move移动语义、std::forward类型完美转发](#82-右值引用stdmove移动语义stdforward类型完美转发)
@@ -1733,45 +1741,135 @@ private:
 
 ## 6.3 关联容器
 
+
 ### 6.3.1 无序关联容器（链式哈希表）
 
 - `unordered_set/unordered_multiset`
 - `unordered_map/unordered_multimap`
 
+- `map` 的 `operator[]`
+  1. 查询
+  2. 如果 key 不存在，会自动插入一个 key-value 对，**其中 value 是默认构造**
+
 ### 6.3.2 有序关联容器（红黑树）
 
-- `set/multiset`
-- `map/multimap`
+- [set/multiset](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#338-setmultiset-%E5%AE%B9%E5%99%A8)
+- [map/multimap](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#339-mapmultimap%E5%AE%B9%E5%99%A8)
 
-## 近容器
+- [map容器排序](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#3396-map%E5%AE%B9%E5%99%A8%E6%8E%92%E5%BA%8F)
 
-数组, string, bitset(位容器)
 
-## 6.6 迭代器
-iterator 和 const_iterator
-reverse_iterator 和 const_reverse_iterator
+## 6.4 迭代器
+
+`iterator` 和 `const_iterator`
+`reverse_iterator` 和 `const_reverse_iterator`
+
 
 ## 6.5 函数对象（类似 C 的函数指针）
 
-greater, less
+- [函数对象(仿函数)](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#341-%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1)
+- [谓词](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#342--%E8%B0%93%E8%AF%8D)
 
-## 6.7 泛型算法
+```cpp
+#include <iostream>
 
-sort, find, find_if, binary_search, for_each
+// 通过函数指针调用函数，无法实现内联，因此会有函数调用的开销
+
+// template <typename T> bool greater(const T &a, const T &b) { return a > b; }
+
+// template <typename T> bool less(const T &a, const T &b) { return a < b; }
+
+// ---------------------------------------------------------------
+
+// 通过函数对象调用函数，可以实现内联
+template <typename T> class mygreater {
+public:
+  bool operator()(const T &a, const T &b) { return a > b; }
+};
+
+template <typename T> class myless {
+public:
+  bool operator()(const T &a, const T &b) { return a < b; }
+};
+
+template <typename T, typename Compare>
+bool compare(const T &a, const T &b, Compare comp) {
+  return comp(a, b);
+}
+```
+
+
+## 6.6 泛型算法
+
+[泛型算法](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#35-stl--%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95) = `template` + 迭代器 + 函数对象
+1. **参数接收的都是迭代器**
+2. 参数还可以接收**函数对象**
+
+### 6.6.1 绑定器 和 lambda 表达式
+
+**绑定器 + 二元函数对象 =>> 一元函数对象**
+`bind1st`: 把二元函数对象的 `operator()(a, b)` 的第一个形参绑定为一个固定值
+`bind2nd`: 把二元函数对象的 `operator()(a, b)` 的第二个形参绑定为一个固定值
+
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+  vector<int> v = {1, 12, 14, 21, 23, 34, 45, 56, 67, 78, 89, 90};
+  // 把 48 插入到 v 中
+  auto it =
+      find_if(v.begin(), v.end(), [](int val) -> bool { return val > 48; });
+  v.insert(it, 48);
+  for (auto i : v)
+    cout << i << " ";
+  cout << endl;
+  for_each(
+      v.begin(), v.end(),
+      [](int val) -> void { // void 可以省略, lambda 表达式
+        if (val % 2 == 0)
+          cout << val << " ";
+      });
+
+  return 0;
+}
+```
 
 ---------------
 
 # 7 继承与多态
 
-## 7.1 静态绑定和动态绑定
+## 7.1 继承的本质和原理
 
-## 7.2 多态
+- [继承](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#256-%E7%BB%A7%E6%89%BF)
+- [多态](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#257--%E5%A4%9A%E6%80%81)
 
-## 7.3 vfptr和vftable、vbptr和vbtable
+## 7.2 派生类的构造过程
 
-## 7.4 抽象类和虚基类
+## 7.3 重载、覆盖、隐藏
 
-## 7.5 四种类型强转
+## 7.4 静态绑定和动态绑定
+
+## 7.5 多态
+
+## 7.6 vfptr和vftable
+
+## 7.7 抽象类的设计原理
+
+## 7.8 多重继承以及问题
+
+## 7.9 虚基类
+
+## 7.10 vbptr和vbtable
+
+## 7.11 RTTI
+
+## 7.12 四种类型强转
+
+## 7.13 继承多态常见面试题分享
 
 -------------------
 

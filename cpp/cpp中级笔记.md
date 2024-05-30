@@ -1847,6 +1847,10 @@ int main() {
 - [继承](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#256-%E7%BB%A7%E6%89%BF)
 - [多态](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#257--%E5%A4%9A%E6%80%81)
 
+**默认的继承方式**是什么？
+  - `class` 定义派生类，默认继承方式是 `private`
+  - `struct` 定义派生类，默认继承方式是 `public`
+
 ## 7.2 派生类的构造过程
 
 ## 7.3 重载、覆盖、隐藏

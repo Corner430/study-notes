@@ -137,6 +137,20 @@
   - [239. 滑动窗口最大值](#239-滑动窗口最大值)
   - [347.前 K 个高频元素](#347前-k-个高频元素)
 - [7 二叉树](#7-二叉树)
+  - [144. 二叉树的前序遍历](#144-二叉树的前序遍历)
+  - [94. 二叉树的中序遍历](#94-二叉树的中序遍历)
+  - [145. 二叉树的后序遍历](#145-二叉树的后序遍历)
+  - [102. 二叉树的层序遍历](#102-二叉树的层序遍历)
+  - [107. 二叉树的层序遍历 II](#107-二叉树的层序遍历-ii)
+  - [199. 二叉树的右视图](#199-二叉树的右视图)
+  - [637. 二叉树的层平均值](#637-二叉树的层平均值)
+  - [429. N叉树的层序遍历](#429-n叉树的层序遍历)
+  - [515. 在每个树行中找最大值](#515-在每个树行中找最大值)
+  - [116. 填充每个节点的下一个右侧节点指针](#116-填充每个节点的下一个右侧节点指针)
+  - [117. 填充每个节点的下一个右侧节点指针 II](#117-填充每个节点的下一个右侧节点指针-ii)
+  - [104. 二叉树的最大深度](#104-二叉树的最大深度)
+  - [111. 二叉树的最小深度](#111-二叉树的最小深度)
+  - [226. 翻转二叉树](#226-翻转二叉树)
   - [1553. 吃掉 N 个橘子的最少天数](#1553-吃掉-n-个橘子的最少天数)
 
 
@@ -7907,9 +7921,494 @@ public:
 
 [347.前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
 
+***python***
+```py
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # 使用Counter统计每个数字的出现频率
+        count = Counter(nums)
+
+        # 创建一个优先队列（最小堆）
+        # 需要频率最高的k个元素，因此使用负频率来创建最大堆
+        pq = []
+        for num, freq in count.items():
+            heapq.heappush(pq, (freq, num))
+            if len(pq) > k:
+                heapq.heappop(pq)
+
+        # 从堆中取出前k个频率最高的元素
+        res = []
+        while pq:
+            res.append(heapq.heappop(pq)[1])
+
+        # 由于使用的是最小堆，因此需要将结果反转
+        return res[::-1]
+```
+
+
+***cpp***
+```cpp
+class Solution {
+private:
+    struct compare {
+        bool operator()(const pair<int, int>& left,
+                        const pair<int, int>& right) {
+            return left.second > right.second;
+        }
+    };
+
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> umap;
+        for (int num : nums)
+            ++umap[num];
+        priority_queue<pair<int, int>, vector<pair<int, int>>, compare> pq;
+        for (unordered_map<int, int>::iterator it = umap.begin();
+             it != umap.end(); ++it) {
+            pq.push(*it);
+            if (pq.size() > k)
+                pq.pop();
+        }
+        // umap.clear();
+        vector<int> res;
+        res.reserve(k);
+        while (!pq.empty()) {
+            res.push_back(pq.top().first);
+            pq.pop();
+        }
+        return res;
+    }
+};
+```
 
 
 ## 7 二叉树
+
+### 144. 二叉树的前序遍历
+
+[144. 二叉树的前序遍历](https://leetcode.cn/problems/binary-tree-preorder-traversal/description/)
+
+```python
+# 递归
+class Solution:
+    def traversal(self, cur: TreeNode, res: List[int]) -> None:
+        if cur is None:
+            return
+        res.append(cur.val)
+        self.traversal(cur.left, res)
+        self.traversal(cur.right, res)
+
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        res = []
+        self.traversal(root, res)
+        return res
+
+# 迭代
+class Solution:
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        res = []
+        if root is None:
+            return res
+        st = [root]
+        while st:
+            cur = st.pop()
+            res.append(cur.val)
+            if cur.right:
+                st.append(cur.right)
+            if cur.left:
+                st.append(cur.left)
+        return res
+
+class Solution:
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        res = []
+        if root is None:
+            return res
+        res.append(root.val)
+        left = self.preorderTraversal(root.left)
+        right = self.preorderTraversal(root.right)
+        res.extend(left)
+        res.extend(right)
+        return res
+```
+
+```cpp
+// 递归
+class Solution
+{
+public:
+    void traversal(TreeNode *cur, vector<int> &res)
+    {
+        if (cur == nullptr)
+            return;
+        res.push_back(cur->val);
+        traversal(cur->left, res);
+        traversal(cur->right, res);
+    }
+
+    vector<int> preorderTraversal(TreeNode *root)
+    {
+        vector<int> res;
+        traversal(root, res);
+        return res;
+    }
+};
+
+// 迭代
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> res;
+        if(root == nullptr) return res;
+        stack<TreeNode*> st;
+        st.push(root);
+        while (!st.empty())
+        {
+            TreeNode *cur = st.top();
+            st.pop();
+            res.push_back(cur->val);
+            if (cur->right) st.push(cur->right);
+            if(cur->left) st.push(cur->left);
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) { //前序遍历
+        vector<int> res;
+        if(!root) return res;
+
+        res.push_back(root->val);
+        vector<int> left = preorderTraversal(root->left);
+        vector<int> right = preorderTraversal(root->right);
+        res.insert(res.end(), left.begin(), left.end());
+        res.insert(res.end(), right.begin(), right.end());
+        return res;
+    }
+};
+```
+
+### 94. 二叉树的中序遍历
+
+[94. 二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/description/)
+
+***python***
+```python
+# 递归
+class Solution:
+    def traversal(self, cur: TreeNode, res: list):
+        if not cur:
+            return
+        self.traversal(cur.left, res)
+        res.append(cur.val)
+        self.traversal(cur.right, res)
+
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        res = []
+        self.traversal(root, res)
+        return res
+
+# 迭代
+class Solution:
+    def inorderTraversal(self, root: TreeNode) -> list:
+        res = []
+        stack = []
+        cur = root
+        while cur or stack:
+            if cur:
+                stack.append(cur)
+                cur = cur.left  # 一直向左走
+            else:
+                cur = stack.pop()
+                res.append(cur.val)  # 根
+                cur = cur.right  # 右
+        return res
+```
+
+***cpp***
+```cpp
+// 递归
+class Solution {
+private:
+    void traversal(TreeNode* cur, vector<int>& res) {
+        if (!cur)
+            return;
+        traversal(cur->left, res);
+        res.push_back(cur->val);
+        traversal(cur->right, res);
+    }
+
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        traversal(root, res);
+        return res;
+    }
+};
+
+// 迭代
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        stack<TreeNode*> st;
+        TreeNode* cur = root;
+        while (cur || !st.empty()) {
+            if (cur) {
+                st.push(cur);
+                cur = cur->left;    // 一直向左走
+            } else {
+                cur = st.top();
+                st.pop();
+                res.push_back(cur->val);    // 根
+                cur = cur->right;   // 右
+            }
+        }
+        return res;
+    }
+};
+```
+
+
+### 145. 二叉树的后序遍历
+
+[145. 二叉树的后序遍历](https://leetcode.cn/problems/binary-tree-postorder-traversal/description/)
+
+***python***
+```python
+# 递归
+class Solution:
+    def traversal(self, cur: TreeNode, res: list):
+        if not cur:
+            return
+        self.traversal(cur.left, res)
+        self.traversal(cur.right, res)
+        res.append(cur.val)
+    
+    def postorderTraversal(self, root: TreeNode) -> list:
+        res = []
+        self.traversal(root, res)
+        return res
+
+# 迭代
+class Solution:
+    def postorderTraversal(self, root: TreeNode) -> list:
+        res = []
+        if not root:
+            return res
+        stack = [root]
+        while stack:
+            cur = stack.pop()
+            res.append(cur.val)
+            if cur.left:
+                stack.append(cur.left)
+            if cur.right:
+                stack.append(cur.right)
+        res.reverse()
+        return res
+```
+
+***cpp***
+```cpp
+// 递归
+class Solution{
+public:
+    void traversal(TreeNode *cur, vector<int> &res){
+        if (cur == nullptr)
+            return;
+        traversal(cur->left, res);
+        traversal(cur->right, res);
+        res.push_back(cur->val);
+    }
+
+    vector<int> postorderTraversal(TreeNode *root){
+        vector<int> res;
+        traversal(root, res);
+        return res;
+    }
+};
+
+// 迭代
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> res;
+        if (root==nullptr) return res;
+        stack<TreeNode*> st;
+        st.push(root);
+        while (!st.empty()){
+            TreeNode *cur = st.top();
+            st.pop();
+            res.push_back(cur->val);
+            if (cur->left) st.push(cur->left);
+            if (cur->right) st.push(cur->right);
+        }
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
+```
+
+
+### 102. 二叉树的层序遍历
+
+[102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+
+***python***
+```python
+class Solution:
+    def levelOrder(self, root: TreeNode) -> list:
+        res = []
+        if not root:
+            return res
+        que = deque([root])
+        while que:
+            level_size = len(que)
+            level = []
+            for _ in range(level_size):
+                cur = que.popleft()
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+                level.append(cur.val)
+            res.append(level)
+        return res
+```
+
+***cpp***
+```cpp
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        queue<TreeNode*> que;
+        if (root)
+            que.push(root);
+        while (!que.empty()) {
+            int size = que.size();
+            vector<int> vec;
+            while (size--) {
+                TreeNode* cur = que.front();
+                que.pop();
+                vec.push_back(cur->val);
+                if (cur->left)
+                    que.push(cur->left);
+                if (cur->right)
+                    que.push(cur->right);
+            }
+            res.push_back(vec);
+        }
+        return res;
+    }
+};
+```
+
+
+### 107. 二叉树的层序遍历 II
+
+[107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
+
+***python***
+```python
+class Solution:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+        res = []
+        if not root:
+            return res
+        que = deque([root])
+        while que:
+            level_size = len(que)
+            level = []
+            for _ in range(level_size):
+                cur = que.popleft()
+                level.append(cur.val)
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+            res.append(level)
+        res.reverse()
+        return res
+```
+
+***cpp***
+```cpp
+class Solution {
+public:
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        vector<vector<int>> res;
+        queue<TreeNode*> que;
+        if (root)
+            que.push(root);
+        while (!que.empty()) {
+            int size = que.size();
+            vector<int> vec;
+            while (size--) {
+                TreeNode* cur = que.front();
+                que.pop();
+                vec.push_back(cur->val);
+                if (cur->left)
+                    que.push(cur -> left);
+                if (cur->right)
+                    que.push(cur -> right);
+            }
+            res.push_back(vec);
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
+```
+
+### 199. 二叉树的右视图
+
+[199. 二叉树的右视图](https://leetcode-cn.com/problems/binary-tree-right-side-view/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+
+### 637. 二叉树的层平均值
+
+[637. 二叉树的层平均值](https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/)
+
+### 429. N叉树的层序遍历
+
+[429. N叉树的层序遍历](https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/)
+
+### 515. 在每个树行中找最大值
+
+[515. 在每个树行中找最大值](https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/)
+
+### 116. 填充每个节点的下一个右侧节点指针
+
+[116. 填充每个节点的下一个右侧节点指针](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/)
+
+### 117. 填充每个节点的下一个右侧节点指针 II
+
+[117. 填充每个节点的下一个右侧节点指针 II](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/)
+
+### 104. 二叉树的最大深度
+
+[104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+
+### 111. 二叉树的最小深度
+
+[111. 二叉树的最小深度](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)
+
+### 226. 翻转二叉树
+
+[226. 翻转二叉树](https://leetcode-cn.com/problems/invert-binary-tree/)
+
+
 
 
 ---------------------------------

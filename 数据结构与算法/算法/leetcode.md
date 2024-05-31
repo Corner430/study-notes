@@ -8369,10 +8369,47 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        res = []
+        que = deque([root]) if root else deque()
+        
+        while que:
+            size = len(que)
+            for i in range(size):
+                cur = que.popleft()
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+                if i == size - 1:  # last node in this level
+                    res.append(cur.val)
+        
+        return res
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> res;
+        queue<TreeNode*> que;
+        if (root)
+            que.push(root);
+        while (!que.empty()) {
+            int size = que.size();
+            while (size--) {
+                TreeNode* cur = que.front();
+                que.pop();
+                if (cur->left) que.push(cur->left);
+                if (cur->right) que.push(cur->right);
+                if (!size) res.push_back(cur->val);
+            }
+        }
+        return res;
+    }
+};
 ```
 
 
@@ -8380,35 +8417,548 @@ public:
 
 [637. 二叉树的层平均值](https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/)
 
+***python***
+```python
+class Solution:
+    def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        res = []
+        que = deque([root]) if root else deque()
+        
+        while que:
+            size = len(que)
+            sum_val = 0
+            for _ in range(size):
+                cur = que.popleft()
+                sum_val += cur.val
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+            res.append(sum_val / size)
+        
+        return res
+```
+
+
+***cpp***
+```cpp
+class Solution {
+public:
+    vector<double> averageOfLevels(TreeNode* root) {
+        vector<double> res;
+        queue<TreeNode*> que;
+        if (root)
+            que.push(root);
+        while (!que.empty()) {
+            int size = que.size();
+            int size_backup = size;
+            double sum = 0;
+            while (size--) {
+                TreeNode* cur = que.front();
+                que.pop();
+                sum += cur->val;
+                if (cur->left)
+                    que.push(cur->left);
+                if (cur->right)
+                    que.push(cur->right);
+            }
+            res.push_back(sum / size_backup);
+        }
+        return res;
+    }
+};
+```
+
 ### 429. N叉树的层序遍历
 
 [429. N叉树的层序遍历](https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/)
+
+***python***
+```python
+class Solution:
+    def levelOrder(self, root: 'Node') -> List[List[int]]:
+        res = []
+        que = deque([root]) if root else deque()
+        
+        while que:
+            size = len(que)
+            level = []
+            for _ in range(size):
+                cur = que.popleft()
+                level.append(cur.val)
+                for child in cur.children:
+                    que.append(child)
+            res.append(level)
+        
+        return res 
+```
+
+***cpp***
+```cpp
+class Solution {
+public:
+    vector<vector<int>> levelOrder(Node* root) {
+        vector<vector<int>> res;
+        queue<Node*> que;
+        if (root)
+            que.push(root);
+        while (!que.empty()) {
+            int size = que.size();
+            vector<int> vec;
+            while (size--) {
+                Node* cur = que.front();
+                que.pop();
+                vec.push_back(cur->val);
+                for (Node* node : cur->children)
+                    que.push(node);
+            }
+            res.push_back(vec);
+        }
+        return res;
+    }
+};
+```
+
 
 ### 515. 在每个树行中找最大值
 
 [515. 在每个树行中找最大值](https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/)
 
+***python***
+```python
+class Solution:
+    def largestValues(self, root: Optional[TreeNode]) -> List[int]:
+        res = []
+        que = deque([root]) if root else deque()
+        
+        while que:
+            size = len(que)
+            max_val = float('-inf')
+            for _ in range(size):
+                cur = que.popleft()
+                max_val = max(max_val, cur.val)
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+            res.append(max_val)
+        
+        return res
+```
+
+
+***cpp***
+```cpp
+class Solution {
+public:
+    vector<int> largestValues(TreeNode* root) {
+        vector<int> res;
+        queue<TreeNode*> que;
+        if (root)
+            que.push(root);
+        while (!que.empty()) {
+            int size = que.size();
+            res.push_back(que.front()->val);
+            while (size--) {
+                TreeNode* cur = que.front();
+                que.pop();
+                res.back() = max(cur->val, res.back());
+                if (cur->left)
+                    que.push(cur->left);
+                if (cur->right)
+                    que.push(cur->right);
+            }
+        }
+        return res;
+    }
+};
+```
+
 ### 116. 填充每个节点的下一个右侧节点指针
 
 [116. 填充每个节点的下一个右侧节点指针](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/)
+
+***python***
+```python
+class Solution:
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+        que = deque([root]) if root else deque()
+        
+        while que:
+            size = len(que)
+            for i in range(size):
+                cur = que.popleft()
+                if i < size - 1:
+                    cur.next = que[0]
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+        
+        return root 
+```
+
+***cpp***
+```cpp
+class Solution {
+public:
+    Node* connect(Node* root) {
+        queue<Node*> que;
+        if (root)
+            que.push(root);
+        while (!que.empty()) {
+            int size = que.size();
+            while (size--) {
+                Node* cur = que.front();
+                que.pop();
+                if (size) cur->next = que.front();
+                if (cur->left) que.push(cur->left);
+                if (cur->right) que.push(cur->right);
+            }
+        }
+        return root;
+    }
+};
+```
+
 
 ### 117. 填充每个节点的下一个右侧节点指针 II
 
 [117. 填充每个节点的下一个右侧节点指针 II](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/)
 
+***python***
+```python
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        if not root:
+            return root
+        
+        que = deque([root])
+        
+        while que:
+            size = len(que)
+            for i in range(size):
+                cur = que.popleft()
+                if i < size - 1:  # If it's not the last node in the current level
+                    cur.next = que[0]
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+        
+        return root
+```
+
+***cpp***
+```cpp
+class Solution {
+public:
+    Node* connect(Node* root) {
+        queue<Node*> que;
+        if (root)
+            que.push(root);
+        while (!que.empty()) {
+            int size = que.size();
+            while (size--) {
+                Node* cur = que.front();
+                que.pop();
+                if (size) cur->next = que.front();
+                if (cur->left) que.push(cur->left);
+                if (cur->right) que.push(cur->right);
+            }
+        }
+        return root;
+    }
+};
+```
+
+
 ### 104. 二叉树的最大深度
 
 [104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+
+***python***
+```python
+# 层序
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        res = 0
+        que = deque([root])
+        
+        while que:
+            res += 1
+            size = len(que)
+            for _ in range(size):
+                cur = que.popleft()
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+        
+        return res
+
+# 回溯
+class Solution:
+    def __init__(self):
+        self.res = 0
+        self.depth = 0
+
+    def traverse(self, root: TreeNode):
+        if not root:
+            return
+        self.depth += 1
+        self.traverse(root.left)
+        self.traverse(root.right)
+        self.res = max(self.res, self.depth)
+        self.depth -= 1
+
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        self.traverse(root)
+        return self.res
+
+# dfs, 带返回值
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        return max(self.maxDepth(root.left), self.maxDepth(root.right)) + 1
+```
+
+***cpp***
+```cpp
+// 层序遍历
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        int res = 0;
+        queue<TreeNode*> que;
+        if (root)
+            que.push(root);
+        while (!que.empty()) {
+            ++res;
+            int size = que.size();
+            while (size--) {
+                TreeNode* cur = que.front();
+                que.pop();
+                if (cur->left) que.push(cur->left);
+                if (cur->right) que.push(cur->right);
+            }
+        }
+        return res;
+    }
+};
+
+// 回溯
+class Solution {
+private:
+    int res = 0, depth = 0;
+
+    void traverse(TreeNode* root) {
+        if (!root)
+            return;
+        ++depth;
+        traverse(root->left);
+        traverse(root->right);
+        res = max(res, depth);
+        --depth;
+    }
+
+public:
+    int maxDepth(TreeNode* root) {
+        traverse(root);
+        return res;
+    }
+}
+
+// dfs，带返回值
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if (!root) return 0;
+        return max(maxDepth(root->left), maxDepth(root->right)) + 1;
+    }
+};
+```
+
 
 ### 111. 二叉树的最小深度
 
 [111. 二叉树的最小深度](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)
 
+***python***
+```python
+# 层序遍历
+class Solution:
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        depth = 0
+        que = deque([root])
+        
+        while que:
+            depth += 1
+            size = len(que)
+            for _ in range(size):
+                cur = que.popleft()
+                if not cur.left and not cur.right:
+                    return depth
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+        
+        return depth
+
+# dfs, 带返回值
+class Solution:
+    def dfs(self, root: TreeNode) -> int:
+        if not root:
+            return float('inf')
+        if not root.left and not root.right:
+            return 1
+        return min(self.dfs(root.left), self.dfs(root.right)) + 1
+
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        return self.dfs(root)
+
+# dfs, 分情况讨论
+class Solution:
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if root is None:
+            return 0
+        if root.left and not root.right:
+            return self.minDepth(root.left) + 1
+        elif not root.left and root.right:
+            return self.minDepth(root.right) + 1
+        return min(self.minDepth(root.left), self.minDepth(root.right)) + 1
+```
+
+***cpp***
+```cpp
+// 层序遍历
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        int depth = 0;
+        queue<TreeNode*> que;
+        if (root) que.push(root);
+        while (!que.empty()) {
+            ++depth;
+            int size = que.size();
+            while (size--) {
+                TreeNode* cur = que.front();
+                que.pop();
+                if (!cur->left && !cur->right) return depth;
+                if (cur->left) que.push(cur->left);
+                if (cur->right) que.push(cur->right);
+            }
+        }
+        return depth;
+    }
+};
+
+// dfs, 带返回值
+class Solution {
+private:
+    int dfs(TreeNode* root) {
+        if (!root) return 10001;
+        if (!root->left && !root->right) return 1;
+        return min(dfs(root->left), dfs(root->right)) + 1;
+    }
+
+public:
+    int minDepth(TreeNode* root) {
+        if (!root) return 0;
+        return dfs(root);
+    }
+};
+
+// dfs, 分情况讨论
+class Solution {
+public:
+    int minDepth(TreeNode *root) {
+        if (root == nullptr)
+            return 0;
+        if (root->left && root->right == nullptr)
+            return minDepth(root->left) + 1;
+        else if (root->left == nullptr && root->right)
+            return minDepth(root->right) + 1;
+        return min(minDepth(root->left), minDepth(root->right)) + 1;
+    }
+};
+```
+
 ### 226. 翻转二叉树
 
 [226. 翻转二叉树](https://leetcode-cn.com/problems/invert-binary-tree/)
 
+***python***
+```python
+# dfs
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return root
+        self.invertTree(root.left)
+        self.invertTree(root.right)
+        root.left, root.right = root.right, root.left
+        return root
 
+# bfs
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return root
+        
+        stack = [root]
+        while stack:
+            cur = stack.pop()
+            cur.left, cur.right = cur.right, cur.left
+            if cur.left:
+                stack.append(cur.left)
+            if cur.right:
+                stack.append(cur.right)
+        
+        return root
+```
+
+***cpp***
+```cpp
+// dfs
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if (!root) return root;
+        invertTree(root->left);
+        invertTree(root->right);
+        swap(root->left, root->right);
+        return root;
+    }
+};
+
+// bfs
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        stack<TreeNode*> st;
+        if (root) st.push(root);
+        while (!st.empty()) {
+            TreeNode *cur = st.top();
+            st.pop();
+            swap(cur->left,cur->right);
+            if (cur->left) st.push(cur->left);
+            if (cur->right) st.push(cur->right);
+        }
+        return root;
+    }
+};
+```
 
 
 ---------------------------------

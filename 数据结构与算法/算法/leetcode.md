@@ -154,9 +154,7 @@
   - [101. 对称二叉树](#101-对称二叉树)
   - [100. 相同的树](#100-相同的树)
   - [572. 另一棵树的子树](#572-另一棵树的子树)
-  - [104. 二叉树的最大深度](#104-二叉树的最大深度-1)
   - [559. n叉树的最大深度](#559-n叉树的最大深度)
-  - [111. 二叉树的最小深度](#111-二叉树的最小深度-1)
   - [222. 完全二叉树的节点个数](#222-完全二叉树的节点个数)
   - [110. 平衡二叉树](#110-平衡二叉树)
   - [257. 二叉树的所有路径](#257-二叉树的所有路径)
@@ -167,6 +165,18 @@
   - [106. 从中序与后序遍历序列构造二叉树](#106-从中序与后序遍历序列构造二叉树)
   - [105.从前序与中序遍历序列构造二叉树](#105从前序与中序遍历序列构造二叉树)
   - [654. 最大二叉树](#654-最大二叉树)
+  - [617. 合并二叉树](#617-合并二叉树)
+  - [700. 二叉搜索树中的搜索](#700-二叉搜索树中的搜索)
+  - [98. 验证二叉搜索树](#98-验证二叉搜索树)
+  - [530. 二叉搜索树的最小绝对差](#530-二叉搜索树的最小绝对差)
+  - [501.二叉搜索树中的众数](#501二叉搜索树中的众数)
+  - [236. 二叉树的最近公共祖先](#236-二叉树的最近公共祖先)
+  - [235. 二叉搜索树的最近公共祖先](#235-二叉搜索树的最近公共祖先)
+  - [701. 二叉搜索树中的插入操作](#701-二叉搜索树中的插入操作)
+  - [450. 删除二叉搜索树中的节点](#450-删除二叉搜索树中的节点)
+  - [669. 修剪二叉搜索树](#669-修剪二叉搜索树)
+  - [108.将有序数组转换为二叉搜索树](#108将有序数组转换为二叉搜索树)
+  - [538.把二叉搜索树转换为累加树](#538把二叉搜索树转换为累加树)
   - [1553. 吃掉 N 个橘子的最少天数](#1553-吃掉-n-个橘子的最少天数)
 
 
@@ -8982,10 +8992,99 @@ public:
 
 ***python***
 ```python
+# 递归
+class Solution:
+    def compare(self, left: TreeNode, right: TreeNode) -> bool:
+        if (left is None and right is not None) or (left is not None and right is None):
+            return False
+        elif left is None and right is None:
+            return True
+        elif left.val != right.val:
+            return False
+        else:
+            return self.compare(left.left, right.right) and self.compare(
+                left.right, right.left
+            )
+
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        if root is None:
+            return True
+        return self.compare(root.left, root.right)
+
+# 迭代
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+        
+        stack = []
+        stack.append(root.right)
+        stack.append(root.left)
+        
+        while stack:
+            left = stack.pop()
+            right = stack.pop()
+            
+            if not left and not right:
+                continue
+            if not left or not right:
+                return False
+            if left.val != right.val:
+                return False
+            
+            stack.append(left.left)
+            stack.append(right.right)
+            stack.append(left.right)
+            stack.append(right.left)
+        
+        return True
 ```
 
 ***cpp***
 ```cpp
+// 递归
+class Solution {
+public:
+    bool compare(TreeNode *left, TreeNode *right) {
+        if ((left == nullptr && right != nullptr) || (left != nullptr && right == nullptr))
+            return false;
+        else if(left == nullptr && right == nullptr) return true;
+        else if (left->val != right->val)
+            return false;
+        else
+            return compare(left->left, right->right) && compare(left->right, right->left);
+    }
+
+    bool isSymmetric(TreeNode *root) {
+        return compare(root->left, root->right);
+    }
+};
+
+
+// 迭代
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        stack<TreeNode*> st;
+        st.push(root->right);
+        st.push(root->left);
+        while (!st.empty()) {
+            TreeNode* left = st.top();
+            st.pop();
+            TreeNode* right = st.top();
+            st.pop();
+            if (!left && !right) continue;
+            if (!left && right) return false;
+            if (left && !right) return false;
+            if (left->val != right->val) return false;
+            st.push(left->left);
+            st.push(right->right);
+            st.push(left->right);
+            st.push(right->left);
+        }
+        return true;
+    }
+};
 ```
 
 ### 100. 相同的树
@@ -8994,10 +9093,87 @@ public:
 
 ***python***
 ```python
+# 递归
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if p is None and q is None:
+            return True
+        elif p is None and q is not None:
+            return False
+        elif p is not None and q is None:
+            return False
+        elif p.val != q.val:
+            return False
+        else:
+            return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+
+# 迭代
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        queue = deque()
+        queue.append(p)
+        queue.append(q)
+        
+        while queue:
+            left = queue.popleft()
+            right = queue.popleft()
+            
+            if not left and not right:
+                continue
+            if left and not right:
+                return False
+            if not left and right:
+                return False
+            if left.val != right.val:
+                return False
+            
+            queue.append(left.left)
+            queue.append(right.left)
+            queue.append(left.right)
+            queue.append(right.right)
+        
+        return True
 ```
 
 ***cpp***
 ```cpp
+// 递归
+class Solution {
+public:
+    bool isSameTree(TreeNode *p, TreeNode *q) {
+        if (p == nullptr && q == nullptr)
+            return true;
+        else if (p == nullptr && q !=nullptr) return false;
+        else if (p != nullptr && q ==nullptr) return false;
+        else if (p->val != q->val) return false;
+        else return (isSameTree(p->left,q->left) && isSameTree(p->right,q->right));
+    }
+};
+
+// 迭代
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        queue<TreeNode *> que;
+        que.push(p);
+        que.push(q);
+        while (!que.empty()){
+            TreeNode *left = que.front();
+            que.pop();
+            TreeNode *right = que.front();
+            que.pop();
+            if (!left && !right) continue;
+            if (left && !right) return false;
+            if (!left && right) return false;
+            if (left->val != right->val) return false;
+            que.push(left->left);
+            que.push(right->left);
+            que.push(left->right);
+            que.push(right->right);
+        }
+        return true;
+    }
+};
 ```
 
 ### 572. 另一棵树的子树
@@ -9006,23 +9182,281 @@ public:
 
 ***python***
 ```python
+# 层序 + 逐棵子树对比
+class Solution:
+    def compare(self, p: TreeNode, q: TreeNode) -> bool:
+        stack = []
+        stack.append(p)
+        stack.append(q)
+        
+        while stack:
+            qNode = stack.pop()
+            pNode = stack.pop()
+            
+            if not qNode and not pNode:
+                continue
+            elif qNode is None and pNode is not None:
+                return False
+            elif qNode is not None and pNode is None:
+                return False
+            elif qNode.val != pNode.val:
+                return False
+            
+            stack.append(pNode.left)
+            stack.append(qNode.left)
+            stack.append(pNode.right)
+            stack.append(qNode.right)
+        
+        return True
+
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        if not root:
+            return False
+        
+        queue = deque()
+        queue.append(root)
+        
+        while queue:
+            cur = queue.popleft()
+            if self.compare(cur, subRoot):
+                return True
+            if cur.left:
+                queue.append(cur.left)
+            if cur.right:
+                queue.append(cur.right)
+        
+        return False
+
+
+# KMP + 先序遍历
+class KMP:
+    def getNext(self, vec):
+        res = [0] * len(vec)
+        length = 0
+        i = 1
+        while i < len(vec):
+            if vec[i].val == vec[length].val:
+                length += 1
+                res[i] = length
+                i += 1
+            elif length:
+                length = res[length - 1]
+            else:
+                res[i] = 0
+                i += 1
+        return res
+
+    def findStart(self, vec, vecsub):
+        res = []
+        next_arr = self.getNext(vecsub)
+        i = 0
+        j = 0
+        while len(vec) - i >= len(vecsub) - j:
+            if vec[i].val == vecsub[j].val:
+                i += 1
+                j += 1
+
+            if j == len(vecsub):
+                res.append(vec[i - j])
+                j = next_arr[j - 1]
+            elif i < len(vec) and vec[i].val != vecsub[j].val:
+                if j != 0:
+                    j = next_arr[j - 1]
+                else:
+                    i += 1
+        return res
+
+class Solution:
+    def compare(self, p: TreeNode, q: TreeNode) -> bool:
+        stack = []
+        stack.append(p)
+        stack.append(q)
+        
+        while stack:
+            qNode = stack.pop()
+            pNode = stack.pop()
+            
+            if not qNode and not pNode:
+                continue
+            elif not qNode or not pNode:
+                return False
+            elif qNode.val != pNode.val:
+                return False
+            
+            stack.append(pNode.left)
+            stack.append(qNode.left)
+            stack.append(pNode.right)
+            stack.append(qNode.right)
+        
+        return True
+
+    def preorder(self, cur: TreeNode, res: list):
+        if cur is None:
+            return
+        res.append(cur)
+        self.preorder(cur.left, res)
+        self.preorder(cur.right, res)
+
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        vec = []
+        vecsub = []
+        self.preorder(root, vec)
+        self.preorder(subRoot, vecsub)
+        
+        kmp = KMP()
+        res = kmp.findStart(vec, vecsub)
+        
+        for cur in res:
+            if self.compare(cur, subRoot):
+                return True
+        
+        return False 
 ```
 
 ***cpp***
 ```cpp
+// 层序 + 逐棵子树对比
+class Solution {
+public:
+    bool compare(TreeNode *p, TreeNode *q) { // 比较 p 和 q是否为同一棵树
+        stack<TreeNode *> st;
+        st.push(p);
+        st.push(q);
+        while (!st.empty()) {
+            TreeNode *qNode = st.top();
+            st.pop();
+            TreeNode *pNode = st.top();
+            st.pop();
+            if (!qNode && !pNode)
+                continue;
+            else if (qNode == nullptr && pNode != nullptr)
+                return false;
+            else if (qNode != nullptr && pNode == nullptr)
+                return false;
+            else if (qNode->val != pNode->val)
+                return false;
+
+            st.push(pNode->left);
+            st.push(qNode->left);
+            st.push(pNode->right);
+            st.push(qNode->right);
+        }
+        return true;
+    }
+
+    bool isSubtree(TreeNode *root, TreeNode *subRoot) {
+        queue<TreeNode *> que;
+        que.push(root);
+        while (!que.empty()) {
+            TreeNode *cur = que.front();
+            if (compare(cur, subRoot))
+                return true;
+            que.pop();
+            if (cur->left)
+                que.push(cur->left);
+            if (cur->right)
+                que.push(cur->right);
+        }
+        return false;
+    }
+};
+
+// 先序遍历 + KMP
+class Solution {
+public:
+    class KMP {
+    public:
+        vector<int> getNext(vector<TreeNode*> vec) {
+            vector<int> res(vec.size(), 0);
+            int len = 0; // len 跟踪最长公共前缀
+            int i = 1;
+            while (i < vec.size()) {
+                if (vec[i]->val == vec[len]->val) {
+                    ++len;
+                    res[i++] = len;
+                } else if (len)
+                    len = res[len - 1];
+                else
+                    res[i++] = 0;
+            }
+            return res;
+        }
+
+        vector<TreeNode*> findStart(vector<TreeNode*> vec,
+                                    vector<TreeNode*> vecsub) {
+            vector<TreeNode*> res;
+            vector<int> next = getNext(vecsub);
+            int i = 0, j = 0; // i 追踪 vec，j 追踪 vecsub
+            while (vec.size() - i >= vecsub.size() - j) {
+                if (vec[i]->val == vecsub[j]->val) {
+                    i++;
+                    j++;
+                }
+
+                if (j == vecsub.size()) {
+                    res.push_back(vec[i - j]);
+                    j = next[j - 1];
+                } else if (i < vec.size() && vec[i]->val != vecsub[j]->val) {
+                    if (j != 0)
+                        j = next[j - 1];
+                    else
+                        i++;
+                }
+            }
+            return res;
+        }
+    };
+
+    bool compare(TreeNode* p, TreeNode* q) { // 比较 p 和 q是否为同一棵树
+        stack<TreeNode*> st;
+        st.push(p);
+        st.push(q);
+        while (!st.empty()) {
+            TreeNode* qNode = st.top();
+            st.pop();
+            TreeNode* pNode = st.top();
+            st.pop();
+            if (!qNode && !pNode)
+                continue;
+            else if (qNode == nullptr && pNode != nullptr)
+                return false;
+            else if (qNode != nullptr && pNode == nullptr)
+                return false;
+            else if (qNode->val != pNode->val)
+                return false;
+
+            st.push(pNode->left);
+            st.push(qNode->left);
+            st.push(pNode->right);
+            st.push(qNode->right);
+        }
+        return true;
+    }
+
+    void preorder(TreeNode* cur, vector<TreeNode*>& res) {
+        if (cur == nullptr)
+            return;
+        res.push_back(cur);
+        preorder(cur->left, res);
+        preorder(cur->right, res);
+    }
+
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        vector<TreeNode*> vec;
+        vector<TreeNode*> vecsub;
+        preorder(root, vec);       // vec 为 root 的先序遍历结果
+        preorder(subRoot, vecsub); // vecsub 为 subRoot 的先序遍历结果
+        KMP kmp;
+        vector<TreeNode*> res = kmp.findStart(vec, vecsub);
+        for (TreeNode* cur : res) {
+            if (compare(cur, subRoot))
+                return true;
+        }
+        return false;
+    }
+};
 ```
 
-### 104. 二叉树的最大深度
-
-[104. 二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/description/)
-
-***python***
-```python
-```
-
-***cpp***
-```cpp
-```
 
 ### 559. n叉树的最大深度
 
@@ -9030,23 +9464,75 @@ public:
 
 ***python***
 ```python
+# bfs
+class Solution:
+    def maxDepth(self, root: 'Node') -> int:
+        if not root:
+            return 0
+        
+        queue = deque([root])
+        depth = 0
+        
+        while queue:
+            depth += 1
+            level_size = len(queue)
+            for _ in range(level_size):
+                current = queue.popleft()
+                for child in current.children:
+                    queue.append(child)
+        
+        return depth 
+
+# dfs
+class Solution:
+    def maxDepth(self, root: 'Node') -> int:
+        if not root:
+            return 0
+        
+        depth = 0
+        for child in root.children:
+            depth = max(depth, self.maxDepth(child))
+        
+        return depth + 1 
 ```
 
 ***cpp***
 ```cpp
+// bfs
+class Solution {
+public:
+    int maxDepth(Node *root) {
+        queue<Node *> que;
+        int res = 0;
+        if (root)
+            que.push(root);
+        while (!que.empty()) {
+            res++;
+            int size = que.size();
+            while (size--) {
+                Node *cur = que.front();
+                que.pop();
+                for (Node *node : cur->children)
+                    que.push(node);
+            }
+        }
+        return res;
+    }
+};
+
+// dfs
+class Solution {
+public:
+    int maxDepth(Node* root) {
+        if (!root) return 0;
+        int depth = 0;
+        for (Node* cur : root->children)
+            depth = max(depth, maxDepth(cur));
+        return depth + 1;
+    }
+};
 ```
 
-### 111. 二叉树的最小深度
-
-[111.二叉树的最小深度](https://leetcode.cn/problems/minimum-depth-of-binary-tree/description/)
-
-***python***
-```python
-```
-
-***cpp***
-```cpp
-```
 
 ### 222. 完全二叉树的节点个数
 
@@ -9054,10 +9540,119 @@ public:
 
 ***python***
 ```python
+# 层序
+class Solution:
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        queue = deque([root])
+        count = 0
+        
+        while queue:
+            count += 1
+            current = queue.popleft()
+            if current.left:
+                queue.append(current.left)
+            if current.right:
+                queue.append(current.right)
+        
+        return count
+
+# 递归
+class Solution:
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        return self.countNodes(root.left) + self.countNodes(root.right) + 1
+
+
+# 利用完全二叉树性质
+class Solution:
+    def isCompleteBinaryTree(self, root: Optional[TreeNode]) -> int:
+        left, right = 0, 0
+        cur = root
+        while cur:
+            left += 1
+            cur = cur.left
+        cur = root
+        while cur:
+            right += 1
+            cur = cur.right
+
+        if left == right:
+            return 2**left - 1
+        else:
+            return -1
+
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+
+        temp = self.isCompleteBinaryTree(root)
+        if temp != -1:
+            return temp
+
+        return self.countNodes(root.left) + self.countNodes(root.right) + 1
 ```
 
 ***cpp***
 ```cpp
+// 层序
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        queue<TreeNode*> que;
+        int res = 0;
+        if (root) que.push(root);
+        while (!que.empty()) {
+            ++res;
+            TreeNode* cur = que.front();
+            que.pop();
+            if (cur->left) que.push(cur->left);
+            if (cur->right) que.push(cur->right);
+        }
+        return res;
+    }
+};
+
+
+// 递归
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if (!root) return 0;
+        return countNodes(root->left) + countNodes(root->right) + 1;
+    }
+};
+
+// 利用完全二叉树性质
+class Solution {
+private:
+    int isCompleteBinaryTree(TreeNode* root) {
+        int left = 0, right = 0;
+        TreeNode* cur = root;
+        while(cur) {
+            ++left;
+            cur = cur->left;
+        }
+        cur = root;
+        while (cur) {
+            ++right;
+            cur = cur->right;
+        }
+        return left == right ? pow(2, left) - 1 : -1;
+    }
+
+public:
+    int countNodes(TreeNode* root) {
+        if (!root) return 0;
+        int temp = isCompleteBinaryTree(root);
+        if (-1 != temp) return temp;
+        return countNodes(root->left) + countNodes(root->right) + 1;
+    }
+};
 ```
 
 ### 110. 平衡二叉树
@@ -9066,10 +9661,127 @@ public:
 
 ***python***
 ```python
+# bfs 进行逐个判断
+class Solution:
+    def getHeight(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        left_height = self.getHeight(root.left)
+        right_height = self.getHeight(root.right)
+        return max(left_height, right_height) + 1
+
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        def checkBalance(node: TreeNode) -> int:
+            if not node:
+                return 0
+            left_height = checkBalance(node.left)
+            right_height = checkBalance(node.right)
+            if left_height == -1 or right_height == -1 or abs(left_height - right_height) > 1:
+                return -1
+            return max(left_height, right_height) + 1
+        
+        return checkBalance(root) != -1
+
+# dfs
+class Solution:
+    def dfs(self, root: TreeNode) -> tuple[bool, int]:
+        if not root:
+            return True, 0
+
+        left = self.dfs(root.left)
+        right = self.dfs(root.right)
+
+        if not left[0] or not right[0] or abs(left[1] - right[1]) > 1:
+            return False, 0
+
+        return True, max(left[1], right[1]) + 1
+
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        return self.dfs(root)[0]
+
+# dfs
+class Solution:
+    def dfs(self, root: TreeNode, flag: list[bool]) -> int:
+        if not root or not flag[0]:
+            return 0
+        left = self.dfs(root.left, flag)
+        right = self.dfs(root.right, flag)
+        if abs(left - right) > 1:
+            flag[0] = False
+        return max(left, right) + 1
+
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        flag = [True]
+        self.dfs(root, flag)
+        return flag[0]
 ```
 
 ***cpp***
 ```cpp
+// bfs 进行逐个判断
+class Solution {
+private:
+    int getHeight(TreeNode* root) {
+        if (!root) return 0;
+        return max(getHeight(root->left), getHeight(root->right)) + 1;
+    }
+
+public:
+    bool isBalanced(TreeNode* root) {
+        queue<TreeNode*> que;
+        if (root) que.push(root);
+        while (!que.empty()) {
+            TreeNode* cur = que.front();
+            que.pop();
+            if (abs(getHeight(cur->left) - getHeight(cur->right)) > 1)
+                return false;
+            if (cur->left) que.push(cur->left);
+            if (cur->right) que.push(cur->right);
+        }
+        return true;
+    }
+};
+
+// dfs
+class Solution {
+private:
+    pair<bool, int> dfs(TreeNode* root) {
+        if (!root) return {true, 0};
+        
+        auto left = dfs(root->left);
+        auto right = dfs(root->right);
+        
+        if (!left.first || !right.first || abs(left.second - right.second) > 1)
+            return {false, 0};
+        
+        return {true, max(left.second, right.second) + 1};
+    }
+public:
+    bool isBalanced(TreeNode* root) {
+        return dfs(root).first;
+    }
+};
+
+// dfs
+class Solution {
+private:
+    int dfs(TreeNode* root, bool& flag) {
+        if (!root || !flag)
+            return 0;
+        int left = dfs(root->left, flag);
+        int right = dfs(root->right, flag);
+        if (abs(left - right) > 1)
+            flag = false;
+        return max(left, right) + 1;
+    }
+
+public:
+    bool isBalanced(TreeNode* root) {
+        bool flag = true;
+        dfs(root, flag);
+        return flag;
+    }
+};
 ```
 
 ### 257. 二叉树的所有路径
@@ -9078,10 +9790,43 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        res = []
+        def backtracking(node, path=""):
+            if not node:
+                return
+            if not node.left and not node.right:
+                res.append(path + str(node.val))
+                return
+            backtracking(node.left, path + str(node.val) + "->")
+            backtracking(node.right, path + str(node.val) + "->")
+        
+        backtracking(root)
+        return res
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+private:
+    vector<string> res;
+    void backtracking(TreeNode* root, string path = "") {
+        if (!root) return;
+        if (!root->left && !root->right) {
+            res.push_back(path + to_string(root->val));
+            return;
+        }
+        backtracking(root->left, path + to_string(root->val) + "->");
+        backtracking(root->right, path + to_string(root->val) + "->");
+    }
+
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        backtracking(root);
+        return res;
+    }
+};
 ```
 
 ### 404. 左叶子之和
@@ -9090,10 +9835,73 @@ public:
 
 ***python***
 ```python
+# bfs 逐个判断
+class Solution:
+    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        que = deque([root])
+        sum = 0
+        
+        while que:
+            cur = que.popleft()
+            if cur.left and not cur.left.left and not cur.left.right:
+                sum += cur.left.val
+            if cur.left:
+                que.append(cur.left)
+            if cur.right:
+                que.append(cur.right)
+                
+        return sum
+
+# dfs
+class Solution:
+    def dfs(self, root: TreeNode, isLeft: bool) -> int:
+        if not root:
+            return 0
+        if not root.left and not root.right:
+            return root.val if isLeft else 0  # 只有左叶子节点才累加其值
+        return self.dfs(root.left, True) + self.dfs(root.right, False)
+
+    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        return self.dfs(root, False)
 ```
 
 ***cpp***
 ```cpp
+// 层序，逐个判断
+class Solution:
+    def dfs(self, root: TreeNode, isLeft: bool) -> int:
+        if not root:
+            return 0
+        if not root.left and not root.right:
+            return root.val if isLeft else 0  # 只有左叶子节点才累加其值
+        return self.dfs(root.left, True) + self.dfs(root.right, False)
+
+    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        return self.dfs(root, False)
+
+// dfs
+class Solution {
+private:
+    int dfs(TreeNode* root, bool isLeft) {
+        if (!root) return 0;
+        if (!root->left && !root->right)  // 只有左叶子节点才累加其值
+            return isLeft ? root->val : 0;
+        return dfs(root->left, true) + dfs(root->right, false);
+    }
+
+public:
+    int sumOfLeftLeaves(TreeNode* root) {
+        if (!root) return 0;
+        return dfs(root, false);
+    }
+}
 ```
 
 ### 513. 找树左下角的值
@@ -9102,10 +9910,48 @@ public:
 
 ***python***
 ```python
+# bfs
+class Solution:
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        que = deque([root])
+        ans = root.val
+        
+        while que:
+            size = len(que)
+            ans = que[0].val  # 第一个节点是当前层的最左边节点
+            
+            for _ in range(size):
+                cur = que.popleft()
+                if cur.left:
+                    que.append(cur.left)
+                if cur.right:
+                    que.append(cur.right)
+        
+        return ans
 ```
 
 ***cpp***
 ```cpp
+// bfs
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+        queue<TreeNode*> que;
+        int ans = root->val;
+        que.push(root);
+        while (!que.empty()) {
+            int size = que.size();
+            ans = que.front()->val;
+            while (size--) {
+                TreeNode* cur = que.front();
+                que.pop();
+                if (cur->left) que.push(cur->left);
+                if (cur->right) que.push(cur->right);
+            }
+        }
+        return ans;
+    }
+};
 ```
 
 ### 112. 路径总和
@@ -9114,10 +9960,33 @@ public:
 
 ***python***
 ```python
+# dfs, 回溯
+class Solution:
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        if not root:
+            return False
+        
+        if not root.left and not root.right and targetSum == root.val:
+            return True
+        
+        return (self.hasPathSum(root.left, targetSum - root.val) or
+                self.hasPathSum(root.right, targetSum - root.val))
 ```
 
 ***cpp***
 ```cpp
+// dfs, 回溯
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if (!root) return false;
+
+        if (!root->left && !root->right && targetSum == root->val)
+            return true;
+        return hasPathSum(root->left, targetSum - root->val) ||
+               hasPathSum(root->right, targetSum - root->val);
+    }
+};
 ```
 
 ### 113. 路径总和ii
@@ -9126,10 +9995,52 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def backtracking(self, root: TreeNode, targetSum: int):
+        if not root:
+            return
+        targetSum -= root.val
+        self.path.append(root.val)
+
+        if not root.left and not root.right and targetSum == 0:
+            self.res.append(list(self.path))  # make a copy of the current path
+
+        self.backtracking(root.left, targetSum)
+        self.backtracking(root.right, targetSum)
+        self.path.pop()
+
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        self.res = []
+        self.path = []
+        self.backtracking(root, targetSum)
+        return self.res
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+private:
+    vector<vector<int>> res;
+    vector<int> path;
+    void backtracking(TreeNode* root, int targetSum) {
+        if (!root) return;
+        targetSum -= root->val;
+        path.push_back(root->val);
+
+        if (!root->left && !root->right && !targetSum)
+            res.push_back(path);
+
+        backtracking(root->left, targetSum);
+        backtracking(root->right, targetSum);
+        path.pop_back();
+    }
+
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        backtracking(root, targetSum);
+        return res;
+    }
+};
 ```
 
 ### 106. 从中序与后序遍历序列构造二叉树
@@ -9138,10 +10049,55 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def __init__(self):
+        self.umap = {}
+        
+    def build(self, inorder, il, ir, postorder, pl, pr):
+        if pl > pr:
+            return None
+        root = TreeNode(postorder[pr])  # 创建根节点
+        if pl == pr:
+            return root  # 仅有一个节点
+        index = self.umap[postorder[pr]]
+        root.right = self.build(inorder, index + 1, ir, postorder, pr - ir + index, pr - 1)
+        root.left = self.build(inorder, il, index - 1, postorder, pl, pr - ir + index - 1)
+        return root
+
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        for i, val in enumerate(inorder):
+            self.umap[val] = i
+        return self.build(inorder, 0, len(inorder) - 1, postorder, 0, len(postorder) - 1)
 ```
 
 ***cpp***
 ```cpp
+class Solution {
+private:
+    unordered_map<int, int> umap;
+    TreeNode* build(const vector<int>& inorder, int il, int ir,
+                    const vector<int>& postorder, int pl, int pr) {
+        if (pl > pr)
+            return nullptr;
+        TreeNode* root = new TreeNode(postorder[pr]);
+        if (pl == pr)
+            return root;
+        int index = umap[postorder[pr]];
+        root->left =
+            build(inorder, il, index - 1, postorder, pl, pr - ir + index - 1);
+        root->right =
+            build(inorder, index + 1, ir, postorder, pr - ir + index, pr - 1);
+        return root;
+    }
+
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        for (int i = 0; i < inorder.size(); ++i)
+            umap[inorder[i]] = i;
+        return build(inorder, 0, inorder.size() - 1, postorder, 0,
+                     postorder.size() - 1);
+    }
+};
 ```
 
 ### 105.从前序与中序遍历序列构造二叉树
@@ -9150,15 +10106,105 @@ public:
 
 ***python***
 ```python
+class Solution:
+    def __init__(self):
+        self.umap = {}
+
+    def build(self, preorder, pl, pr, inorder, il, ir):
+        if pl > pr:
+            return None
+        root = TreeNode(preorder[pl])
+        if pl == pr:
+            return root
+        index = self.umap[preorder[pl]]
+        root.left = self.build(preorder, pl + 1, pl + index - il, inorder, il, index - 1)
+        root.right = self.build(preorder, pl + index - il + 1, pr, inorder, index + 1, ir)
+        return root
+
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        self.umap = {val: i for i, val in enumerate(inorder)}
+        return self.build(preorder, 0, len(preorder) - 1, inorder, 0, len(inorder) - 1)
 ```
+
 
 ***cpp***
 ```cpp
+class Solution {
+private:
+    unordered_map<int, int> umap;
+    TreeNode* build(const vector<int>& preorder, int pl, int pr,
+                    const vector<int>& inorder, int il, int ir) {
+        if (pl > pr)
+            return nullptr;
+        TreeNode* root = new TreeNode(preorder[pl]);
+        if (pl == pr)
+            return root;
+        int index = umap[preorder[pl]];
+        root->left =
+            build(preorder, pl + 1, pl + index - il, inorder, il, index - 1);
+        root->right =
+            build(preorder, pl + index - il + 1, pr, inorder, index + 1, ir);
+        return root;
+    }
+
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        for (int i = 0; i < inorder.size(); ++i)
+            umap[inorder[i]] = i;
+        return build(preorder, 0, preorder.size() - 1, inorder, 0,
+                     inorder.size() - 1);
+    }
+};
 ```
 
 ### 654. 最大二叉树
 
 [654. 最大二叉树](https://leetcode-cn.com/problems/maximum-binary-tree/description/)
+
+***python***
+```python
+class Solution:
+    def build(self, nums, l, r):
+        if l > r:
+            return None
+        index = l
+        for i in range(l, r + 1):
+            if nums[i] > nums[index]:
+                index = i
+        root = TreeNode(nums[index])
+        root.left = self.build(nums, l, index - 1)
+        root.right = self.build(nums, index + 1, r)
+        return root
+
+    def constructMaximumBinaryTree(self, nums: List[int]) -> Optional[TreeNode]:
+        return self.build(nums, 0, len(nums) - 1)
+```
+
+***cpp***
+```cpp
+class Solution {
+private:
+    TreeNode* build(const vector<int>& nums, int l, int r) {
+        if (l > r) return nullptr;
+        int index = l;
+        for (int i = l; i <= r; ++i)
+            index = nums[index] == max(nums[index], nums[i]) ? index : i;
+        TreeNode* root = new TreeNode(nums[index]);
+        root->left = build(nums, l, index - 1);
+        root->right = build(nums, index + 1, r);
+        return root;
+    }
+
+public:
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        return build(nums, 0, nums.size() - 1);
+    }
+};
+```
+
+### 617. 合并二叉树
+
+[617. 合并二叉树](https://leetcode-cn.com/problems/merge-two-binary-trees/description/)
 
 ***python***
 ```python
@@ -9168,7 +10214,137 @@ public:
 ```cpp
 ```
 
+### 700. 二叉搜索树中的搜索
 
+[700. 二叉搜索树中的搜索](https://leetcode-cn.com/problems/search-in-a-binary-search-tree/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 98. 验证二叉搜索树
+
+[98. 验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 530. 二叉搜索树的最小绝对差
+
+[530. 二叉搜索树的最小绝对差](https://leetcode-cn.com/problems/minimum-absolute-difference-in-bst/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 501.二叉搜索树中的众数
+
+[501. 二叉搜索树中的众数](https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 236. 二叉树的最近公共祖先
+
+[236. 二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 235. 二叉搜索树的最近公共祖先
+
+[235. 二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 701. 二叉搜索树中的插入操作
+
+[701. 二叉搜索树中的插入操作](https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 450. 删除二叉搜索树中的节点
+
+[450. 删除二叉搜索树中的节点](https://leetcode-cn.com/problems/delete-node-in-a-bst/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 669. 修剪二叉搜索树
+
+[669. 修剪二叉搜索树](https://leetcode-cn.com/problems/trim-a-binary-search-tree/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 108.将有序数组转换为二叉搜索树
+
+[108. 将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
+
+### 538.把二叉搜索树转换为累加树
+
+[538. 把二叉搜索树转换为累加树](https://leetcode-cn.com/problems/convert-bst-to-greater-tree/description/)
+
+***python***
+```python
+```
+
+***cpp***
+```cpp
+```
 
 
 ---------------------------------

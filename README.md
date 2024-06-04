@@ -54,8 +54,8 @@
 - [cpp 入门笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp入门笔记.md)
 - [cpp 中级笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp中级笔记.md)
 - [cpp 高级笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp高级笔记.md)
-- [内存池源码剖析]()
-- [SGI STL源码]()
+- [SGI 内存池 和 nginx 内存池](https://github.com/Corner430/study-notes/blob/main/cpp/SGI和nginx内存池.md)
+- [SGI STL源码](https://github.com/Corner430/study-notes/tree/main/cpp/SGI-STL)
 
 ## 5 工具
 

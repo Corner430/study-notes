@@ -505,6 +505,32 @@ __default_alloc_template<threads, inst>::reallocate(void* __p,
 
 [nginx github](https://github.com/nginx/nginx)
 
+**Nginx 内存分配总流图**
+
+![20240605121244](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240605121244.png)
+
+---
+
+**内存池基本结构之间的关系**
+
+![20240605121446](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240605121446.png)
+
+---
+
+**分配小块内存后的内存池结构**
+
+![20240605121644](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240605121644.png)
+
+---
+
+**分配大块内存后的内存池结构**
+
+> **紫色💜部分应该是是小块内存区分配出来的!!!**
+
+![20240605122029](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240605122029.png)
+
+---
+
 ## 3.1 `/src/core/ngx_palloc.h` 文件剖析
 
 ```cpp

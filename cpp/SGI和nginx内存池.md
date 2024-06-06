@@ -1,5 +1,33 @@
 - [source insight](https://www.sourceinsight.com/) 是一个优秀的源代码阅读工具
 
+
+
+- [1 C++ STL 空间配置器](#1-c-stl-空间配置器)
+- [2 SGI STL 空间配置器](#2-sgi-stl-空间配置器)
+  - [2.1 定义](#21-定义)
+  - [2.2 一级空间配置器](#22-一级空间配置器)
+  - [2.3 二级空间配置器](#23-二级空间配置器)
+    - [2.3.1 重要类型和变量定义](#231-重要类型和变量定义)
+    - [2.3.2 重要的辅助接口函数](#232-重要的辅助接口函数)
+    - [2.3.3 内存池管理函数](#233-内存池管理函数)
+    - [2.3.4 `class __default_alloc_template` (内存池) 的实现](#234-class-__default_alloc_template-内存池-的实现)
+    - [2.3.5 `_S_refill(size_t __n);` 函数的实现](#235-_s_refillsize_t-__n-函数的实现)
+    - [2.3.6 `_S_chunk_alloc(size_t __size, int& __nobjs);` 函数的实现](#236-_s_chunk_allocsize_t-__size-int-__nobjs-函数的实现)
+    - [2.3.7 `malloc_alloc::allocate(size_t __n);` 函数的实现](#237-malloc_allocallocatesize_t-__n-函数的实现)
+    - [2.3.8 `reallocate` 函数的实现](#238-reallocate-函数的实现)
+  - [2.4 移植 SGI STL 空间配置器 内存池](#24-移植-sgi-stl-空间配置器-内存池)
+- [3 nginx 内存池](#3-nginx-内存池)
+  - [3.1 `/src/core/ngx_palloc.h` 文件剖析](#31-srccorengx_palloch-文件剖析)
+  - [3.2 `/src/core/ngx_palloc.c` 文件剖析](#32-srccorengx_pallocc-文件剖析)
+    - [3.2.1 `ngx_memalign(NGX_POOL_ALIGNMENT, size, log);` 函数的实现](#321-ngx_memalignngx_pool_alignment-size-log-函数的实现)
+    - [3.2.2 nginx 内存释放问题](#322-nginx-内存释放问题)
+  - [3.3 移植 nginx 内存池](#33-移植-nginx-内存池)
+    - [3.3.1 `ngx_mem_pool.h`](#331-ngx_mem_poolh)
+    - [3.3.2 `ngx_mem_pool.cpp`](#332-ngx_mem_poolcpp)
+    - [3.3.3 `main.cpp`](#333-maincpp)
+
+
+
 # 1 C++ STL 空间配置器
 
 [容器空间配置器](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E4%B8%AD%E7%BA%A7%E7%AC%94%E8%AE%B0.md#42-%E5%AE%B9%E5%99%A8%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8-allocator)

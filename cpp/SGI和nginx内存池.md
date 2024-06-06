@@ -2,7 +2,7 @@
 
 # 1 C++ STL 空间配置器
 
-[容器空间配置器](ttps://github.com/Corner430/study-notes/blob/main/cpp/cpp%E4%B8%AD%E7%BA%A7%E7%AC%94%E8%AE%B0.md#42-%E5%AE%B9%E5%99%A8%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8-allocator)
+[容器空间配置器](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E4%B8%AD%E7%BA%A7%E7%AC%94%E8%AE%B0.md#42-%E5%AE%B9%E5%99%A8%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE%E5%99%A8-allocator)
 
 ```cpp
 template<typename _Tp, typename _Alloc = std::allocator<_Tp> >
@@ -495,10 +495,328 @@ __default_alloc_template<threads, inst>::reallocate(void* __p,
 }
 ```
 
-## 2.4 手写 SGI STL 内存池
+## 2.4 移植 SGI STL 空间配置器 内存池
+
+***myallocator.h***
+```cpp
+/*
+ * 移植 SGI STL 二级空间配置器内存池源码
+ * 漏洞：allocate 函数的接收的参数，甚至是所有的，都有问题！！！
+ *      应该接收的是 sizeof(T) __n 的大小，而不是 __n 的大小
+ */
+#include <cstddef>  // for size_t
+#include <iostream> // for std::bad_alloc
+#include <mutex>    // for std::lock_guard
+
+const int _S_ALIGN = 8; // 内存对齐的字节数
+
+template <int __inst> class __malloc_alloc_template {
+
+private:
+  // 定义了两个私有的静态函数，用于在内存分配失败时尝试重新分配内存
+  static void *_S_oom_malloc(size_t);
+  static void *_S_oom_realloc(void *, size_t);
+  static void (*__malloc_alloc_oom_handler)(); // 留给用户的回调函数接口
+
+public:
+  static void *allocate(size_t __n) {
+    void *__result = malloc(__n);
+    if (0 == __result)
+      __result = _S_oom_malloc(__n);
+    return __result;
+  }
+
+  static void deallocate(void *__p, size_t /* __n */) { free(__p); }
+
+  static void *reallocate(void *__p, size_t /* old_sz */, size_t __new_sz) {
+    void *__result = realloc(__p, __new_sz);
+    if (0 == __result)
+      __result = _S_oom_realloc(__p, __new_sz);
+    return __result;
+  }
+
+  static void (*__set_malloc_handler(void (*__f)()))() {
+    void (*__old)() = __malloc_alloc_oom_handler;
+    __malloc_alloc_oom_handler = __f;
+    return (__old);
+  }
+};
+
+// 静态成员函数指针，用于处理内存分配失败的情况
+// 如果内存分配失败，那么会调用这个函数尝试处理内存不足的问题
+template <int __inst>
+void (*__malloc_alloc_template<__inst>::__malloc_alloc_oom_handler)() = nullptr;
+
+// __n 是请求的内存大小
+template <int __inst>
+void *__malloc_alloc_template<__inst>::_S_oom_malloc(size_t __n) {
+  void (*__my_malloc_handler)(); // 定义一个函数指针，用于处理内存不足的情况
+  void *__result; // 用于保存分配的内存的地址
+
+  for (;;) { // 无限循环，直到分配成功或者无法处理内存不足的情况
+    __my_malloc_handler = __malloc_alloc_oom_handler; // 获取内存不足处理函数
+    if (nullptr ==
+        __my_malloc_handler) { // 如果没有设置内存不足处理函数，那么抛出异常
+      throw std::bad_alloc();
+    }
+    (*__my_malloc_handler)(); // 调用处理函数，尝试处理内存不足的情况
+    __result = malloc(__n); // 重新尝试分配内存
+    if (__result)
+      return (__result);
+  }
+}
+
+template <int __inst>
+void *__malloc_alloc_template<__inst>::_S_oom_realloc(void *__p, size_t __n) {
+  void (*__my_malloc_handler)();
+  void *__result;
+
+  for (;;) {
+    __my_malloc_handler = __malloc_alloc_oom_handler;
+    if (0 == __my_malloc_handler) {
+      throw std::bad_alloc();
+    }
+    (*__my_malloc_handler)();
+    __result = realloc(__p, __n);
+    if (__result)
+      return (__result);
+  }
+}
+
+typedef __malloc_alloc_template<0> malloc_alloc;
+
+template <typename T> class myallocator {
+public:
+  using value_type = T;
+
+  // 分配内存的入口函数, __n 是请求的内存大小, 必须大于0
+  static T *allocate(size_t __n) {
+    // __n *= sizeof(T);
+    void *__ret = 0;
+
+    // 如果请求的内存大于_MAX_BYTES（这是一个预设的阈值），则采用和一级空间配置器相同的方式分配内存
+    if (__n > (size_t)_MAX_BYTES) {
+      __ret = malloc_alloc::allocate(__n);
+    } else {
+      // 否则，从内存池中分配。首先找到对应大小的自由链表
+      // __my_free_list 是一个_Obj*指针(二级指针)，指向自由链表的头部
+      _Obj *volatile *__my_free_list = _S_free_list + _S_freelist_index(__n);
+
+      // 在多线程环境下，需要加锁以保证线程安全
+      std::lock_guard<std::mutex> guard(mtx);
+
+      // 从自由链表中取出一个对象
+      _Obj *__result = *__my_free_list;
+      if (__result == nullptr) // 如果自由链表为空，那么需要填充自由链表
+        __ret = _S_refill(_S_round_up(__n));
+      else { // 否则，直接从自由链表中取出一个对象，并更新自由链表
+        *__my_free_list = __result->_M_free_list_link;
+        __ret = __result;
+      }
+    }
+
+    // 返回分配的内存
+    return (T *)__ret;
+  }
+
+  // 把 chunk 块归还到内存池
+  // __p 是要释放的内存块的起始地址，不能为0
+  // __n 是要释放的内存块的大小
+  static void deallocate(void *__p, size_t __n) {
+    // 如果要释放的内存块大小超过了_MAX_BYTES，那么直接调用malloc_alloc的deallocate函数释放内存
+    if (__n > (size_t)_MAX_BYTES)
+      malloc_alloc::deallocate(__p, __n);
+    else {
+      // 否则，将内存块加入到相应的自由链表中
+      _Obj *volatile *__my_free_list =
+          _S_free_list +
+          _S_freelist_index(__n); // 计算内存块应该加入哪个自由链表
+      _Obj *__q = (_Obj *)__p;    // 将void*指针转换为_Obj*指针
+
+      // 在多线程环境下，需要加锁以保证线程安全
+      std::lock_guard<std::mutex> guard(mtx);
+
+      // 头插法，将内存块加入到自由链表中
+      __q->_M_free_list_link = *__my_free_list;
+      *__my_free_list = __q;
+      // lock is released here
+    }
+  }
+
+  // 内存池扩容缩容函数
+  void *reallocate(void *__p, size_t __old_sz, size_t __new_sz);
+
+  // 对象构造
+  void construct(T *__p, const T &__val) { new (__p) T(__val); }
+
+  // 对象析构
+  void destroy(T *__p) { __p->~T(); }
+
+private:
+  // 内存池的粒度信息
+  enum { _ALIGN = 8 }; // (free-lists)内存对齐的字节数
+  enum {
+    _MAX_BYTES = 128
+  }; // 可以处理的最大字节数, 超过这个值的内存请求将使用 malloc
+  enum { _NFREELISTS = 16 }; // _MAX_BYTES/_ALIGN, free-lists的个数
+
+  // 每一个内存chunk块的头信息
+  union _Obj {
+    union _Obj *_M_free_list_link; // 指向下一个空闲块的指针
+    char _M_client_data[1]; // 客户端看到的数据，实际上可能会更大
+  };
+
+  // 组织所有自由链表的数组，数组的每一个元素的类型是_Obj*，全部初始化为0
+  static _Obj *volatile _S_free_list[_NFREELISTS];
+
+  // 线程安全锁
+  static std::mutex mtx;
+
+  // Chunk allocation state. 记录内存chunk块的分配情况
+  static char *_S_start_free; // 指向堆中当前可用内存的开始位置
+  static char *_S_end_free;   // 指向堆中当前可用内存的结束位置
+  static size_t _S_heap_size; // 当前堆的大小
+
+  /* 一种常见的内存对齐技巧，效率很高. 将 __bytes 上调至最邻近的 8 的倍数*/
+  static size_t _S_round_up(size_t __bytes) {
+    return (((__bytes) + (int)_S_ALIGN - 1) & ~((int)_S_ALIGN - 1));
+  }
+
+  /*返回 __bytes 大小的chunk块位于 free-list 中的编号*/
+  static size_t _S_freelist_index(size_t __bytes) {
+    return (((__bytes) + (int)_S_ALIGN - 1) / (int)_S_ALIGN - 1);
+  }
+
+private:
+  // __n 是请求的内存大小，必须大于0
+  static void *_S_refill(size_t __n) {
+    // 首先尝试获取20个大小为__n的内存块
+    int __nobjs = 20;
+    char *__chunk = _S_chunk_alloc(__n, __nobjs);
+    _Obj *volatile *__my_free_list;
+    _Obj *__result;
+    _Obj *__current_obj;
+    _Obj *__next_obj;
+    int __i;
+
+    // 如果只获取到一个内存块，那么直接返回这个内存块
+    if (1 == __nobjs)
+      return (__chunk);
+    // 否则，将获取到的内存块加入到自由链表中
+    __my_free_list = _S_free_list + _S_freelist_index(__n);
+
+    // 在内存块中建立自由链表
+    __result = (_Obj *)__chunk;                             // 第一个对象
+    *__my_free_list = __next_obj = (_Obj *)(__chunk + __n); // 第二个对象
+    // 从第三个对象开始，每个对象的_M_free_list_link指向下一个对象
+    for (__i = 1;; __i++) {
+      __current_obj = __next_obj;
+      __next_obj = (_Obj *)((char *)__next_obj + __n);
+      // 如果已经处理到最后一个对象，那么将其_M_free_list_link设置为0，表示自由链表的结束
+      if (__nobjs - 1 == __i) {
+        __current_obj->_M_free_list_link = 0;
+        break;
+      } else {
+        __current_obj->_M_free_list_link = __next_obj;
+      }
+    }
+    // 返回第一个对象，这个对象将被分配出去
+    return (__result);
+  }
+
+  // __size 是请求的内存块大小，必须大于0
+  // __nobjs 是请求的内存块数量
+  static char *_S_chunk_alloc(size_t __size, int &__nobjs) {
+    char *__result; // 用于保存分配的内存块的起始地址
+    size_t __total_bytes = __size * __nobjs; // 计算总共需要的内存大小
+    size_t __bytes_left =
+        _S_end_free - _S_start_free; // 计算内存池中剩余的内存大小
+
+    // 如果内存池中的内存足够，那么直接从内存池中分配
+    if (__bytes_left >= __total_bytes) {
+      __result = _S_start_free; // 分配的内存块的起始地址就是内存池的起始地址
+      _S_start_free += __total_bytes; // 更新内存池的起始地址
+      return (__result);              // 返回分配的内存块的起始地址
+    } else if (__bytes_left >= __size) {
+      // 如果内存池中的内存不足以满足所有请求，但至少可以满足一个请求，那么分配尽可能多的内存块
+      __nobjs = (int)(__bytes_left / __size); // 计算可以分配的内存块数量
+      __total_bytes = __size * __nobjs; // 计算实际分配的内存大小
+      __result = _S_start_free; // 分配的内存块的起始地址就是内存池的起始地址
+      _S_start_free += __total_bytes; // 更新内存池的起始地址
+      return (__result);              // 返回分配的内存块的起始地址
+    } else {
+      // 如果内存池中的内存连一个内存块的大小都不够，那么需要向系统申请新的内存
+      size_t __bytes_to_get =
+          2 * __total_bytes +
+          _S_round_up(_S_heap_size >> 4); // 计算需要申请的内存大小
+      // 尝试利用内存池中剩余的内存
+      if (__bytes_left > 0) {
+        _Obj *volatile *__my_free_list =
+            _S_free_list +
+            _S_freelist_index(__bytes_left); // 计算剩余内存应该放入哪个自由链表
+
+        ((_Obj *)_S_start_free)->_M_free_list_link =
+            *__my_free_list; // 将剩余内存加入到自由链表中
+        *__my_free_list = (_Obj *)_S_start_free; // 更新自由链表的头部
+      }
+      // 向系统申请新的内存
+      _S_start_free = (char *)malloc(__bytes_to_get); // 申请新的内存
+      if (nullptr == _S_start_free) {
+        // 如果申请失败，那么尝试从更大的自由链表中取内存
+        size_t __i;
+        _Obj *volatile *__my_free_list;
+        _Obj *__p;
+        for (__i = __size; __i <= (size_t)_MAX_BYTES; __i += (size_t)_ALIGN) {
+          __my_free_list =
+              _S_free_list +
+              _S_freelist_index(__i); // 计算应该从哪个自由链表中取内存
+          __p = *__my_free_list;
+          if (nullptr != __p) {
+            *__my_free_list = __p->_M_free_list_link; // 从自由链表中取出内存
+            _S_start_free = (char *)__p;       // 更新内存池的起始地址
+            _S_end_free = _S_start_free + __i; // 更新内存池的结束地址
+            return (_S_chunk_alloc(__size, __nobjs)); // 重新尝试分配内存
+          }
+        }
+        _S_end_free = nullptr; // In case of exception.
+        // _S_start_free = (char *)malloc_alloc::allocate(
+        //     __bytes_to_get); //
+        //     如果所有的自由链表都没有足够的内存，那么抛出异常
+      }
+      _S_heap_size += __bytes_to_get;               // 更新堆的大小
+      _S_end_free = _S_start_free + __bytes_to_get; // 更新内存池的结束地址
+      return (_S_chunk_alloc(__size, __nobjs)); // 重新尝试分配内存
+    }
+  }
+};
+
+// _S_start_free 是一个静态成员，表示内存池起始位置的指针。初始值为nullptr。
+template <typename T> char *myallocator<T>::_S_start_free = nullptr;
+
+// _S_end_free 是一个静态成员，表示内存池结束位置的指针。初始值为nullptr。
+template <typename T> char *myallocator<T>::_S_end_free = nullptr;
+
+// _S_heap_size 是一个静态成员，表示已经配置的堆大小。初始值为0。
+template <typename T> size_t myallocator<T>::_S_heap_size = 0;
+
+template <typename T>
+typename myallocator<T>::_Obj
+    *volatile myallocator<T>::_S_free_list[_NFREELISTS] = {
+        nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+        nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+}; // 初始化16个指针，全部为nullptr
+
+template <typename T> std::mutex myallocator<T>::mtx;
+```
 
 ```cpp
+#include "myallocator.h"
 
+int main(){
+  vector<int, myallocator<int>> v;
+  /* ... */
+  return 0;
+}
 ```
 
 
@@ -1207,7 +1525,7 @@ ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)
 >       - 否则 60s 之后，nginx 就主动断开连接，此时 nginx 可以调用 `ngx_reset_pool` 函数，重置内存池，等待下一次请求。
 
 
-## 3.3 手写 nginx 内存池
+## 3.3 移植 nginx 内存池
 
 ### 3.3.1 `ngx_mem_pool.h`
 

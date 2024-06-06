@@ -498,6 +498,7 @@ __default_alloc_template<threads, inst>::reallocate(void* __p,
 ## 2.4 手写 SGI STL 内存池
 
 ```cpp
+
 ```
 
 
@@ -609,13 +610,6 @@ struct ngx_pool_s {
 };
 
 
-typedef struct {
-    ngx_fd_t              fd;
-    u_char               *name;
-    ngx_log_t            *log;
-} ngx_pool_cleanup_file_t;
-
-
 /* ----------------nginx 内存池重要函数接口-------------------- */
 
 // 创建内存池
@@ -636,8 +630,6 @@ void *ngx_pnalloc(ngx_pool_t *pool, size_t size);
 // 内存分配函数，支持内存初始化0
 void *ngx_pcalloc(ngx_pool_t *pool, size_t size);
 
-void *ngx_pmemalign(ngx_pool_t *pool, size_t size, size_t alignment);
-
 // 内存释放（大块内存）
 ngx_int_t ngx_pfree(ngx_pool_t *pool, void *p);
 
@@ -654,7 +646,9 @@ ngx_pool_cleanup_t *ngx_pool_cleanup_add(ngx_pool_t *p, size_t size);
 #endif /* _NGX_PALLOC_H_INCLUDED_ */
 ```
 
+
 ## 3.2 `/src/core/ngx_palloc.c` 文件剖析
+
 
 ```cpp
 // 分配小块内存
@@ -1213,10 +1207,556 @@ ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)
 >       - 否则 60s 之后，nginx 就主动断开连接，此时 nginx 可以调用 `ngx_reset_pool` 函数，重置内存池，等待下一次请求。
 
 
-## 3.3 编译测试 nginx 内存池功能
+## 3.3 手写 nginx 内存池
 
-
-## 3.4 手写 nginx 内存池
+### 3.3.1 `ngx_mem_pool.h`
 
 ```cpp
+#include <cstddef> // 为了使用 size_t
+#include <cstdint> // 为了使用 uintptr_t
+#include <cstring> // 为了使用 memset
+// 类型重定义
+using u_char = unsigned char;
+using ngx_uint_s = unsigned int;
+const int NGX_ALIGNMENT = sizeof(unsigned long); // 小块内存对齐大小
+#define ngx_memzero(buf, n)                                                    \
+  (void)memset(buf, 0, n) // 将 buf 中的前 n 个字节初始化为 0
+
+/* ---------------------重要类型定义----------------------- */
+
+/*
+ * NGX_MAX_ALLOC_FROM_POOL 应该是 (ngx_pagesize - 1)，在x86上是4095。
+ * 在Windows NT上，它可以减少内核中锁定的页面数量。
+ */
+
+const int ngx_pagesize = 4096; // 页大小
+
+// 定义从内存池中最大可分配的内存大小
+const int NGX_MAX_ALLOC_FROM_POOL = ngx_pagesize - 1;
+
+// 定义默认的内存池大小为16KB
+const int NGX_DEFAULT_POOL_SIZE = 16 * 1024;
+
+// 定义内存池的对齐大小为16字节
+const int NGX_POOL_ALIGNMENT = 16;
+
+// 将 d 向上对齐到 a 的倍数
+#define ngx_align(d, a) (((d) + (a - 1)) & ~(a - 1))
+
+// 将指针 p 向上对齐到 a 的倍数
+#define ngx_align_ptr(p, a)                                                    \
+  (u_char *)(((std::uintptr_t)(p) + ((std::uintptr_t)a - 1)) &                 \
+             ~((std::uintptr_t)a - 1))
+
+/*
+ * ngx_pool_cleanup_pt
+ * 是一个函数指针类型，该函数接收一个void*类型的参数，没有返回值。
+ * 通常用于定义清理操作，当内存池销毁时，会调用这个函数进行清理。
+ */
+// 清理回掉函数的类型定义
+typedef void (*ngx_pool_cleanup_pt)(void *data);
+
+struct ngx_pool_cleanup_s {
+  ngx_pool_cleanup_pt handler; // 清理操作的处理函数，是一个函数指针
+  void *data; // 清理操作的数据，是一个void*类型的指针，传给handler函数
+  ngx_pool_cleanup_s *next; // 指向下一个清理操作的指针
+};
+
+// 大块内存类型定义
+struct ngx_pool_large_s {
+  ngx_pool_large_s *next; // 指向下一个大块内存
+  void *alloc;            // 记录分配的大块内存的起始地址
+};
+
+// 前向声明
+struct ngx_pool_s;
+
+// ngx_pool 的数据头部
+struct ngx_pool_data_s {
+  u_char *last;      // 指向内存池中当前可用内存的开始位置
+  u_char *end;       // 指向内存池中内存的结束位置
+  ngx_pool_s *next;  // 指向下一个内存池的指针
+  ngx_uint_s failed; // 记录当前内存池内存分配失败的次数
+};
+
+// 定义了一个结构体类型ngx_pool_s
+struct ngx_pool_s {
+  ngx_pool_data_s d; // 内存池的数据头
+  size_t max; // 内存池中可分配的最大内存大小，小块内存和大块内存分界线
+  ngx_pool_s *current;         // 指向当前内存池
+  ngx_pool_large_s *large;     // 指向内存池中的大块内存
+  ngx_pool_cleanup_s *cleanup; // 指向内存池的清理操作
+};
+
+// 定义最小的内存池大小
+const int NGX_MIN_POOL_SIZE = ngx_align(
+    (sizeof(ngx_pool_s) + 2 * sizeof(ngx_pool_large_s)), NGX_POOL_ALIGNMENT);
+
+class NginxPool {
+public:
+  NginxPool(size_t size = 512);
+  ~NginxPool();
+
+  // 重置内存池
+  void ngx_reset_pool();
+
+  // 内存分配函数，支持内存对齐
+  void *ngx_palloc(size_t size);
+
+  // 内存分配函数，不支持内存对齐
+  void *ngx_pnalloc(size_t size);
+
+  // 内存分配函数，支持内存初始化0
+  void *ngx_pcalloc(size_t size);
+
+  // 内存释放（大块内存）
+  void ngx_pfree(void *p);
+
+  // 在内存池中添加一个清理操作
+  ngx_pool_cleanup_s *ngx_pool_cleanup_add(size_t size);
+
+private:
+  ngx_pool_s *pool;
+
+  // 创建内存池
+  ngx_pool_s *ngx_create_pool(size_t size);
+
+  // 销毁内存池
+  void ngx_destroy_pool();
+
+  // 分配小块内存
+  // static inline void *ngx_palloc_small(size_t size, ngx_uint_s align);
+  inline void *ngx_palloc_small(size_t size, ngx_uint_s align);
+
+  // 创建新的内存池，并返回一个需要分配的内存块的起始地址
+  // static void *ngx_palloc_block(size_t size);
+  void *ngx_palloc_block(size_t size);
+
+  // 分配大块内存
+  // static void *ngx_palloc_large(size_t size);
+  void *ngx_palloc_large(size_t size);
+};
+```
+
+### 3.3.2 `ngx_mem_pool.cpp`
+
+```cpp
+#include "ngx_mem_pool.h"
+#include <cstdlib>
+
+// 构造函数
+NginxPool::NginxPool(size_t size) { pool = ngx_create_pool(size); }
+
+// 析构函数
+NginxPool::~NginxPool() { ngx_destroy_pool(); }
+
+/*
+ * 创建内存池
+ * 参数：
+ *   size: 需要创建内存池的大小
+ * 返回值：
+ *   返回一个指向新创建的内存池的指针
+ */
+ngx_pool_s *NginxPool::ngx_create_pool(size_t size) {
+  ngx_pool_s *p; // 用于保存新创建的内存池的指针
+
+  p = (ngx_pool_s *)malloc(size);
+  if (p == nullptr) {
+    return nullptr;
+  }
+
+  // 初始化内存池的数据头
+  p->d.last =
+      (u_char *)p + sizeof(ngx_pool_s); // 设置内存池中当前可用内存的开始位置
+  p->d.end = (u_char *)p + size; // 设置内存池中内存的结束位置
+  p->d.next = nullptr; // 设置指向下一个内存池的指针为NULL
+  p->d.failed = 0;     // 设置内存池内存分配失败的次数为0
+
+  // 真正可被分配出去的内存大小
+  size = size - sizeof(ngx_pool_s); // 计算内存池中可用内存的大小
+  // 设置内存池中可分配的最大内存大小
+  p->max = (size < NGX_MAX_ALLOC_FROM_POOL) ? size : NGX_MAX_ALLOC_FROM_POOL;
+
+  // 初始化当前内存池其它成员变量
+  p->current = p;     // 设置指向当前内存池的指针
+  p->large = nullptr; // 设置指向内存池中的大块内存的指针为NULL
+  p->cleanup = nullptr; // 设置指向内存池的清理操作的指针为NULL
+
+  return p; // 返回新创建的内存池的指针
+}
+
+/*
+ * 销毁内存池
+ */
+void NginxPool::ngx_destroy_pool() {
+  ngx_pool_s *p, *n;     // 用于遍历内存池的指针
+  ngx_pool_large_s *l;   // 用于遍历大块内存的指针
+  ngx_pool_cleanup_s *c; // 用于遍历清理操作的指针
+
+  // 遍历内存池的清理操作
+  for (c = pool->cleanup; c; c = c->next) {
+    if (c->handler) {
+      c->handler(c->data);
+    }
+  }
+
+  // 释放内存池中的大块内存
+  for (l = pool->large; l; l = l->next) {
+    if (l->alloc) {
+      free(l->alloc);
+    }
+  }
+
+  // 释放内存池中的内存链
+  for (p = pool, n = pool->d.next; /* void */; p = n, n = n->d.next) {
+    free(p);
+
+    if (n == nullptr) {
+      break;
+    }
+  }
+}
+
+/*
+ * 重置内存池
+ */
+void NginxPool::ngx_reset_pool() {
+  ngx_pool_s *p;       // 用于遍历内存池的指针
+  ngx_pool_large_s *l; // 用于遍历大块内存的指针
+
+  // 遍历内存池中的大块内存，释放大块内存
+  for (l = pool->large; l; l = l->next) {
+    if (l->alloc) {
+      free(l->alloc);
+    }
+  }
+
+  // 重置内存池中的内存链
+  for (p = pool; p; p = p->d.next) {
+    p->d.last = (u_char *)p + sizeof(ngx_pool_s);
+    p->d.failed = 0;
+  }
+
+  pool->current = pool; // 将当前内存池设置为传入的内存池
+  pool->large = nullptr;
+}
+
+/*
+ * 内存分配函数(内存对齐)
+ * 参数：
+ *   size: 需要分配的内存大小
+ * 返回值：
+ *   返回一个指向分配的内存的指针
+ */
+void *NginxPool::ngx_palloc(size_t size) {
+  // 如果请求的内存大小小于等于内存池中可分配的最大内存大小
+  if (size <= pool->max) {
+    // 从内存池中分配一块小内存，第二个参数 1 表示内存对齐
+    return ngx_palloc_small(size, 1);
+  }
+
+  // 否则，从内存池中分配一块大内存
+  return ngx_palloc_large(size);
+}
+
+/*
+ * 内存分配函数(不需要内存对齐)
+ * 参数：
+ *   size: 需要分配的内存大小
+ * 返回值：
+ *   返回一个指向分配的内存的指钩
+ */
+void *NginxPool::ngx_pnalloc(size_t size) {
+  // 如果请求的内存大小小于等于内存池中可分配的最大内存大小
+  if (size <= pool->max) {
+    // 从内存池中分配一块小内存，第二个参数 0 表示不需要内存对齐
+    return ngx_palloc_small(size, 0);
+  }
+
+  // 否则，从内存池中分配一块大内存
+  return ngx_palloc_large(size);
+}
+
+/*
+ * 小块内存分配函数，支持内存对齐
+ * 参数：
+ *   size: 需要分配的内存大小
+ *   align: 1 表示需要内存对齐，0 表示不需要对齐
+ * 返回值：
+ *   返回一个指向分配的内存的指针
+ */
+inline void *NginxPool::ngx_palloc_small(size_t size, ngx_uint_s align) {
+  u_char *m;     // 用于保存分配的内存的起始地址
+  ngx_pool_s *p; // 用于遍历内存池
+
+  p = pool->current; // 从当前内存池开始遍历
+
+  do {
+    m = p->d.last; // 获取内存池中当前可用内存的开始位置
+
+    if (align) {
+      // 将 m 向上对齐到 NGX_ALIGNMENT 的倍数
+      m = ngx_align_ptr(m, NGX_ALIGNMENT);
+    }
+
+    // 如果当前内存池的剩余内存足够分配 size 大小的内存
+    if ((size_t)(p->d.end - m) >= size) {
+      // 更新内存池中当前可用内存的开始位置
+      p->d.last = m + size;
+
+      return m; // 返回分配的内存的起始地址
+    }
+
+    // 如果当前内存池的剩余内存不足以分配 size 大小的内存
+    // 继续向下一个内存池查找
+    p = p->d.next;
+
+  } while (p); // 直到遍历完所有内存池都没有找到合适的内存块
+
+  // 如果所有内存池都没有找到合适的内存块，那么调用 ngx_palloc_block
+  // 函数分配一块新的内存池，并返回分配的内存的起始地址（不是新的内存池的起始地址！！！也不是新的内存池可用内存的起始地址！！！）
+  return ngx_palloc_block(size);
+}
+
+/*
+ * 分配一块新的内存池
+ * 参数：
+ *   pool: 指向内存池的指针
+ *   size: 需要分配的内存大小
+ * 返回值：
+ *   返回一个指向分配的内存的指针
+ */
+void *NginxPool::ngx_palloc_block(size_t size) {
+  u_char *m;               // 用于保存分配的内存的起始地址
+  size_t psize;            // 新的内存池的大小
+  ngx_pool_s *p, *newpool; // p 用于遍历内存池，new 指向新的内存池
+
+  // 计算新的内存池的大小，与传入内存池的大小相同
+  psize = (size_t)(pool->d.end - (u_char *)pool);
+
+  // 调用 ngx_memalign 函数分配一块对齐的内存，大小为 psize
+  m = (u_char *)malloc(psize);
+  if (m == nullptr) {
+    return nullptr;
+  }
+
+  // 初始化新的内存池
+  newpool = (ngx_pool_s *)m;
+
+  newpool->d.end = m + psize;
+  newpool->d.next = nullptr;
+  newpool->d.failed = 0;
+
+  // 让 m 指向新内存池可用内存的起始位置, 存储结果，最后返回出去
+  m += sizeof(ngx_pool_data_s);
+  m = ngx_align_ptr(m, NGX_ALIGNMENT);
+  newpool->d.last = m + size; // 更新内存池中当前可用内存的开始位置
+
+  // 遍历内存池，找到最后一个内存池
+  for (p = pool->current; p->d.next; p = p->d.next) {
+    if (p->d.failed++ > 4) {
+      // 如果当前内存池的内存分配失败次数超过4次，那么将当前内存池的指针指向下一个内存池
+      pool->current = p->d.next;
+    }
+  }
+
+  // 将最后一个内存池的指针指向新的内存池，尾插
+  p->d.next = newpool;
+
+  // 返回分配的内存的起始地址
+  return m;
+}
+
+/*
+ * 分配大块内存
+ * 参数：
+ *   size: 需要分配的内存大小
+ * 返回值：
+ *   返回一个指向分配的内存的指针
+ */
+void *NginxPool::ngx_palloc_large(size_t size) {
+  void *p;                 // 保存分配的内存的起始地址
+  ngx_uint_s n;            // 用于计数
+  ngx_pool_large_s *large; // 遍历大块内存
+
+  p = malloc(size);
+  if (p == nullptr) {
+    return nullptr;
+  }
+
+  n = 0;
+
+  // 遍历内存池中的大块内存
+  for (large = pool->large; large; large = large->next) {
+    if (large->alloc == nullptr) {
+      // 如果找到一个未分配的大块内存，那么将分配的内存的起始地址赋值给 alloc
+      large->alloc = p;
+      return p;
+    }
+
+    if (n++ > 3) { // 最多查 4 次
+      break;
+    }
+  }
+
+  // 在内存池分配的小块内存中分配一块 ngx_pool_large_s 结构体大小的内存
+  // 用于记录分配的大块内存的信息
+  large = (ngx_pool_large_s *)ngx_palloc_small(sizeof(ngx_pool_large_s), 1);
+  if (large == nullptr) {
+    // 内存池中小块内存区域不足，释放分配的大块内存
+    free(p);
+    return nullptr;
+  }
+
+  // 将分配的内存的起始地址赋值给 alloc
+  large->alloc = p;
+  // 将新分配的大块内存插入到内存池的大块内存链表的头部
+  large->next = pool->large;
+  pool->large = large;
+
+  return p; // 返回分配的大块内存的起始地址
+}
+
+/*
+ * ngx_pfree 是一个函数，用于在内存池中释放一块大内存。
+ * 参数：
+ *   pool: 指向内存池的指针
+ *   p: 指向需要释放的大内存的指针
+ * 返回值：
+ *   如果成功释放内存，返回NGX_OK；如果没有找到需要释放的内存，返回NGX_DECLINED
+ */
+void NginxPool::ngx_pfree(void *p) {
+  ngx_pool_large_s *l;
+
+  // 遍历内存池中的所有大内存
+  for (l = pool->large; l; l = l->next) {
+    // 如果找到了需要释放的内存
+    if (p == l->alloc) {
+      // 释放内存
+      free(l->alloc);
+      // 将指针设置为NULL
+      l->alloc = nullptr;
+    }
+  }
+}
+
+/*
+ * 内存分配函数，调用 ngx_palloc 分配对齐的内存，并支持内存初始化0
+ * 参数：
+ *   pool: 指向内存池的指针
+ *   size: 需要分配的内存大小
+ * 返回值：
+ *   返回一个指向分配的内存的指针
+ */
+void *NginxPool::ngx_pcalloc(size_t size) {
+  void *p;
+
+  p = ngx_palloc(size);
+  if (p) {
+    ngx_memzero(p, size); // 将分配的内存初始化为0
+  }
+
+  return p; // 返回分配的内存的指针，如果分配失败，返回NULL
+}
+
+/*
+ * ngx_pool_cleanup_add 是一个函数，用于在内存池中添加一个清理操作。
+ * 参数：
+ *   p: 指向内存池的指针
+ *   size: 清理操作的数据大小
+ * 返回值：
+ *   返回一个指向新添加的清理操作的指针，如果内存分配失败，返回NULL
+ */
+ngx_pool_cleanup_s *NginxPool::ngx_pool_cleanup_add(size_t size) {
+  ngx_pool_cleanup_s *c;
+
+  // 从内存池中分配一块内存，用于存储清理操作
+  c = (ngx_pool_cleanup_s *)ngx_palloc(sizeof(ngx_pool_cleanup_s));
+  // 如果内存分配失败，返回nullptr
+  if (c == nullptr) {
+    return nullptr;
+  }
+
+  // 如果指定了清理操作的数据大小
+  if (size) {
+    // 从内存池中分配一块内存，用于存储清理操作的数据
+    c->data = ngx_palloc(size);
+    // 如果内存分配失败，返回nullptr
+    if (c->data == nullptr) {
+      return nullptr;
+    }
+
+    // 如果没有指定清理操作的数据大小，将数据指针设置为nullptr
+  } else {
+    c->data = nullptr;
+  }
+
+  // 初始化清理操作的处理函数和下一个清理操作的指针
+  c->handler = nullptr;
+  c->next = pool->cleanup;
+
+  // 将新添加的清理操作添加到内存池的清理操作链表的头部
+  pool->cleanup = c;
+
+  // 返回新添加的清理操作
+  return c;
+}
+```
+
+### 3.3.3 `main.cpp`
+
+```cpp
+#include "ngx_mem_pool.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Data {
+  char *ptr;
+  FILE *pfile;
+};
+
+void func1(char *p) {
+  printf("free ptr mem!");
+  free(p);
+}
+void func2(FILE *pf) {
+  printf("close file!");
+  fclose(pf);
+}
+int main() {
+  // 512 - sizeof(ngx_pool_t) - 4095   =>   max
+  NginxPool *obj = new NginxPool();
+  if (obj == nullptr) {
+    printf("ngx_create_pool fail...");
+    return 0;
+  }
+
+  void *p1 = obj->ngx_palloc(128); // 从小块内存池分配的
+  if (p1 == nullptr) {
+    printf("ngx_palloc 128 bytes fail...");
+    return 0;
+  }
+
+  Data *p2 = (Data *)obj->ngx_palloc(512); // 从大块内存池分配的
+  if (p2 == nullptr) {
+    printf("ngx_palloc 512 bytes fail...");
+    return 0;
+  }
+  p2->ptr = (char *)malloc(12);
+  strcpy(p2->ptr, "hello world");
+  p2->pfile = fopen("data.txt", "w");
+
+  ngx_pool_cleanup_s *c1 = obj->ngx_pool_cleanup_add(sizeof(char *));
+  c1->handler = reinterpret_cast<ngx_pool_cleanup_pt>(func1);
+  c1->data = p2->ptr;
+
+  ngx_pool_cleanup_s *c2 = obj->ngx_pool_cleanup_add(sizeof(FILE *));
+  c2->handler = reinterpret_cast<ngx_pool_cleanup_pt>(func2);
+  c2->data = p2->pfile;
+
+  delete obj;
+
+  return 0;
+}
 ```

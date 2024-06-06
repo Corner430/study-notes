@@ -7110,9 +7110,48 @@ public:
 [77. 组合](https://leetcode-cn.com/problems/combinations/description/)
 
 ```python
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def backtracking(self, n, k, start):
+        if len(self.path) == k:
+            self.res.append(self.path[:])
+            return
+        for i in range(start, n - (k - len(self.path)) + 2):
+            self.path.append(i)
+            self.backtracking(n, k, i + 1)
+            self.path.pop()
+
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        self.backtracking(n, k, 1)
+        return self.res
 ```
 
 ```cpp
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(const int& n, const int& k, int start) {
+        if (path.size() == k) {
+            res.push_back(path);
+            return;
+        }
+        for (int i = start; i <= n - (k - path.size()) + 1; ++i) {
+            path.push_back(i);
+            backtracking(n, k, i + 1);
+            path.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> combine(int n, int k) {
+        backtracking(n, k, 1);
+        return res;
+    }
+};
 ```
 
 ### 216. 组合总和 III
@@ -7120,9 +7159,51 @@ public:
 [216. 组合总和 III](https://leetcode-cn.com/problems/combination-sum-iii/description/)
 
 ```python
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def backtracking(self, k, n, start):
+        if n == 0 and len(self.path) == k:
+            self.res.append(self.path[:])
+            return
+        for i in range(start, 10):
+            if n - i < 0 or 10 - i < k - len(self.path):
+                return
+            self.path.append(i)
+            self.backtracking(k, n - i, i + 1)
+            self.path.pop()
+
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        self.backtracking(k, n, 1)
+        return self.res
 ```
 
 ```cpp
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(int k, int n, int start) {
+        if (!n && path.size() == k) {
+            res.push_back(path);
+            return;
+        }
+        for (int i = start; i <= 9; ++i){
+            if (n - i < 0 || 10 - i < k - path.size()) return;
+            path.push_back(i);
+            backtracking(k, n - i, i + 1);
+            path.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        backtracking(k, n, 1);
+        return res;
+    }
+};
 ```
 
 ### 17. 电话号码的字母组合
@@ -7130,9 +7211,66 @@ public:
 [17. 电话号码的字母组合](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/description/)
 
 ```python
+class Solution:
+    def __init__(self):
+        self.letterMap = [
+            "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"
+        ]
+        self.path = []
+        self.res = []
+
+    def backtracking(self, digits, start):
+        if len(self.path) == len(digits):
+            self.res.append("".join(self.path))
+            return
+        for i in range(start, len(digits)):
+            for c in self.letterMap[int(digits[i])]:
+                self.path.append(c)
+                self.backtracking(digits, i + 1)
+                self.path.pop()
+
+    def letterCombinations(self, digits: str) -> List[str]:
+        if digits:
+            self.backtracking(digits, 0)
+        return self.res
 ```
 
 ```cpp
+class Solution {
+private:
+    const string letterMap[10] = {
+        "",
+        "",
+        "abc",
+        "def",
+        "ghi",
+        "jkl",
+        "mno",
+        "pqrs",
+        "tuv",
+        "wxzy"
+    };
+    string path;
+    vector<string> res;
+
+    void backtracking(const string &digits, int start){
+        if (path.size() == digits.size()){
+            res.push_back(path);
+            return;
+        }
+        for (int i = start; i < digits.size(); ++i)
+            for (const char &c : letterMap[digits[i] - '0']){
+                path.push_back(c);
+                backtracking(digits, i + 1);
+                path.pop_back();
+            }
+    }
+public:
+    vector<string> letterCombinations(string digits) {
+        if (digits.size()) backtracking(digits, 0);
+        return res;
+    }
+};
 ```
 
 ### 39. 组合总和
@@ -7140,9 +7278,11 @@ public:
 [39. 组合总和](https://leetcode-cn.com/problems/combination-sum/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 40. 组合总和II

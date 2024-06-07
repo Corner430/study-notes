@@ -126,12 +126,21 @@
   - [93. 复原IP地址](#93-复原ip地址)
   - [78. 子集](#78-子集)
   - [90. 子集II](#90-子集ii)
-  - [491. 递增子序列](#491-递增子序列)
+  - [491. 非递减子序列](#491-非递减子序列)
   - [46. 全排列](#46-全排列)
   - [47. 全排列 II](#47-全排列-ii)
   - [332. 重新安排行程](#332-重新安排行程)
   - [51. N皇后](#51-n皇后)
   - [37. 解数独](#37-解数独)
+- [9 贪心算法](#9-贪心算法)
+  - [455. 分发饼干](#455-分发饼干)
+  - [376. 摆动序列](#376-摆动序列)
+  - [53. 最大子序和](#53-最大子序和)
+  - [122. 买卖股票的最佳时机 II](#122-买卖股票的最佳时机-ii)
+  - [55. 跳跃游戏](#55-跳跃游戏)
+  - [45. 跳跃游戏 II](#45-跳跃游戏-ii)
+  - [1005. K次取反后最大化的数组和](#1005-k次取反后最大化的数组和)
+  - [134. 加油站](#134-加油站)
   - [1553. 吃掉 N 个橘子的最少天数](#1553-吃掉-n-个橘子的最少天数)
 
 
@@ -7278,11 +7287,53 @@ public:
 [39. 组合总和](https://leetcode-cn.com/problems/combination-sum/description/)
 
 ```python
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
 
+    def backtracking(self, candidates, target, start):
+        if target == 0:
+            self.res.append(list(self.path))
+            return
+        for i in range(start, len(candidates)):
+            if target < candidates[i]:
+                continue
+            self.path.append(candidates[i])
+            self.backtracking(candidates, target - candidates[i], i)
+            self.path.pop()
+
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        self.res = []
+        self.path = []
+        self.backtracking(candidates, target, 0)
+        return self.res 
 ```
 
 ```cpp
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(vector<int>& candidates, int target, int start) {
+        if (!target) {
+            res.push_back(path);
+            return;
+        }
+        for (int i = start; i < candidates.size(); ++i) {
+            if (target < candidates[i]) continue;
+            path.push_back(candidates[i]);
+            backtracking(candidates, target - candidates[i], i);
+            path.pop_back();
+        }
+    }
 
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        backtracking(candidates, target, 0);
+        return res;
+    }
+};
 ```
 
 ### 40. 组合总和II
@@ -7290,9 +7341,129 @@ public:
 [40. 组合总和II](https://leetcode-cn.com/problems/combination-sum-ii/description/)
 
 ```python
+# used 数组去重
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def backtracking(self, candidates, target, used, start):
+        if target == 0:
+            self.res.append(list(self.path))
+            return
+        for i in range(start, len(candidates)):
+            if candidates[i] > target:
+                break
+            if i > start and candidates[i] == candidates[i - 1] and not used[i - 1]:
+                continue
+            self.path.append(candidates[i])
+            used[i] = True
+            self.backtracking(candidates, target - candidates[i], used, i + 1)
+            used[i] = False
+            self.path.pop()
+
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        used = [False] * len(candidates)
+        self.res = []
+        self.path = []
+        self.backtracking(candidates, target, used, 0)
+        return self.res
+
+
+# set 去重
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def backtracking(self, candidates, target, start):
+        if target == 0:
+            self.res.append(list(self.path))
+            return
+        uset = [False] * 51
+        for i in range(start, len(candidates)):
+            if candidates[i] > target:
+                break
+            if uset[candidates[i]]:
+                continue
+            else:
+                uset[candidates[i]] = True
+                self.path.append(candidates[i])
+                self.backtracking(candidates, target - candidates[i], i + 1)
+                self.path.pop()
+
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        self.res = []
+        self.path = []
+        self.backtracking(candidates, target, 0)
+        return self.res
 ```
 
 ```cpp
+// used 数组去重
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(vector<int>& candidates, int target, vector<bool>& used,
+                      int start) {
+        if (!target) {
+            res.push_back(path);
+            return;
+        }
+        for (int i = start; i < candidates.size() && candidates[i] <= target; ++i) {
+            if (i && candidates[i] == candidates[i - 1] && !used[i - 1])
+                continue;
+            path.push_back(candidates[i]);
+            used[i] = true;
+            backtracking(candidates, target - candidates[i], used, i + 1);
+            used[i] = false;
+            path.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<bool> used(candidates.size(), false);
+        sort(candidates.begin(), candidates.end());
+        backtracking(candidates, target, used, 0);
+        return res;
+    }
+};
+
+// set 去重
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+
+    void backtracking(vector<int>& candidates, int target, int start) {
+        if (!target) {
+            res.push_back(path);
+            return;
+        }
+        bool uset[51] = {false};
+        for (int i = start; i < candidates.size() && candidates[i] <= target;
+             ++i) {
+            if (uset[candidates[i]]) continue;
+            else {
+                uset[candidates[i]] = true;
+                path.push_back(candidates[i]);
+                backtracking(candidates, target - candidates[i], i + 1);
+                path.pop_back();
+            }
+        }
+    }
+
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        backtracking(candidates, target, 0);
+        return res;
+    }
+};
 ```
 
 ### 131. 分割回文串
@@ -7300,9 +7471,68 @@ public:
 [131. 分割回文串](https://leetcode-cn.com/problems/palindrome-partitioning/description/)
 
 ```python
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def isPalindrome(self, s, left, right):
+        while left < right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+
+    def backtracking(self, s, startIndex):
+        if startIndex == len(s):
+            self.res.append(list(self.path))
+            return
+        for i in range(startIndex, len(s)):
+            if self.isPalindrome(s, startIndex, i):
+                self.path.append(s[startIndex:i+1])
+                self.backtracking(s, i + 1)
+                self.path.pop()
+
+    def partition(self, s: str) -> List[List[str]]:
+        self.res = []
+        self.path = []
+        self.backtracking(s, 0)
+        return self.res
 ```
 
 ```cpp
+class Solution {
+private:
+    vector<string> path;
+    vector<vector<string>> res;
+    bool isPalinrome(const string& s, int left, int right) {
+        while (left < right)
+            if (s[left++] != s[right--])
+                return false;
+        return true;
+    }
+
+    void backtracking(const string& s, int startIndex) {
+        if (startIndex == s.size()) {
+            res.push_back(path);
+            return;
+        }
+        for (int i = startIndex; i < s.size(); ++i){
+            if (isPalinrome(s, startIndex, i)){
+                path.push_back(s.substr(startIndex, i - startIndex + 1));
+                backtracking(s, i + 1);
+                path.pop_back();
+            }
+        }
+    }
+
+public:
+    vector<vector<string>> partition(string s) {
+        backtracking(s, 0);
+        return res;
+    }
+};
 ```
 
 ### 93. 复原IP地址
@@ -7310,9 +7540,73 @@ public:
 [93. 复原IP地址](https://leetcode-cn.com/problems/restore-ip-addresses/description/)
 
 ```python
+class Solution:
+    def __init__(self):
+        self.res = []
+
+    def isValid(self, s, left, right):
+        if left == right:
+            return True
+        elif s[left] == '0':
+            return False
+        num = 0
+        while left <= right:
+            num = num * 10 + (ord(s[left]) - ord('0'))
+            left += 1
+        return num >= 1 and num <= 255
+
+    def backtracking(self, s, path, startIndex, layer):
+        if layer == 4:
+            if startIndex == len(s):
+                self.res.append(path[:-1])
+            return
+        for i in range(startIndex, len(s)):
+            if i - startIndex < 3 and len(s) - startIndex <= (4 - layer) * 3 and self.isValid(s, startIndex, i):
+                self.backtracking(s, path + s[startIndex:i+1] + ".", i + 1, layer + 1)
+
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        self.res = []
+        self.backtracking(s, "", 0, 0)
+        return self.res
 ```
 
 ```cpp
+class Solution {
+private:
+    vector<string> res;
+    bool isValid(const string& s, int left, int right) {
+        if (left == right)
+            return true;
+        else if (s[left] == '0')
+            return false;
+        int num = 0;
+        while (left <= right)
+            num = num * 10 + (s[left++] - '0');
+        return num >= 1 && num <= 255;
+    }
+    void backtracking(const string& s, string path, int startIndex, int layer) {
+        if (4 == layer) {
+            if (startIndex == s.size()) {
+                res.push_back(path);
+                res.back().resize(path.size() - 1);
+            }
+            return;
+        }
+        for (int i = startIndex; i < s.size(); ++i)
+            if (i - startIndex < 3 && s.size() - startIndex <= (4 - layer) * 3 &&
+                isValid(s, startIndex, i))
+                backtracking(
+                    s, path + s.substr(startIndex, i - startIndex + 1) + ".",
+                    i + 1, layer + 1);
+    }
+
+public:
+    vector<string> restoreIpAddresses(string s) {
+        string path;
+        backtracking(s, path, 0, 0);
+        return res;
+    }
+};
 ```
 
 ### 78. 子集
@@ -7320,9 +7614,45 @@ public:
 [78. 子集](https://leetcode-cn.com/problems/subsets/description/)
 
 ```python
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def backtracking(self, nums, startIndex):
+        self.res.append(list(self.path))
+        for i in range(startIndex, len(nums)):
+            self.path.append(nums[i])
+            self.backtracking(nums, i + 1)
+            self.path.pop()
+
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        self.res = []
+        self.path = []
+        self.backtracking(nums, 0)
+        return self.res
 ```
 
 ```cpp
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(const vector<int>& nums, int startIndex) {
+        res.push_back(path);
+        for (int i = startIndex; i < nums.size(); ++i) {
+            path.push_back(nums[i]);
+            backtracking(nums, i + 1);
+            path.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        backtracking(nums, 0);
+        return res;
+    }
+};
 ```
 
 ### 90. 子集II
@@ -7330,19 +7660,173 @@ public:
 [90. 子集II](https://leetcode-cn.com/problems/subsets-ii/description/)
 
 ```python
+# used 数组去重
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def backtracking(self, nums, used, startIndex):
+        self.res.append(list(self.path))
+        for i in range(startIndex, len(nums)):
+            if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:
+                continue
+            self.path.append(nums[i])
+            used[i] = True
+            self.backtracking(nums, used, i + 1)
+            used[i] = False
+            self.path.pop()
+
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        used = [False] * len(nums)
+        self.res = []
+        self.path = []
+        self.backtracking(nums, used, 0)
+        return self.res
+
+
+# set 去重
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def backtracking(self, nums, startIndex):
+        self.res.append(list(self.path))
+        used = [False] * 21  # Python doesn't have fixed-size arrays, so we use a list
+        for i in range(startIndex, len(nums)):
+            if not used[nums[i] + 10]:
+                used[nums[i] + 10] = True
+                self.path.append(nums[i])
+                self.backtracking(nums, i + 1)
+                self.path.pop()
+
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        self.res = []
+        self.path = []
+        self.backtracking(nums, 0)
+        return self.res
 ```
 
 ```cpp
+// used 数组去重
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(const vector<int>& nums, vector<bool>& used,
+                      int startIndex) {
+        res.push_back(path);
+        for (int i = startIndex; i < nums.size(); ++i) {
+            if (i && nums[i] == nums[i - 1] && !used[i - 1])
+                continue;
+            path.push_back(nums[i]);
+            used[i] = true;
+            backtracking(nums, used, i + 1);
+            used[i] = false;
+            path.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<bool> uesd(nums.size(), false);
+        backtracking(nums, uesd, 0);
+        return res;
+    }
+};
+
+// set 去重
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(const vector<int>& nums, int startIndex) {
+        res.push_back(path);
+        bool arr[21] = {false};
+        for (int i = startIndex; i < nums.size(); ++i) {
+            if (!arr[nums[i] + 10]) {
+                arr[nums[i] + 10] = true;
+                path.push_back(nums[i]);
+                backtracking(nums, i + 1);
+                path.pop_back();
+            }
+        }
+    }
+
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        backtracking(nums, 0);
+        return res;
+    }
+};
 ```
 
-### 491. 递增子序列
+### 491. 非递减子序列
 
-[491. 递增子序列](https://leetcode-cn.com/problems/increasing-subsequences/description/)
+[491. 非递减子序列](https://leetcode.cn/problems/non-decreasing-subsequences/description/)
 
 ```python
+# 没有说有序，使用 set 去重
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def backtracking(self, nums, startIndex):
+        if len(self.path) > 1:
+            self.res.append(list(self.path))
+
+        uset = set()
+        for i in range(startIndex, len(nums)):
+            if nums[i] in uset:
+                continue
+            if not self.path or nums[i] >= self.path[-1]:
+                self.path.append(nums[i])
+                uset.add(nums[i])
+                self.backtracking(nums, i + 1)
+                self.path.pop()
+
+    def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+        self.res = []
+        self.path = []
+        self.backtracking(nums, 0)
+        return self.res
 ```
 
 ```cpp
+// 没有说有序，使用 set 去重
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(const vector<int>& nums, int startIndex) {
+        if (path.size() > 1)
+            res.push_back(path);
+
+        unordered_set<int> uset;
+        for (int i = startIndex; i < nums.size(); ++i) {
+            if (uset.find(nums[i]) != uset.end())
+                continue;
+            if (!path.size() || nums[i] >= path.back()) {
+                path.push_back(nums[i]);
+                uset.insert(nums[i]);
+                backtracking(nums, i + 1);
+                path.pop_back();
+            }
+        }
+    }
+
+public:
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        backtracking(nums, 0);
+        return res;
+    }
+};
 ```
 
 ### 46. 全排列
@@ -7350,9 +7834,59 @@ public:
 [46. 全排列](https://leetcode-cn.com/problems/permutations/description/)
 
 ```python
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def backtracking(self, nums, used):
+        if len(self.path) == len(nums):
+            self.res.append(list(self.path))
+            return
+        for i in range(len(nums)):
+            if not used[i]:
+                self.path.append(nums[i])
+                used[i] = True
+                self.backtracking(nums, used)
+                self.path.pop()
+                used[i] = False
+
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        used = [False] * len(nums)
+        self.res = []
+        self.path = []
+        self.backtracking(nums, used)
+        return self.res
 ```
 
 ```cpp
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(const vector<int>& nums, vector<bool>& used) {
+        if (path.size() == nums.size()) {
+            res.push_back(path);
+            return;
+        }
+        for (int i = 0; i < nums.size(); ++i) {
+            if (!used[i]) {
+                path.push_back(nums[i]);
+                used[i] = true;
+                backtracking(nums, used);
+                path.pop_back();
+                used[i] = false;
+            }
+        }
+    }
+
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<bool> used(nums.size(), false);
+        backtracking(nums, used);
+        return res;
+    }
+};
 ```
 
 ### 47. 全排列 II
@@ -7360,9 +7894,68 @@ public:
 [47. 全排列 II](https://leetcode-cn.com/problems/permutations-ii/description/)
 
 ```python
+# 也可以使用 set 控制节点内去重， used 控制路径去重
+
+class Solution:
+    def __init__(self):
+        self.path = []
+        self.res = []
+
+    def backtracking(self, nums, used):
+        if len(self.path) == len(nums):
+            self.res.append(list(self.path))
+            return
+        for i in range(len(nums)):
+            if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:
+                continue
+            if not used[i]:
+                used[i] = True
+                self.path.append(nums[i])
+                self.backtracking(nums, used)
+                self.path.pop()
+                used[i] = False
+
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        used = [False] * len(nums)
+        self.res = []
+        self.path = []
+        self.backtracking(nums, used)
+        return self.res
 ```
 
 ```cpp
+// 也可以使用 set 控制节点内去重， used 控制路径去重
+
+class Solution {
+private:
+    vector<int> path;
+    vector<vector<int>> res;
+    void backtracking(const vector<int>& nums, vector<bool>& used) {
+        if (path.size() == nums.size()) {
+            res.push_back(path);
+            return;
+        }
+        for (int i = 0; i < nums.size(); ++i) {
+            if (i && nums[i] == nums[i - 1] && !used[i - 1]) continue;
+            if (!used[i]) {
+                used[i] = true;
+                path.push_back(nums[i]);
+                backtracking(nums, used);
+                path.pop_back();
+                used[i] = false;
+            }
+        }
+    }
+
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<bool> used(nums.size(), false);
+        backtracking(nums, used);
+        return res;
+    }
+};
 ```
 
 ### 332. 重新安排行程
@@ -7370,9 +7963,11 @@ public:
 [332. 重新安排行程](https://leetcode-cn.com/problems/reconstruct-itinerary/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 51. N皇后
@@ -7396,8 +7991,93 @@ public:
 ```
 
 
-
 ---------------------------------
+
+## 9 贪心算法
+
+### 455. 分发饼干
+
+[455. 分发饼干](https://leetcode-cn.com/problems/assign-cookies/description/)
+
+```python
+```
+
+```cpp
+```
+
+### 376. 摆动序列
+
+[376. 摆动序列](https://leetcode-cn.com/problems/wiggle-subsequence/description/)
+
+```python
+```
+
+```cpp
+```
+
+### 53. 最大子序和
+
+[53. 最大子序和](https://leetcode-cn.com/problems/maximum-subarray/description/)
+
+```python
+```
+
+```cpp
+```
+
+### 122. 买卖股票的最佳时机 II
+
+[122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/description/)
+
+```python
+```
+
+```cpp
+```
+
+### 55. 跳跃游戏
+
+[55. 跳跃游戏](https://leetcode-cn.com/problems/jump-game/description/)
+
+```python
+```
+
+```cpp
+```
+
+### 45. 跳跃游戏 II
+
+[45. 跳跃游戏 II](https://leetcode-cn.com/problems/jump-game-ii/description/)
+
+```python
+```
+
+```cpp
+```
+
+### 1005. K次取反后最大化的数组和
+
+[1005. K 次取反后最大化的数组和](https://leetcode-cn.com/problems/maximize-sum-of-array-after-k-negations/description/)
+
+```python
+```
+
+```cpp
+```
+
+### 134. 加油站
+
+[134. 加油站](https://leetcode-cn.com/problems/gas-station/description/)
+
+```python
+```
+
+```cpp
+```
+
+
+
+
 
 
 ### 1553. 吃掉 N 个橘子的最少天数

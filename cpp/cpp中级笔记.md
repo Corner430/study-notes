@@ -1812,8 +1812,8 @@ bool compare(const T &a, const T &b, Compare comp) {
 ### 6.6.1 绑定器 和 lambda 表达式
 
 **绑定器 + 二元函数对象 =>> 一元函数对象**
-`bind1st`: 把二元函数对象的 `operator()(a, b)` 的第一个形参绑定为一个固定值
-`bind2nd`: 把二元函数对象的 `operator()(a, b)` 的第二个形参绑定为一个固定值
+- `bind1st`: 把二元函数对象的 `operator()(a, b)` 的第一个形参绑定为一个固定值
+- `bind2nd`: 把二元函数对象的 `operator()(a, b)` 的第二个形参绑定为一个固定值
 
 ```cpp
 #include <algorithm>

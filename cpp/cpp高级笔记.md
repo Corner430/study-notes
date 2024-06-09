@@ -1206,61 +1206,53 @@ int main() {
 ## 4.1 常用知识点总结
 
 1. **关键字和语法**
-  - `auto`：可以根据右值，推导右值的类型推导左边的类型。
-  - `nullptr`：给指针专用（能够和整数进行区别）。
-  - `for_each`：可以遍历数组、容器等，底层通过指针或迭代器来实现。
-  - **右值引用**：`move`移动语义函数和`forward`类型完美转发。
-  - **模板的新特性**：`typename... A` 表示可变参（类型参数）。
+
+- `auto`：可以根据右值，推导右值的类型，进而推导左边的类型
+- `nullptr`：给指针专用（能够和整数进行区别）
+- `for_each`：可以遍历数组、容器等，底层通过指针或迭代器来实现
+- **右值引用**：`move`移动语义函数和`forward`类型完美转发
+- **模板的新特性**：`typename... A` 表示可变参（类型参数）
+
 2. **[绑定器和函数对象](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0.md#3-%E7%BB%91%E5%AE%9A%E5%99%A8%E5%92%8C%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F)**
-    - `function`：函数对象
-    - `bind`：绑定器
-    - `lambda`表达式
-3. **智能指针**：可以自动管理资源，以防止代码不可预期的执行导致资源泄露、资源未释放。[`shared_ptr`和`weak_ptr`]()
+   - `function`：函数对象
+   - `bind`：绑定器
+   - `lambda`表达式
+3. **智能指针**：可以自动管理资源，以防止代码不可预期的执行导致资源泄露、资源未释放。[`shared_ptr`和`weak_ptr`](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E9%AB%98%E7%BA%A7%E7%AC%94%E8%AE%B0.md#24-%E5%B8%A6%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E7%9A%84%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-shared_ptr-%E5%92%8C-weak_ptr)
+4. 容器
 
----
+- `unordered_set` 和 `unordered_map`：哈希表
+- `array`：数组，无法进行扩容
+- `forward_list`：前向链表
 
-## 三. 容器
+5. C++语言级别支持多线程编程，增强了可移植性，代码可以跨平台运行。
 
-1. **unordered_set** 和 **unordered_map**：哈希表。
-2. **array**：数组，无法进行扩容。
-3. **forward_list**：前向链表。
+## 4.2 多线程类 `thread`
 
----
+C++语言层面的`thread`，其底层还是调用操作系统对象的多线程函数，例如 Windows 下调用`CreateThread`，Linux 下调用的是`pthread_create`。语言层面的支持就做到了跨平台运行。
 
-## 四. C++语言级别支持多线程编程
-
-增强了可移植性，代码可以跨平台运行。
-
-### 多线程类thread
-
-C++语言层面的`thread`，其底层还是调用操作系统对象的多线程函数，例如Windows下调用`CreateThread`，Linux下调用的是`pthread_create`。语言层面的支持就做到了跨平台运行。
-
-#### 怎么创建启动一个新线程？
-
-使用`std::thread`定义一个线程对象，传入线程所需要的线程函数和参数，线程自动开启。
-
-#### 子线程如何结束？
-
-子线程函数运行完成，线程就结束了。
-
-#### 主线程如何处理子线程
+1. 怎么创建启动一个新线程？
+   使用`std::thread`定义一个线程对象，传入线程所需要的线程函数和参数，线程自动开启。
+2. 子线程如何结束？
+   子线程函数运行完成，线程就结束了。
+3. 主线程如何处理子线程
 
 - `t.join()`：等待 `t` 线程结束，当前线程继续往下运行。
 - `t.detach()`：把 `t` 线程设置为分离线程，主线程结束，整个进程结束，所有子线程就自动结束。
+- 示例代码
 
-### 示例代码：
+  ```cpp
+  #include <iostream>
+  #include <thread>
+  using namespace std;
 
-```cpp
-#include <iostream>
-#include <thread>
-using namespace std;
-
-void threadHandle(int time) {
+  void threadHandle(int time) {
+    // 让子线程睡眠2秒
+    // chrono:名词空间，定义了一些和时间有关的常量
     std::this_thread::sleep_for(std::chrono::seconds(time));
     cout << "hello thread!" << endl;
-}
-
-int main() {
+  }
+  int main() {
+    // 创建了一个线程对象，传入一个线程函数，新线程就开始运行了
     std::thread t1(threadHandle, 2);
     // 主线程等待子线程结束，主线程继续往下运行
     // t1.join();
@@ -1268,241 +1260,291 @@ int main() {
     t1.detach();
     cout << "main thread done" << endl;
 
+    // 主线程运行完成，查看如果当前进程还有未运行完成的子进程，进程就会异常终止
     return 0;
-}
-```
+  }
+  ```
 
----
+## 4.3 线程互斥锁 `mutex`
 
-## 五. 线程互斥锁mutex
+- 多线程互斥
+  - **竞态条件**：多线程程序执行的结果是一致的，不会随着 CPU 对线程不同的调用顺序，而产生不同运行结果。
 
-### 多线程互斥
-
-#### 竞态条件
-
-多线程程序执行的结果是一致的，不会随着CPU对线程不同的调用顺序，而产生不同运行结果。
-
-### 示例：C++ thread模拟车站三个窗口卖票程序
+示例：C++ `thread` 模拟车站三个窗口卖票程序
 
 ```cpp
 #include <iostream>
-#include <thread>
 #include <list>
+#include <thread>
 using namespace std;
+
+// C++ thread 模拟车站三个窗口卖票的程序
+int ticketCount = 100; // 车站有 100 张车票，由三个窗口一起卖票
 
 // 模拟卖票的线程函数
-int ticketCount = 100; // 车站有100张车票，由三个窗口一起卖票
-
 void sellTicket(int index) {
-    while (ticketCount > 0) {
-        cout << ticketCount << endl;
-        ticketCount--;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
+  while (ticketCount > 0) {
+    // cout << "窗口" << index << "卖出第" << ticketCount << "张票" << endl;
+    cout << ticketCount << endl;
+    ticketCount--;
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
 }
-
 int main() {
-    list<std::thread> tlist;
-    for (int i = 1; i <= 3; ++i) {
-        tlist.push_back(std::thread(sellTicket, i));
-    }
-    for (std::thread& t : tlist) {
-        t.join();
-    }
-    cout << "所有窗口卖票结束" << endl;
-    return 0;
+  list<std::thread> tlist;
+  for (int i = 1; i <= 3; ++i)
+    tlist.push_back(std::thread(sellTicket, i));
+
+  for (std::thread &t : tlist)
+    t.join();
+  cout << "所有窗口卖票结束" << endl;
+  return 0;
 }
 ```
 
-### 加互斥锁实现线程安全：
+**加互斥锁实现线程安全：**
 
 ```cpp
 #include <iostream>
-#include <thread>
 #include <list>
 #include <mutex>
+#include <thread>
 using namespace std;
+
+// C++ thread 模拟车站三个窗口卖票的程序
+int ticketCount = 100; // 车站有100张车票，由三个窗口一起卖票
+std::mutex mtx;        // 全局的一把互斥锁
 
 // 模拟卖票的线程函数
-int ticketCount = 100; // 车站有100张车票，由三个窗口一起卖票
-std::mutex mtx; // 全局的一把互斥锁
-
 void sellTicket(int index) {
-    while (ticketCount > 0) {
-        mtx.lock();
-        if (ticketCount > 0) {
-            cout << "窗口" << index << "卖出第" << ticketCount << "张票" << endl;
-            ticketCount--;
-        }
-        mtx.unlock();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  while (ticketCount > 0) {
+    mtx.lock();
+    // 不加 if 可能导致 ticketCount=1 时，两个线程同时进入 while 循环，
+    // 导致 ticketCount 成为负数
+    if (ticketCount > 0) {
+      // 临界区代码段，需要保证原子操作，所以进行线程间互斥操作->mutex
+      cout << "窗口" << index << "卖出第" << ticketCount << "张票" << endl;
+      ticketCount--;
     }
+    mtx.unlock();
+    // 每卖出一张票，睡眠100ms，让每个窗口都有机会卖票
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
 }
-
 int main() {
-    list<std::thread> tlist;
-    for (int i = 1; i <= 3; ++i) {
-        tlist.push_back(std::thread(sellTicket, i));
-    }
-    for (std::thread& t : tlist) {
-        t.join();
-    }
-    cout << "所有窗口卖票结束" << endl;
-    return 0;
+  list<std::thread> tlist;
+  for (int i = 1; i <= 3; ++i)
+    tlist.push_back(std::thread(sellTicket, i));
+
+  for (std::thread &t : tlist)
+    t.join();
+
+  cout << "所有窗口卖票结束" << endl;
+  return 0;
 }
 ```
 
-### lock_guard自动释放锁
+**`lock_guard`自动释放锁**
+
+由于互斥锁需要手动`lock()`，`unlock()`，可能导致`unlock()`调用不到。所以采用`lock_guard()`封装`mutex`，保证所有线程都能释放锁，**防止死锁的发生**。（就像智能指针一样，利用栈上的对象出作用域必须析构对象来释放空间）
 
 ```cpp
 void sellTicket(int index) {
-    while (ticketCount > 0) {
-        lock_guard<std::mutex> lock(mtx); // 相当于scope_ptr
-        if (ticketCount > 0) {
-            cout << "窗口" << index << "卖出第" << ticketCount << "张票" << endl;
-            ticketCount--;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  while (ticketCount > 0) {
+    lock_guard<std::mutex> lock(mtx); // 相当于scope_ptr
+    if (ticketCount > 0) {
+      // 临界区代码段,需要保证原子操作，所以进行线程间互斥操作->mutex
+      cout << "窗口" << index << "卖出第" << ticketCount << "张票" << endl;
+      ticketCount--;
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
 }
 ```
 
----
+## 4.4 线程间同步通信-----生产者消费者模型
 
-## 六. 线程间同步通信—生产者消费者模型
-
-### 示例代码：
+**生产者消费者问题**（英语：Producer-consumer problem），也称**有限缓冲问题**（Bounded-buffer problem），是一个**多进程同步**问题的经典案例。该问题描述了共享固定大小缓冲区的两个进程——即所谓的“生产者”和“消费者”——在实际运行时会发生的问题。生产者的主要作用是生成一定量的数据放到缓冲区中，然后重复此过程。与此同时，消费者也在缓冲区消耗这些数据。**该问题的关键就是要保证生产者不会在缓冲区满时加入数据，消费者也不会在缓冲区中空时消耗数据**。
 
 ```cpp
+#include <condition_variable> //Linux平台下的condition_variable机制，用于解决线程间的同步通信问题
 #include <iostream>
-#include <thread>
 #include <mutex>
-#include <condition_variable>
-#include <queue>
+#include <queue> //C++ STL所有的容器都不是线程安全的
+#include <thread>
 using namespace std;
 
-std::mutex mtx;
-std::condition_variable cv;
+/*
+notify_one:通知另外的一个线程的
+notify_all:通知其他所有线程的
+通知其他所有线程，我生产了一个物品，赶紧消费吧
+其他线程得知，就会从等待=>阻塞=>获取互斥锁才能继续执行
+*/
+std::mutex mtx;             // 定义互斥锁，做线程间的互斥操作
+std::condition_variable cv; // 定义条件变量，做线程间的同步通信操作
 
+// 生产者生产一个物品，通知消费者消费一个；消费完了，消费者再通知生产者继续生产物品
 class Queue {
 public:
-    void put(int val) {
-        unique_lock<std::mutex> lck(mtx);
-        while (!que.empty()) {
-            cv.wait(lck);
-        }
-        que.push(val);
-        cv.notify_all();
-        cout << "生产者 生产" << val << "号物品" << endl;
+  void put(int val) // 生产物品
+  {
+    unique_lock<std::mutex> lck(mtx);
+    while (!que.empty()) {
+      // que不为空，生产者应该通知消费者去消费，消费完了，再继续生产
+      // 生产者线程进入等待状态，并且把mtx互斥锁释放掉
+      cv.wait(lck);
     }
-
-    int get() {
-        unique_lock<std::mutex> lck(mtx);
-        while (que.empty()) {
-            cv.wait(lck);
-        }
-        int val = que.front();
-        que.pop();
-        cv.notify_all();
-        cout << "消费者 消费" << val << "号物品" << endl;
-        return val;
+    que.push(val);
+    cv.notify_all();
+    cout << "生产者 生产" << val << "号物品" << endl;
+  }
+  int get() // 消费物品
+  {
+    unique_lock<std::mutex> lck(mtx);
+    while (que.empty()) {
+      cv.wait(lck);
     }
+    int val = que.front();
+    que.pop();
+    cv.notify_all(); // 通知其他线程我消费完了，赶紧生产吧
+    cout << "消费者 消费" << val << "号物品" << endl;
+    return val;
+  }
 
 private:
-    queue<int> que;
+  queue<int> que;
 };
 
-void producer(Queue *que) {
-    for (int i = 0; i <= 10; i++) {
-        que->put(i);
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
+void producer(Queue *que) // 生产线程
+{
+  for (int i = 0; i <= 10; i++) {
+    que->put(i);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
 }
-
-void consumer(Queue* que) {
-    for (int i = 0; i <= 10; i++) {
-        que->get();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
+void consumer(Queue *que) // 消费者线程
+{
+  for (int i = 0; i <= 10; i++) {
+    que->get();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
 }
 
 int main() {
-    Queue que;
-    std::thread t1(producer, &que);
-    std::thread t2(consumer, &que);
+  Queue que;
+  std::thread t1(producer, &que);
+  std::thread t2(consumer, &que);
 
-    t1.join();
-    t2.join();
+  t1.join();
+  t2.join();
 }
 ```
 
----
+> `notify_all()` 方法会唤醒所有等待在该条件变量上的线程。**这些被唤醒的线程会从等待状态变为阻塞状态**，并尝试重新获取与条件变量关联的互斥锁。一旦某个线程成功获取到互斥锁，它就可以继续执行。
 
-## 七. lock_guard和unique_lock
-
-### lock_guard
+## 4.5 `lock_guard` 和 `unique_lock`
 
 ```cpp
+/**************** mutex ****************/
+// 写法类似于裸指针，可能出现获取但没释放的情况。
+mutex mtx;
+
+int main() {
+  mtx.lock(); // 加锁
+  mtx.unlock(); // 解锁
+}
+
+/**************** lock_guard ****************/
+// lock_guard 类似于智能指针，构造函数获取锁，析构函数释放锁。
+// 部分源码如下，禁止拷贝构造和赋值
+lock_guard(const lock_guard&) = delete;
+lock_guard& operator=(const lock_guard&) = delete;
+
+// 用法：
 lock_guard<std::thread> guard(mtx);
-```
 
-### unique_lock
+// lock_guard 不可能用在函数参数传递或者返回过程中，因为这些会用到拷贝构造或赋值函数，但 lock_guard 不能进行拷贝构造和赋值，只能用在简单的加锁和解锁临界区代码段中。
 
-```cpp
+
+/**************** unique_lock ****************/
+// 同样是构造函数获取锁，析构函数释放锁
+
+// 删除了左值的拷贝构造和等号运算符重载，提供了右值的拷贝构造和等号运算符重载，unique_lock不仅可用于函数的参数传递以及返回过程中，还可用在简单的临界区代码段的互斥操作中。
+
+// 底层也提供了互斥锁的 lock() 和 unlock() 方法
+
+// 用法：
 unique_lock<std::thread> lck(mtx);
-```
 
-### condition_variable
+// unique_lock 完全可以替代lock_guard，就像 unique_ptr 完全可以替代 scoped_ptr 一样。只是多了个条件变量的功能（线程同步通信）
 
-```cpp
+
+/**************** condition_variable ****************/
+
+// -----
+// 通常和 unique_lock 搭配使用
+
 unique_lock<mutex> lck(mtx);
+
+// 1. 使线程进入等待状态
+// 2. lck.unlock() 释放互斥锁 mtx
 cv.wait(lck);
+// -----
+
+// 通知 cv 上等待的线程从等待状态进入阻塞状态，开始抢互斥锁
+// 抢到互斥锁的线程从阻塞->运行
 cv.notify_all();
 ```
 
----
+## 4.6 基于 CAS 操作的 atomic 原子类型
 
-## 八. 基于CAS操作的atomic原子类型
-
-### 示例代码：
+- 互斥锁是比较重的，适合于临界区代码做的事情稍稍复杂的情形。而`++`, `--`操作使用CAS原子特性就足够了，是无锁操作。
+- CAS 并不是不加锁，只不过加锁解锁不在软件层面。cpu 和内存之间通信通过系统总线进行。CAS通过 `exchange/swap` 指令，相当于给总线加锁，当一个线程在做 cpu 和内存交换，不允许其他线程再使用总线，有助于提高多线程效率。
+- `volatile`：防止多线程对共享变量进行缓存，访问的都是原始内存变量值。
+  - 不加 `volatile` 的话，每个线程都会拷贝一份自己的线程栈上的变量，带到 CPU 的缓存，这样效率较高，但也可能出错。
 
 ```cpp
+#include <atomic> // 包含很多原子操作的函数
 #include <iostream>
-#include <thread>
 #include <list>
-#include <atomic>
+#include <thread>
+
 using namespace std;
 
 volatile atomic_bool is_ready = false;
 volatile atomic_int cnt = 0;
 
+// task 函数，每个线程都会执行这个函数
 void task() {
-    if (!is_ready) {
-        this_thread::yield();
-    }
-    for (int i = 0; i < 100; i++) {
-        cnt++;
-    }
+  // 如果 is_ready 变量为 false，当前线程让出时间片
+  if (!is_ready)
+    this_thread::yield();
+
+  // 当 is_ready 变量为 true 时，每个线程都对 cnt 变量加 100 次
+  for (int i = 0; i < 100; i++)
+    cnt++;
 }
 
 int main() {
-    list<thread> tlist;
-    for (int i = 0; i < 10; i++) {
-        tlist.push_back(thread(task));
-    }
-    this_thread::sleep_for(chrono::seconds(2));
-    is_ready = true;
-    for (thread& t : tlist) {
-        t.join();
-    }
-    cout << cnt << endl; // 1000
-    return 0;
+  // 创建一个线程列表
+  list<thread> tlist;
+  // 创建 10 个线程，每个线程都会执行 task 函数
+  for (int i = 0; i < 10; i++)
+    tlist.push_back(thread(task));
+
+  // 主线程休眠 2 秒，让其他线程有机会先执行
+  this_thread::sleep_for(chrono::seconds(2));
+  // 将 is_ready 变量设置为 true，让其他线程开始执行任务
+  is_ready = true;
+  // 等待所有线程执行完毕
+  for (thread &t : tlist)
+    t.join();
+
+  // 打印 cnt 变量的值，应该为 1000（10 个线程，每个线程加 100 次）
+  cout << cnt << endl; // 1000
+  return 0;
 }
 ```
-
-
-
-
 
 # 5 设计模式
 

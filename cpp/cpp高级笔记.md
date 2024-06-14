@@ -1498,8 +1498,8 @@ cv.notify_all();
 
 ## 4.6 基于 CAS 操作的 atomic 原子类型
 
-- 互斥锁是比较重的，适合于临界区代码做的事情稍稍复杂的情形。而`++`, `--`操作使用CAS原子特性就足够了，是无锁操作。
-- CAS 并不是不加锁，只不过加锁解锁不在软件层面。cpu 和内存之间通信通过系统总线进行。CAS通过 `exchange/swap` 指令，相当于给总线加锁，当一个线程在做 cpu 和内存交换，不允许其他线程再使用总线，有助于提高多线程效率。
+- 互斥锁是比较重的，适合于临界区代码做的事情稍稍复杂的情形。而`++`, `--`操作使用 CAS 原子特性就足够了，是无锁操作。
+- CAS 并不是不加锁，只不过加锁解锁不在软件层面。cpu 和内存之间通信通过系统总线进行。CAS 通过 `exchange/swap` 指令，相当于给总线加锁，当一个线程在做 cpu 和内存交换，不允许其他线程再使用总线，有助于提高多线程效率。
 - `volatile`：防止多线程对共享变量进行缓存，访问的都是原始内存变量值。
   - 不加 `volatile` 的话，每个线程都会拷贝一份自己的线程栈上的变量，带到 CPU 的缓存，这样效率较高，但也可能出错。
 
@@ -1550,26 +1550,1139 @@ int main() {
 
 ## 5.1 单例模式
 
+- 单例模式：**无论怎么获取，永远只能得到该类类型的唯一一个实例对象**，那么设计一个单例就必须要满足下面三个条件：
+  - 构造函数私有化，这样用户就不能任意定义该类型的对象了
+  - 定义该类型唯一的对象
+  - 通过一个 `static` 静态成员方法返回唯一的对象实例
+
+### 5.1.1 饿汉式和懒汉式单例模式
+
+- **饿汉式单例模式**，顾名思义，**就是程序启动时就实例化了该对象**，并没有推迟到第一次使用该对象时再进行实例化；如果运行过程中没有使用到，该实例对象就被浪费掉了
+- **懒汉式单例模式**，顾名思义，就是对象的实例化，延迟到第一次使用它的时候
+
+```cpp
+//----------- 饿汉式单例模式 ------------
+class CSingleton {
+public:
+  static CSingleton *getInstance() { return &single; }
+
+private:
+  static CSingleton single;
+  CSingleton() { cout << "CSingleton()" << endl; }
+  ~CSingleton() { cout << "~CSingleton()" << endl; }
+  CSingleton(
+      const CSingleton &); // 防止外部使用拷贝构造产生新的对象
+                           // 如 CSingleton s = *p1;
+};
+CSingleton CSingleton::single;
+
+int main() {
+  CSingleton *p1 = CSingleton::getInstance();
+  CSingleton *p2 = CSingleton::getInstance();
+  CSingleton *p3 = CSingleton::getInstance();
+  cout << p1 << " " << p2 << " " << p3 << endl;
+  return 0;
+}
+
+//----------- 懒汉式单例模式 ------------
+
+class CSingleton {
+public:
+  static CSingleton *getInstance() {
+    if (!instance)
+      instance = new CSingleton();
+    return instance;
+  }
+
+private:
+  static CSingleton *instance;
+  CSingleton() { cout << "CSingleton()" << endl; }
+  ~CSingleton() { cout << "~CSingleton()" << endl; }
+  CSingleton(const CSingleton &other) = delete;
+};
+CSingleton *CSingleton::instance = nullptr;
+
+int main() {
+  CSingleton *p1 = CSingleton::getInstance();
+  CSingleton *p2 = CSingleton::getInstance();
+  CSingleton *p3 = CSingleton::getInstance();
+  cout << p1 << "\t" << p2 << "\t" << p3 << endl;
+  // delete p1;  // ‘CSingleton::~CSingleton()’ is private within this context
+  return 0;
+}
+```
+
+### 5.1.2 嵌套类和静态对象的方式解决单例模式的资源释放问题
+
+**上述释放资源的问题，可以通过嵌套类和静态对象的方式来解决**
+
+```cpp
+class CSingleton {
+public:
+  static CSingleton *getInstance() {
+    if (nullptr == single)
+      single = new CSingleton();
+    return single;
+  }
+
+private:
+  static CSingleton *single;
+  CSingleton() { cout << "CSingleton()" << endl; }
+  ~CSingleton() { cout << "~CSingleton()" << endl; }
+  CSingleton(const CSingleton &);
+
+  // 定义一个嵌套类，在该类的析构函数中，自动释放外层类的资源
+  class CRelease {
+  public:
+    ~CRelease() { delete single; }
+  };
+  // 通过该静态对象在程序结束时自动析构的特点，来释放外层类的对象资源
+  static CRelease release;
+};
+CSingleton *CSingleton::single = nullptr;
+CSingleton::CRelease CSingleton::release;
+
+int main() {
+  CSingleton *p1 = CSingleton::getInstance();
+  CSingleton *p2 = CSingleton::getInstance();
+  CSingleton *p3 = CSingleton::getInstance();
+  cout << p1 << " " << p2 << " " << p3 << endl;
+  return 0;
+}
+```
+
+### 5.1.3 线程安全的单例模式
+
+在开发服务器程序的时候，经常会用到多线程，多线程要考虑代码的线程安全特性，不能让代码在多线程环境下出现**竞态条件**，否则就要进行线程互斥操作
+
+1. 饿汉单例模式的线程安全特性
+   饿汉单例模式中，单例对象定义成了一个`static`静态对象，它是在程序启动时，`main`函数运行之前就初始化好的，因此不存在线程安全问题，可以放心的在多线程环境中使用。
+
+2. 懒汉单例模式的线程安全特性
+   懒汉单例模式，获取单例对象的方法如下
+
+```cpp
+static CSingleton *getInstance() {
+  if (nullptr == single) {
+    single = new CSingleton();
+  }
+  return single;
+}
+```
+
+> 很明显，这个`getInstance`是个**不可重入函数**，也就它在多线程环境中执行，会出现竞态条件问题，首先搞清楚这句代码，`single = new CSingleton()`它会做三件事情，**开辟内存，调用构造函数，给`single`指针赋值**，那么在多线程环境下，就有可能出现如下问题：
+>
+> - 线程 A 先调用 `getInstance` 函数，由于 `single` 为 `nullptr`，进入 `if` 语句
+> - `new` 操作先开辟内存，此时 A 线程的 CPU 时间片到了，切换到 B 线程
+> - B 线程由于 `single` 为 `nullptr`，也进入 `if` 语句了，开始 `new` 操作
+
+很明显，上面两个线程都进入了 `if` 语句，都试图 `new` 一个新的对象，不符合单例模式的设计，所有应该为`getInstance` 函数内部加锁，在线程间进行互斥操作。此处介绍 Linux 系统下，`pthread` 库中提供的线程互斥操作方法-`mutex`互斥锁，代码如下：
+
+```cpp
+#include <iostream>
+#include <pthread.h>
+using namespace std;
+
+class CSingleton {
+public:
+  // 获取单例对象的方法
+  static CSingleton *getInstance() {
+    pthread_mutex_lock(&mutex); // 获取互斥锁，保证线程安全
+    if (nullptr == single) {
+      single = new CSingleton();
+    }
+    pthread_mutex_unlock(&mutex); // 释放互斥锁
+    return single;                // 返回单例对象的指针
+  }
+
+private:
+  static CSingleton *single; // 单例对象的指针
+  // 私有构造函数，外部不能直接创建对象
+  CSingleton() { cout << "CSingleton()" << endl; }
+  // 析构函数，释放互斥锁
+  ~CSingleton() {
+    pthread_mutex_destroy(&mutex); // 释放锁
+    cout << "~CSingleton()" << endl;
+  }
+  // 禁止拷贝构造
+  CSingleton(const CSingleton &);
+
+  // 内部类，用于在程序结束时释放单例对象
+  class CRelease {
+  public:
+    // 在程序结束时，自动调用析构函数释放单例对象
+    ~CRelease() { delete single; }
+  };
+  // 静态的 CRelease 对象，当程序结束时，它的析构函数会被调用
+  static CRelease release;
+
+  // 定义线程间的互斥锁
+  static pthread_mutex_t mutex;
+};
+
+// 初始化单例对象的指针为 nullptr
+CSingleton *CSingleton::single = nullptr;
+// 创建 CRelease 对象
+CSingleton::CRelease CSingleton::release;
+// 初始化互斥锁
+pthread_mutex_t CSingleton::mutex = PTHREAD_MUTEX_INITIALIZER;
+
+int main() {
+  CSingleton *p1 = CSingleton::getInstance();
+  CSingleton *p2 = CSingleton::getInstance();
+  CSingleton *p3 = CSingleton::getInstance();
+  return 0;
+}
+```
+
+上面的代码，是一个线程安全的懒汉单例模式，但是效率太低，因为每次调用 `getInstance` 都需要加锁解锁，除了第一次调用，后面对 `getInstance` 函数持续的加解锁完全没有必要，所以这里需要使用**锁 + 双重判断，也叫双重检验锁**，把上面的 `getInstance` 函数代码修改如下：
+
+```cpp
+// 获取单例对象的方法
+static CSingleton *getInstance() {
+  if (nullptr == single) {
+    pthread_mutex_lock(&mutex); // 获取互斥锁，保证线程安全
+    /*
+    这里需要再添加一个 if 判断，否则当两个线程都进入这里，
+    又会多次 new 对象，不符合单例模式的设计
+    */
+    if (nullptr == single)
+      single = new CSingleton();
+    pthread_mutex_unlock(&mutex); // 释放互斥锁
+  }
+
+  return single; // 返回单例对象的指针
+}
+```
+
+将互斥锁封装成一个类，使用起来更加 OOP
+
+```cpp
+#include <iostream>
+#include <pthread.h>
+using namespace std;
+
+// 对互斥锁操作的封装
+class CMutex {
+public:
+  CMutex() { pthread_mutex_init(&mutex, NULL); }  // 初始化锁
+  ~CMutex() { pthread_mutex_destroy(&mutex); }    // 销毁锁
+  void lock() { pthread_mutex_lock(&mutex); }     // 获取锁
+  void unlock() { pthread_mutex_unlock(&mutex); } // 释放锁
+private:
+  pthread_mutex_t mutex;
+};
+
+class CSingleton {
+public:
+  static CSingleton *getInstance() {
+    if (nullptr == single) {
+      // 获取互斥锁
+      mutex.lock();
+
+      /*
+      这里需要再添加一个if判断，否则当两个线程都进入这里，
+      又会多次new对象，不符合单例模式的设计
+      */
+      if (nullptr == single)
+        single = new CSingleton();
+
+      // 释放互斥锁
+      mutex.unlock();
+    }
+
+    return single;
+  }
+
+private:
+  static CSingleton *single;
+  CSingleton() { cout << "CSingleton()" << endl; }
+  ~CSingleton() { cout << "~CSingleton()" << endl; }
+  CSingleton(const CSingleton &);
+
+  class CRelease {
+  public:
+    ~CRelease() { delete single; }
+  };
+  static CRelease release;
+
+  // 线程间的静态互斥锁
+  static CMutex mutex;
+};
+CSingleton *CSingleton::single = nullptr;
+CSingleton::CRelease CSingleton::release;
+// 定义互斥锁静态对象
+CMutex CSingleton::mutex;
+
+int main() {
+  CSingleton *p1 = CSingleton::getInstance();
+  CSingleton *p2 = CSingleton::getInstance();
+  CSingleton *p3 = CSingleton::getInstance();
+  return 0;
+}
+
+
+/*
+对于 static 静态局部变量的初始化，编译器会自动对它的初始化进行加锁和解锁控制，
+使静态局部变量的初始化成为线程安全的操作，不用担心多个线程都会初始化静态局部变量，
+因此这样的懒汉单例模式是线程安全的单例模式！
+*/
+
+#include <iostream>
+using namespace std;
+
+class CSingleton {
+public:
+  static CSingleton *getInstance() {
+    static CSingleton single; // 懒汉式单例模式，定义唯一的对象实例
+    return &single;
+  }
+
+private:
+  static CSingleton *single;
+  CSingleton() { cout << "CSingleton()" << endl; }
+  ~CSingleton() { cout << "~CSingleton()" << endl; }
+  CSingleton(const CSingleton &);
+};
+int main() {
+  CSingleton *p1 = CSingleton::getInstance();
+  CSingleton *p2 = CSingleton::getInstance();
+  CSingleton *p3 = CSingleton::getInstance();
+  return 0;
+}
+```
+
 ## 5.2 简单工厂、工厂方法、抽象工厂
 
-## 5.3 迭代器模式
+- **简单工厂**：把对象的创建封装在一个借口函数里面，通过传入不同的标识，返回创建的对象。用户不用自己负责 `new` 对象，不需要了解对象创建的详细过程。
+  - 提供创建对象实例的借口函数不闭合，不能对修改关闭，对扩展开放。
+- **工厂方法**：Factory 基类，提供了一个纯虚函数（创建产品），定义派生类（具体工厂）负责创建对应的产品，可以做到不同的产品由不同的工厂创建。工厂方法模式是符合开闭原则的。
+  - 一个工厂只能生产一种产品，如果需要生产多种产品，就需要多个工厂。
+- **抽象工厂**：把有关联关系的，属于一个产品簇的所有产品创建的借口函数，放在一个抽象工厂（Abstract Factory）类里面，派生类（具体工厂）负责创建对应的产品。
 
-## 5.4 观察者模式
+### 5.2.1 简单工厂模式（Simple Factory）
 
-## 5.5 代理模式
+简单工厂（Simple Factory）不属于标准的 OOP 设计模式中的一项，在编写大型 C++ 软件的时候，代码里面会出现很多的类，每次创建对象的时候，都需要通过 **`new` 类名称**的方式来生成对象，这样一来，用户需要记忆很多类的名称，暂且不管记不记得住，这样的设计使得代码很难维护，类名如果做了改变，那么所有使用类名称的地方都需要去修改，耦合性太强，不符合软件设计的思想，Simple Factory 就是在这样的需求下诞生的。
 
-# 6 面向对象编程实践
+**简单工厂模式的 UML 设计类图：**
 
-## 6.1 深度遍历搜索迷宫路径
+![20240610162335](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240610162335.png)
 
-## 6.2 广度遍历搜索迷宫路径找出最短路径
+从上面的 UML 类图可以看出，所有对象的创建不再通过 **`new` 类名称**的方式进行了，而是**把对象的创建都封装在了 SimpleFactory 类的 `createProduct` 方法当中，通过传入一个事先设计好的枚举类型，然后返回一个对应的对象，既解耦了对象的创建，还不用再记忆那么多的类名**。
 
-## 6.3 大数加减法
+```cpp
+#include <iostream>
+#include <memory>
+#include <string>
+using namespace std;
 
-## 6.4 海量数据查重以及求 top k 问题
+class Car {
+public:
+  Car(string name) : _name(name) {}
+  virtual void show() = 0;
 
-## 6.5 数字化男女匹配问题
+protected:
+  string _name;
+};
 
-# 7 校招 C++ 面经讲解
+class Bmw : public Car {
+public:
+  Bmw(string name) : Car(name) {}
+  void show() { cout << "Bmw: " << _name << endl; }
+};
 
-# 8 应聘 C++ 研发岗简历模板
+class Audi : public Car {
+public:
+  Audi(string name) : Car(name) {}
+  void show() { cout << "Audi: " << _name << endl; }
+};
+
+enum CarType { BMW, AUDI };
+
+class SimpleFactory {   // 不符合开闭原则
+public:
+  Car *createCar(CarType ct) {
+    switch (ct) {
+    case BMW:
+      return new Bmw("X5");
+    case AUDI:
+      return new Audi("A6");
+    default:
+      cerr << "传入工厂的参数不正确：" << ct << endl;
+      break;
+    }
+    return nullptr;
+  }
+};
+
+int main() {
+  // Car *p1 = new BMW("X5");
+  // Car *p2 = new Audi("A6");
+  // p1->show();
+  // p2->show();
+  unique_ptr<SimpleFactory> factory(new SimpleFactory());
+  unique_ptr<Car> p1(factory->createCar(BMW));
+  unique_ptr<Car> p2(factory->createCar(AUDI));
+  p1->show();
+  p2->show();
+  return 0;
+}
+```
+
+### 5.2.2 工厂方法模式（Factory Method）
+
+工厂方法模式（Factory Method）是简单工厂模式的进一步抽象和推广，**工厂方法模式是定义一个创建对象的接口，让子类决定实例化哪一个类**，工厂方法使一个类的实例化延伸到其子类。**工厂方法模式是符合开闭原则的**。
+
+```cpp
+#include <iostream>
+#include <memory>
+#include <string>
+using namespace std;
+
+class Car {
+public:
+  Car(string name) : _name(name) {}
+  virtual void show() = 0;
+
+protected:
+  string _name;
+};
+
+class Bmw : public Car {
+public:
+  Bmw(string name) : Car(name) {}
+  void show() { cout << "Bmw: " << _name << endl; }
+};
+
+class Audi : public Car {
+public:
+  Audi(string name) : Car(name) {}
+  void show() { cout << "Audi: " << _name << endl; }
+};
+
+// 工厂方法
+class Factory {
+public:
+  virtual Car *createCar(string name) = 0;
+};
+
+// 宝马工厂
+class BmwFactory : public Factory {
+public:
+  Car *createCar(string name) { return new Bmw(name); }
+};
+
+// 奥迪工厂
+class AudiFactory : public Factory {
+public:
+  Car *createCar(string name) { return new Audi(name); }
+};
+
+int main() {
+  unique_ptr<Factory> bmwFactory(new BmwFactory());
+  unique_ptr<Factory> audiFactory(new AudiFactory());
+  unique_ptr<Car> p1(bmwFactory->createCar("X6"));
+  unique_ptr<Car> p2(audiFactory->createCar("Q7"));
+  p1->show();
+  p2->show();
+  return 0;
+}
+```
+
+### 5.2.3 抽象工厂模式（Abstract Factory）
+
+抽象工厂模式（Abstract Factory）是工厂方法模式的升级版本，**抽象工厂对于一组有关联关系的产品簇，提供产品对象的统一创建接口**
+
+```cpp
+#include <iostream>
+#include <memory>
+#include <string>
+using namespace std;
+
+// 产品系列 1
+class Car {
+public:
+  Car(string name) : _name(name) {}
+  virtual void show() = 0;
+
+protected:
+  string _name;
+};
+
+class Bmw : public Car {
+public:
+  Bmw(string name) : Car(name) {}
+  void show() { cout << "Bmw: " << _name << endl; }
+};
+
+class Audi : public Car {
+public:
+  Audi(string name) : Car(name) {}
+  void show() { cout << "Audi: " << _name << endl; }
+};
+
+// 产品系列 2
+class Light {
+public:
+  Light(string name) : _name(name) {}
+  virtual void show() = 0;
+
+protected:
+  string _name;
+};
+
+class BmwLight : public Light {
+public:
+  BmwLight(string name) : Light(name) {}
+  void show() { cout << "BmwLight: " << _name << endl; }
+};
+
+class AudiLight : public Light {
+public:
+  AudiLight(string name) : Light(name) {}
+  void show() { cout << "AudiLight: " << _name << endl; }
+};
+
+// 抽象工厂类
+class AbstractFactory {
+public:
+  virtual Car *createCar(string name) = 0;     // 工厂方法，创建汽车
+  virtual Light *createLight(string name) = 0; // 工厂方法，创建汽车灯
+};
+
+// 宝马工厂
+class BmwFactory : public AbstractFactory {
+public:
+  Car *createCar(string name) { return new Bmw(name); }
+  Light *createLight(string name) { return new BmwLight(name); }
+};
+
+// 奥迪工厂
+class AudiFactory : public AbstractFactory {
+public:
+  Car *createCar(string name) { return new Audi(name); }
+  Light *createLight(string name) { return new AudiLight(name); }
+};
+
+int main() {
+  unique_ptr<AbstractFactory> bmwFactory(new BmwFactory());
+  unique_ptr<AbstractFactory> audiFactory(new AudiFactory());
+  unique_ptr<Car> p1(bmwFactory->createCar("X6"));
+  unique_ptr<Car> p2(audiFactory->createCar("Q7"));
+  unique_ptr<Light> p3(bmwFactory->createLight("X6"));
+  unique_ptr<Light> p4(audiFactory->createLight("Q7"));
+  p1->show();
+  p2->show();
+  p3->show();
+  p4->show();
+  return 0;
+}
+```
+
+## 5.3 代理（Proxy）模式
+
+**代理**是一种结构型设计模式， 让你能提供真实服务对象的替代品给客户端使用。代理接收客户端的请求并进行一些处理（访问控制和缓存等）， 然后再将请求传递给服务对象。
+
+![20240611131535](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240611131535.png)
+
+> 代理对象拥有和服务对象相同的接口，这使得当其被传递给客户端时可与真实对象互换。
+
+**使用示例**：尽管代理模式在绝大多数 C++ 程序中并不常见，但它在一些特殊情况下仍然非常方便。当你希望在无需修改客户代码的前提下于已有类的对象上增加额外行为时，该模式是无可替代的。
+
+**识别方法**：代理模式会将所有实际工作委派给一些其他对象。除非代理是某个服务的子类，否则每个代理方法最后都应该引用一个服务对象。
+
+```cpp
+#include <iostream>
+/**
+ * Subject 接口声明了 RealSubject 和 Proxy 的共同操作。
+ * 只要客户端使用这个接口与 RealSubject 交互，就可以传递一个代理而不是一个真实的对象。
+ */
+class Subject {
+public:
+  virtual void Request() const = 0;
+};
+
+/**
+ * RealSubject 包含一些核心业务逻辑。通常，RealSubject 能够做一些有用的工作，
+ * 这些工作可能非常缓慢或敏感，例如校正输入数据。
+ * 代理可以在不改变 RealSubject 代码的情况下解决这些问题。
+ */
+class RealSubject : public Subject {
+public:
+  void Request() const override { std::cout << "RealSubject: 处理请求。\n"; }
+};
+
+/**
+ * Proxy 拥有与 RealSubject 相同的接口。
+ */
+class Proxy : public Subject {
+private:
+  RealSubject *real_subject_;
+
+  bool CheckAccess() const {
+    // 这里应该进行一些实际的检查。
+    std::cout << "Proxy: 在执行实际请求之前检查访问权限。\n";
+    return true;
+  }
+
+  void LogAccess() const { std::cout << "Proxy: 记录请求的时间。\n"; }
+
+public:
+  /**
+   * Proxy 保持对 RealSubject 类对象的引用。
+   * 它可以是懒加载的，也可以由客户端传递给 Proxy。
+   */
+  Proxy(RealSubject *real_subject)
+      : real_subject_(new RealSubject(*real_subject)) {}
+
+  ~Proxy() { delete real_subject_; }
+
+  /**
+   * 代理模式最常见的应用是懒加载、缓存、控制访问、日志记录等。
+   * 代理可以执行这些操作之一，然后根据结果将执行传递给链接的 RealSubject
+   * 对象中的相同方法。
+   */
+  void Request() const override {
+    if (this->CheckAccess()) {
+      this->real_subject_->Request();
+      this->LogAccess();
+    }
+  }
+};
+
+/**
+ * 客户端代码应通过 Subject 接口与所有对象（包括真实对象和代理）交互，
+ * 以支持真实对象和代理。在实际应用中，客户端主要与真实对象直接交互。
+ * 在这种情况下，为了更容易实现模式，可以从真实对象的类扩展代理。
+ */
+void ClientCode(const Subject &subject) {
+  // ...
+  subject.Request();
+  // ...
+}
+
+int main() {
+  std::cout << "Client: 使用真实对象执行客户端代码：\n";
+  RealSubject *real_subject = new RealSubject;
+  ClientCode(*real_subject);
+  std::cout << "\n";
+  std::cout << "Client: 使用代理执行相同的客户端代码：\n";
+  Proxy *proxy = new Proxy(real_subject);
+  ClientCode(*proxy);
+
+  delete real_subject;
+  delete proxy;
+  return 0;
+}
+```
+
+## 5.4 装饰器（Decorator）模式
+
+装饰器：主要是增加现有类的功能。而不增加新的子类。
+
+![20240611133100](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240611133100.png)
+
+为了增加现有类的功能，通过实现子类的方式重写接口，可以完成功能，但是会产生很多的子类。而装饰器模式，可以通过组合的方式，不断的增加功能，而不用增加子类。
+
+![20240611133252](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240611133252.png)
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Car {
+public:
+  virtual void show() = 0;
+};
+
+class Bmw : public Car {
+public:
+  void show() { cout << "BMW, 配置：基类"; }
+};
+
+class Audi : public Car {
+public:
+  void show() { cout << "Audi, 配置：基类"; }
+};
+
+class Benz : public Car {
+public:
+  void show() { cout << "Bnze, 配置：基类"; }
+};
+
+// 装饰器 1 : 定速巡航
+class ConcreteDecorator01 : public Car {
+public:
+  ConcreteDecorator01(Car *p) : pCar(p) {}
+  void show() {
+    pCar->show();
+    cout << "，定速巡航";
+  }
+
+private:
+  Car *pCar;
+};
+
+// 装饰器 2 : 定速刹车
+class ConcreteDecorator02 : public Car {
+public:
+  ConcreteDecorator02(Car *p) : pCar(p) {}
+  void show() {
+    pCar->show();
+    cout << "，定速刹车";
+  }
+
+private:
+  Car *pCar;
+};
+
+// 装饰器 3 : 车道偏离
+class ConcreteDecorator03 : public Car {
+public:
+  ConcreteDecorator03(Car *p) : pCar(p) {}
+  void show() {
+    pCar->show();
+    cout << "，车道偏离";
+  }
+
+private:
+  Car *pCar;
+};
+
+int main() {
+  Car *p1 = new ConcreteDecorator01(new Bmw());
+  p1 = new ConcreteDecorator01(p1);
+  p1->show();
+  cout << endl;
+
+  Car *p2 = new ConcreteDecorator02(new Audi());
+  p2->show();
+  cout << endl;
+
+  Car *p3 = new ConcreteDecorator03(new Benz());
+  p3->show();
+  cout << endl;
+
+  return 0;
+}
+```
+
+## 5.5 适配器（Adapter）模式
+
+适配器模式（Adapter）是一种结构型设计模式，**它能使接口不兼容的对象能够相互合作**。
+
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+class VGA { // VGA 接口的抽象类
+public:
+  virtual void play() = 0;
+};
+
+class TV01 : public VGA { // VGA 接口的投影仪
+public:
+  void play() { cout << "VGA-----TV01" << endl; }
+};
+
+// 实现一个电脑类，它有一个接口，可以连接 VGA 设备
+class Computer {
+public:
+  // 由于电脑只有一个 VGA 接口，所以只能连接一个 VGA 设备
+  void playVideo(VGA *pVGA) { pVGA->play(); }
+};
+
+// 进了一批新的投影仪，但是它们都是 HDMI 接口的，不能直接连接到电脑上
+class HDMI {
+public:
+  virtual void play() = 0;
+};
+
+class TV02 : public HDMI { // HDMI 接口的投影仪
+public:
+  void play() { cout << "HDMI-----TV02" << endl; }
+};
+
+// 适配器模式
+class Adapter : public VGA {
+public:
+  Adapter(HDMI *pHDMI) : m_pHDMI(pHDMI) {}
+  void play() { m_pHDMI->play(); }
+
+private:
+  HDMI *m_pHDMI;
+};
+
+int main() {
+  Computer computer;
+  computer.playVideo(new TV01());
+  // computer.playVideo(new TV02()); // cannot convert ‘TV02*’ to ‘VGA*’
+  /*
+   * 接口不兼容，无法连接
+   *   1. 换一个支持 HDMI 接口的电脑，即代码重构
+   *   2. 买一个转接头，即适配器模式
+   */
+  computer.playVideo(new Adapter(new TV02()));
+  return 0;
+}
+```
+
+## 5.6 观察者-监听者（Observer）/发布-订阅 模式
+
+### 5.6.1 观察者模式简介
+
+观察者模式（Observer Pattern），也叫监听者模式（Listener Pattern）或发布-订阅模式（Publish-Subscribe Pattern），用于解耦事件的观察和事件最终的处理方式。
+
+**例子**
+
+假设有一组数据，生成了多个不同的界面来显示，如曲线图、圆饼图、柱状图等。当底层数据发生改变时，所有基于同一组数据的图像显示都需要修改。可以有**两种实现方式**：
+
+1. 所有图形界面模块都去观察底层数据是否发生变化，如果变化，则读取数据，修改图像显示。
+2. 一个类似 Observer 观察者的模块专门用来观察数据变化。对某组数据感兴趣的图形界面模块可以向 Observer 注册，表示对哪些数据的变化感兴趣。当 Observer 观察到数据变化时，会及时通知对这组数据变化感兴趣的图形界面模块执行相应的代码操作。
+
+第二种方式解耦了事件的观察和事件的处理，各个图形界面模块相当于监听者（Listener）或订阅者（Subscriber），观察数据变化的模块称作观察者（Observer）或发布者（Publisher）。
+
+### 5.6.2 简述 MVC 模式
+
+MVC 模式（Model-View-Controller）起初用于 WEB 开发，通过模块的高内聚和低耦合，逐渐被广泛应用于各种软件开发领域。MVC 模式是一种软件整体的架构思想，不是 OOP 面向对象的设计模式。
+
+- **M**：Model，数据模型层，表示系统底层的数据操作模块。
+- **V**：View，视图显示层，表示系统的数据展示模块。
+- **C**：Controller，控制层，表示监听用户事件交互和分发处理事件的模块。
+
+MVC 模式通过 Controller 监听用户请求事件，通过访问 Model 数据层对数据进行增删改查操作，然后找到合适的 View 视图用相应的数据进行渲染生成最终的显示视图，并返回给用户。
+
+### 5.6.3 观察者模式的 UML 图
+
+观察者模式的类设计关系如下图所示：
+
+![20240611171313](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240611171313.png)
+
+- **Listener** 是对某些事件感兴趣的监听者。
+- **Listener1** 和 **Listener2** 是监听者的具体实现类。
+- **Observer** 是观察者，负责具体的事件观察并通知监听者处理已发生的事件。
+
+### 5.6.4 观察者模式的代码实现
+
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <list>
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+// 定义监听者基类
+class Listener {
+public:
+  // 基类构造函数
+  Listener(string name) : _name(name) {}
+  // 监听者处理消息事件的纯虚函数接口
+  virtual void handleMessage(int msgid) = 0;
+
+protected:
+  string _name;
+};
+
+// 一个具体的监听者类 Listener1
+class Listener1 : public Listener {
+public:
+  Listener1(string name) : Listener(name) {}
+  // Listener1处理自己感兴趣的事件
+  void handleMessage(int msgid) {
+    cout << "listener:" << _name << " recv:" << msgid << " msg, handle it now!"
+         << endl;
+  }
+};
+
+// 一个具体的监听者类 Listener2
+class Listener2 : public Listener {
+public:
+  Listener2(string name) : Listener(name) {}
+  // Listener2 处理自己感兴趣的事件
+  void handleMessage(int msgid) {
+    cout << "listener:" << _name << " recv:" << msgid << " msg, handle it now!"
+         << endl;
+  }
+};
+// 实现观察者
+class Observer {
+public:
+  /*
+  params:
+  1. Listener *pListener: 具体的监听者
+  2. int msgid： 监听者感兴趣的事件
+  该函数接口主要用于监听者向观察者注册感兴趣的事件
+  */
+  void registerListener(Listener *pListener, int msgid) {
+    auto it = listenerMap.find(msgid);
+    if (it == listenerMap.end()) {
+      // 没人对 msgid 事件感兴趣过，第一次注册
+      listenerMap[msgid].push_front(pListener);
+    } else {
+      // 直接把当前pListener添加到对msgid事件感兴趣的list列表中
+      it->second.push_front(pListener);
+    }
+  }
+  /*
+  params:
+  1. int msgid：观察到发生的事件 id
+  该函数接口主要用于观察者观察到事件发生，并转发到对该事件感兴趣
+  的监听者
+  */
+  void dispatchMessage(int msgid) {
+    auto it = listenerMap.find(msgid);
+    if (it != listenerMap.end()) {
+      for_each(it->second.begin(), it->second.end(),
+               [&msgid](Listener *pListener) -> void {
+                 // 观察者派生事件到感兴趣的监听者，监听者通过handleMessage接口负责事件的具体处理操作
+                 pListener->handleMessage(msgid);
+               });
+    }
+  }
+
+private:
+  // 存储监听者注册的感兴趣的事件
+  unordered_map<int, list<Listener *>> listenerMap;
+};
+int main() {
+  Listener *p1 = new Listener1("高海山");
+  Listener *p2 = new Listener2("冯丽婷");
+
+  Observer obser;
+  // 监听者p1注册1，2，3号事件
+  obser.registerListener(p1, 1);
+  obser.registerListener(p1, 2);
+  obser.registerListener(p1, 3);
+  // 监听者p2注册1，3号事件
+  obser.registerListener(p2, 1);
+  obser.registerListener(p2, 3);
+
+  // 模拟事件的发生
+  int msgid;
+  for (;;) {
+    cout << "输入事件id:";
+    cin >> msgid;
+    if (-1 == msgid)
+      break;
+    // 通过用户手动输入msgid模拟事件发生，此处观察者派发事件
+    obser.dispatchMessage(msgid);
+  }
+
+  return 0;
+}
+```
+
+**代码运行结果**
+
+```cpp
+输入事件id:1
+listener:冯丽婷 recv:1 msg, handle it now!
+listener:高海山 recv:1 msg, handle it now!
+输入事件id:2
+listener:高海山 recv:2 msg, handle it now!
+输入事件id:3
+listener:冯丽婷 recv:3 msg, handle it now!
+listener:高海山 recv:3 msg, handle it now!
+输入事件id:4
+输入事件id:-1
+```
+
+> 通过代码可以看到，监听者 Listener 向观察者 Observer 事先注册好它需要处理的感兴趣的事件后，然后就可以做自己的事情，当 Observer 观察到有相应的事件发生时，会对事件进行派发，通知对该事件感兴趣的监听者处理该事件，这就是观察者模式。
+
+### 5.6.5 多线程中的观察者模式
+
+考虑观察者 Observer 独立运行在一个线程环境中，当它观察到事件发生时，通知监听者处理事件的代码如下：
+
+```cpp
+for_each(it->second.begin(), it->second.end(),
+         [&msgid](Listener *pListener) -> void {
+           // 观察者派生事件到感兴趣的监听者，监听者通过handleMessage接口负责事件的具体处理操作
+           pListener->handleMessage(msgid);
+         });
+```
+
+遍历一个 `list<Listener*>` 的列表，然后回调每一个监听者的 `handleMessage` 方法进行事件派发，那么这就涉及到在多线程环境中，共享对象的线程安全问题（解决方法就是使用智能指针）
+
+上面代码通过访问 `Listener*`，**也就是指向监听者的指针，在调用 `handleMessage` 时，其实在多线程环境中，肯定不明确此时监听者对象是否还存活，或是已经在其它线程中被析构了，此时再去通知这样的监听者，肯定是有问题的**，也就是说，当 `Observer` 观察者运行在独立的线程中时，在通知监听者处理该事件时，应该先判断监听者对象是否存活，如果监听者对象已经析构，那么不用通知，并且需要从 `map` 表中删除这样的监听者对象。
+
+**使用 `shared_ptr` 和 `weak_ptr` 智能指针，上面使用 `Listener*` 裸指针在多线程环境中肯定存在多线程访问共享对象的线程安全问题**
+
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <list>
+#include <memory>
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+// 定义监听者基类
+class Listener {
+public:
+  // 基类构造函数
+  Listener(string name) : _name(name) {}
+  // 监听者处理消息事件的纯虚函数接口
+  virtual void handleMessage(int msgid) = 0;
+
+protected:
+  string _name;
+};
+// 一个具体的监听者类Listener1
+class Listener1 : public Listener {
+public:
+  Listener1(string name) : Listener(name) {}
+  // Listener1处理自己感兴趣的事件
+  void handleMessage(int msgid) {
+    cout << "listener:" << _name << " recv:" << msgid << " msg, handle it now!"
+         << endl;
+  }
+};
+// 一个具体的监听者类Listener2
+class Listener2 : public Listener {
+public:
+  Listener2(string name) : Listener(name) {}
+  // Listener2处理自己感兴趣的事件
+  void handleMessage(int msgid) {
+    cout << "listener:" << _name << " recv:" << msgid << " msg, handle it now!"
+         << endl;
+  }
+};
+// 实现观察者用强弱智能指针，解决多线程访问共享对象的线程安全问题
+class Observer {
+public:
+  /*
+  params:
+  1. Listener *pListener: 具体的监听者
+  2. int msgid： 监听者感兴趣的事件
+  该函数接口主要用于监听者向观察者注册感兴趣的事件
+  */
+  void registerListener(weak_ptr<Listener> pwListener, int msgid) {
+    auto it = listenerMap.find(msgid);
+    if (it == listenerMap.end()) {
+      // 没人对msgid事件感兴趣过，第一次注册
+      listenerMap[msgid].push_front(pwListener);
+    } else {
+      // 直接把当前pListener添加到对msgid事件感兴趣的list列表中
+      it->second.push_front(pwListener);
+    }
+  }
+  /*
+  params:
+  1. int msgid：观察到发生的事件id
+  该函数接口主要用于观察者观察到事件发生，并转发到对该事件感兴趣
+  的监听者
+  */
+  void dispatchMessage(int msgid) {
+    auto it = listenerMap.find(msgid);
+    if (it != listenerMap.end()) {
+      for (auto it1 = it->second.begin(); it1 != it->second.end(); ++it1) {
+        // 智能指针的提升操作，用来判断监听者对象是否存活
+        shared_ptr<Listener> ps = it1->lock();
+        // 监听者对象如果存活，才通知处理事件
+        if (ps != nullptr) {
+          ps->handleMessage(msgid);
+        } else {
+          // 监听者对象已经析构，从map中删除这样的监听者对象
+          it1 = it->second.erase(it1);
+        }
+      }
+    }
+  }
+
+private:
+  // 存储监听者注册的感兴趣的事件
+  unordered_map<int, list<weak_ptr<Listener>>> listenerMap;
+};
+int main() {
+  shared_ptr<Listener> p1(new Listener1("高海山"));
+  shared_ptr<Listener> p2(new Listener2("冯丽婷"));
+
+  Observer obser;
+  // 监听者p1注册1，2，3号事件
+  obser.registerListener(p1, 1);
+  obser.registerListener(p1, 2);
+  obser.registerListener(p1, 3);
+  // 监听者p2注册1，3号事件
+  obser.registerListener(p2, 1);
+  obser.registerListener(p2, 3);
+
+  // 模拟事件的发生
+  int msgid;
+  for (;;) {
+    cout << "输入事件id:";
+    cin >> msgid;
+    if (-1 == msgid)
+      break;
+    // 通过用户手动输入msgid模拟事件发生，此处观察者派发事件
+    obser.dispatchMessage(msgid);
+  }
+
+  return 0;
+}
+```
+
+# 6 C++11 容器 `emplace` 方法原理剖析
+
+`emplace` 方法是 C++11 新增的一个方法，用于在容器中直接构造对象，而不是先构造一个临时对象，然后再调用拷贝构造函数。`emplace` 方法的使用方式和 `push_back` 方法类似，只是 `emplace` 方法的参数是直接传递给构造函数的，而 `push_back` 方法的参数是传递给拷贝构造函数的。
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Test {
+public:
+  Test(int a) { cout << "Test(int)" << endl; }
+  Test(int a, int b) { cout << "Test(int, int)" << endl; }
+  ~Test() { cout << "~Test()" << endl; }
+  Test(const Test &t) { cout << "Test(const Test &)" << endl; }
+  Test(Test &&) { cout << "Test(Test &&)" << endl; }
+};
+
+int main() {
+  Test t1(10);
+  vector<Test> v;
+  v.reserve(100);
+
+  cout << "=============直接插入对象，两个是没有区别的============" << endl;
+  v.push_back(t1);
+  v.emplace_back(t1);
+
+  cout << "=============直接插入临时对象，两个也是没有区别的============"
+       << endl;
+  v.push_back(Test(20));
+  v.emplace_back(Test(20));
+  cout << "=============区别所在========" << endl;
+  // 给 emplace_back 传递的参数，会直接传递给构造函数，
+  // 而 push_back 会先构造一个临时对象，然后再调用拷贝构造函数
+  v.emplace_back(30);
+  v.emplace_back(30, 40);
+  cout << "=====================" << endl;
+
+  /*
+   * map<int, string> m;
+   * m.insert(pair<int, string>(1, "hello")); // 临时对象，拷贝构造
+   * m.emplace(1, "hello"); // 直接传递参数，不需要拷贝构造
+   */
+  return 0;
+}
+```
+
+
+# 7 面向对象编程实践
+
+## 7.1 深度遍历搜索迷宫路径
+
+## 7.2 广度遍历搜索迷宫路径找出最短路径
+
+## 7.3 大数加减法
+
+## 7.4 海量数据查重以及求 top k 问题
+
+## 7.5 数字化男女匹配问题
+
+# 8 校招 C++ 面经讲解
+
+# 9 应聘 C++ 研发岗简历模板

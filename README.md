@@ -18,8 +18,8 @@
   - [JavaScript](#javascript)
 - [References](#references)
 
-
 ## 1 Linux 运维
+
 ### Linux
 
 - [《Linux 就该这么学》](https://github.com/Corner430/study-notes/blob/main/book.md#linux-就该这么学)
@@ -31,7 +31,6 @@
 - [《Vim 实用技巧》](https://github.com/Corner430/study-notes/blob/main/book.md#Vim-实用技巧)
 - [Vim 笔记](https://github.com/Corner430/study-notes/blob/main/Linux运维/vim笔记.md)
 
-
 ## 2 Docker
 
 - [Docker 笔记](https://github.com/Corner430/study-notes/blob/main/docker/Docker笔记.md)
@@ -39,7 +38,7 @@
 
 ## 3 python
 
-- [python编程 从入门到实践.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#python编程-从入门到实践)
+- [python 编程 从入门到实践.pdf](https://github.com/Corner430/study-notes/blob/main/book.md#python编程-从入门到实践)
 - [python 基础](https://github.com/Corner430/study-notes/blob/main/python/python笔记.md)
 
 ## 4 cpp
@@ -55,7 +54,7 @@
 - [cpp 中级笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp中级笔记.md)
 - [cpp 高级笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp高级笔记.md)
 - [SGI 内存池 和 nginx 内存池](https://github.com/Corner430/study-notes/blob/main/cpp/SGI和nginx内存池.md)
-- [SGI STL源码](https://github.com/Corner430/study-notes/tree/main/cpp/SGI-STL)
+- [SGI STL 源码](https://github.com/Corner430/study-notes/tree/main/cpp/SGI-STL)
 
 ## 5 工具
 
@@ -79,36 +78,34 @@
 
 - [《网络是怎样连接的》](https://github.com/Corner430/study-notes/blob/main/book.md#网络是怎样连接的)
 - [《计算机网络 第七版（谢希仁）》](https://github.com/Corner430/study-notes/blob/main/book.md#计算机网络)
-- [《TCP/IP网络编程》](https://github.com/Corner430/study-notes/blob/main/book.md#TCP-IP网络编程)
+- [《TCP/IP 网络编程》](https://github.com/Corner430/study-notes/blob/main/book.md#TCP-IP网络编程)
 
 - [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的学习笔记.md)
 - [计算机网络学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络学习笔记.md)
-- [TCP/IP网络编程学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/TCP-IP网络编程/README.md)
-
+- [TCP/IP 网络编程学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/TCP-IP网络编程/README.md)
 
 ## 8 数据库
 
 ### MySQL
 
-- [《MySQL必知必会》](https://github.com/Corner430/study-notes/blob/main/book.md#MySQL必知必会)
+- [《MySQL 必知必会》](https://github.com/Corner430/study-notes/blob/main/book.md#MySQL必知必会)
 - [《数据库系统概念》](https://github.com/Corner430/study-notes/blob/main/book.md#数据库系统概念)
 - [MySQL 学习笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql学习笔记.md)
 
-
 ## 9 设计模式
 
-- [设计模式学习笔记](https://github.com/Corner430/study-notes/blob/main/设计模式/设计模式学习笔记.md)
+- [设计模式学习笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp高级笔记.md#5-设计模式)
 
 ## 10 前端
 
 ### HTML 和 CSS
 
-- [HTML学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/HTML学习笔记.md)
-- [CSS学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/CSS学习笔记.md)
+- [HTML 学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/HTML学习笔记.md)
+- [CSS 学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/CSS学习笔记.md)
 
 ### JavaScript
 
-- [JavaScript学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/JavaScript/JavaScript学习笔记.md)
+- [JavaScript 学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/JavaScript/JavaScript学习笔记.md)
 
 ## References
 

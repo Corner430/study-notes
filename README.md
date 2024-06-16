@@ -55,6 +55,7 @@
 - [cpp 高级笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp高级笔记.md)
 - [SGI 内存池 和 nginx 内存池](https://github.com/Corner430/study-notes/blob/main/cpp/SGI和nginx内存池.md)
 - [SGI STL 源码](https://github.com/Corner430/study-notes/tree/main/cpp/SGI-STL)
+- [数据库连接池](https://github.com/Corner430/study-notes/blob/main/cpp/数据库连接池.md)
 
 ## 5 工具
 

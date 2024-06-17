@@ -7972,11 +7972,64 @@ public:
 [332. 重新安排行程](https://leetcode-cn.com/problems/reconstruct-itinerary/description/)
 
 ```python
+class Solution:
+    def __init__(self):
+        self.graph = defaultdict(lambda: defaultdict(int))
+        self.res = []
 
+    def backtracking(self, num):
+        if len(self.res) == num:
+            return True
+        for to, count in sorted(self.graph[self.res[-1]].items()):
+            if count > 0:
+                self.res.append(to)
+                self.graph[self.res[-2]][to] -= 1
+                if self.backtracking(num):
+                    return True
+                self.res.pop()
+                self.graph[self.res[-1]][to] += 1
+        return False
+
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        for ticket in tickets:
+            self.graph[ticket[0]][ticket[1]] += 1
+        self.res.append("JFK")
+        self.backtracking(len(tickets) + 1)
+        return self.res
 ```
 
 ```cpp
+// 使用 map 保存 graph，使用 map 保存 graph[to]，并且使用 map 保存 graph[to] 的次数
+class Solution {
+  unordered_map<string, map<string, int>> graph;
+  vector<string> res;
 
+private:
+  void backtracking(const int &num) {
+    if (res.size() == num)
+      return;
+    for (auto &[to, count] : graph[res.back()]) {
+      if (count > 0) {
+        res.push_back(to);
+        --count;
+        backtracking(num);
+        if (res.size() == num) // 防止 res.size() == num 时回溯，导致结果被 pop_back
+          return;
+        res.pop_back();
+        ++count;
+      }
+    }
+  }
+
+public:
+  vector<string> findItinerary(vector<vector<string>> &tickets) {
+    for (auto &ticket : tickets)
+      ++graph[ticket[0]][ticket[1]];
+    res.push_back("JFK");
+    backtracking(tickets.size() + 1);
+    return res;
+  }
+};
 ```
 
 ### 51. N皇后
@@ -7984,9 +8037,94 @@ public:
 [51. N皇后](https://leetcode-cn.com/problems/n-queens/description/)
 
 ```python
+class Solution:
+    def __init__(self):
+        self.res = []
+
+    def isValid(self, row, col, chessboard):
+        # Check the column for a queen
+        for i in range(row):
+            if chessboard[i][col] == 'Q':
+                return False
+
+        # Check the 45 degree diagonal
+        i, j = row - 1, col + 1
+        while i >= 0 and j < len(chessboard):
+            if chessboard[i][j] == 'Q':
+                return False
+            i -= 1
+            j += 1
+
+        # Check the 135 degree diagonal
+        i, j = row - 1, col - 1
+        while i >= 0 and j >= 0:
+            if chessboard[i][j] == 'Q':
+                return False
+            i -= 1
+            j -= 1
+
+        return True
+
+    def backtracking(self, row, chessboard):
+        if row == len(chessboard):
+            self.res.append([''.join(row) for row in chessboard])
+            return
+
+        for col in range(len(chessboard)):
+            if self.isValid(row, col, chessboard):
+                chessboard[row][col] = 'Q'
+                self.backtracking(row + 1, chessboard)
+                chessboard[row][col] = '.'
+
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        chessboard = [['.' for _ in range(n)] for _ in range(n)]
+        self.backtracking(0, chessboard)
+        return self.res
 ```
 
 ```cpp
+class Solution {
+private:
+  vector<vector<string>> res;
+  bool isValid(const int &row, const int &col,
+               const vector<string> &chessboard) {
+    for (int i = 0; i < row; ++i)
+      if (chessboard[i][col] == 'Q')
+        return false;
+
+    for (int i = row - 1, j = col + 1; i >= 0 && j < chessboard.size();
+         --i, ++j)
+      if (chessboard[i][j] == 'Q')
+        return false;
+
+    for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; --i, --j)
+      if (chessboard[i][j] == 'Q')
+        return false;
+
+    return true;
+  }
+
+  void backtracking(int row, vector<string> &chessboard) {
+    if (row == chessboard.size()) {
+      res.push_back(chessboard);
+      return;
+    }
+    for (int col = 0; col < chessboard.size(); ++col) {
+      if (isValid(row, col, chessboard)) {
+        chessboard[row][col] = 'Q';
+        backtracking(row + 1, chessboard);
+        chessboard[row][col] = '.';
+      }
+    }
+  }
+
+public:
+  vector<vector<string>> solveNQueens(int n) {
+    vector<string> chessboard(n, string(n, '.'));
+    backtracking(0, chessboard);
+    return res;
+  }
+};
 ```
 
 ### 37. 解数独
@@ -7994,9 +8132,150 @@ public:
 [37. 解数独](https://leetcode-cn.com/problems/sudoku-solver/description/)
 
 ```python
+class Solution:
+    def isValid(self, row, col, k, board):
+        for j in range(9):
+            if board[row][j] == k:
+                return False
+
+        for i in range(9):
+            if board[i][col] == k:
+                return False
+
+        startrow, startcol = (row // 3) * 3, (col // 3) * 3
+        for i in range(startrow, startrow + 3):
+            for j in range(startcol, startcol + 3):
+                if board[i][j] == k:
+                    return False
+
+        return True
+
+    def backtracking(self, board, row, col):
+        if row == 9:
+            return True
+
+        if col == 9:
+            return self.backtracking(board, row + 1, 0)
+
+        if board[row][col] != '.':
+            return self.backtracking(board, row, col + 1)
+
+        for k in '123456789':
+            if self.isValid(row, col, k, board):
+                board[row][col] = k
+                if self.backtracking(board, row, col + 1):
+                    return True
+                board[row][col] = '.'
+
+        return False
+
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        self.backtracking(board, 0, 0)
 ```
 
 ```cpp
+class Solution {
+private:
+  bool isValid(int row, int col, char k, vector<vector<char>> &board) {
+    for (int j = 0; j < 9; ++j) // 查看同行
+      if (board[row][j] == k)
+        return false;
+
+    for (int i = 0; i < 9; ++i) // 查看同列
+      if (board[i][col] == k)
+        return false;
+
+    int startrow = (row / 3) * 3;
+    int startcol = (col / 3) * 3;
+    for (int i = startrow; i < startrow + 3; ++i)
+      for (int j = startcol; j < startcol + 3; ++j)
+        if (board[i][j] == k)
+          return false;
+
+    return true;
+  }
+
+  bool backtracking(vector<vector<char>> &board) {
+    for (int i = 0; i < 9; ++i) {
+      for (int j = 0; j < 9; ++j) {
+        if (board[i][j] != '.')
+          continue;
+        for (char k = '1'; k <= '9'; ++k) {
+          if (isValid(i, j, k, board)) {
+            board[i][j] = k;
+            if (backtracking(board))
+              return true;
+            board[i][j] = '.';
+          }
+        }
+        return false;
+      }
+    }
+    return true;
+  }
+
+public:
+  void solveSudoku(vector<vector<char>> &board) { backtracking(board); }
+};
+
+// 优化后
+class Solution {
+private:
+  bool isValid(int row, int col, char k, vector<vector<char>> &board) {
+    for (int j = 0; j < 9; ++j)
+      if (board[row][j] == k)
+        return false;
+
+    for (int i = 0; i < 9; ++i)
+      if (board[i][col] == k)
+        return false;
+
+    int startrow = (row / 3) * 3;
+    int startcol = (col / 3) * 3;
+    for (int i = startrow; i < startrow + 3; ++i)
+      for (int j = startcol; j < startcol + 3; ++j)
+        if (board[i][j] == k)
+          return false;
+
+    return true;
+  }
+
+  void backtracking(vector<vector<char>> &board, int row, int col, bool &flag) {
+    if (row == 9) {
+      flag = true;
+      return;
+    }
+
+    if (col == 9) {
+      backtracking(board, row + 1, 0, flag);
+      return;
+    }
+
+    if (board[row][col] != '.') {
+      backtracking(board, row, col + 1, flag);
+      return;
+    }
+
+    for (char k = '1'; k <= '9'; ++k) {
+      if (isValid(row, col, k, board)) {
+        board[row][col] = k;
+        backtracking(board, row, col + 1, flag);
+        if (flag)
+          return;
+        board[row][col] = '.';
+      }
+    }
+  }
+
+public:
+  void solveSudoku(vector<vector<char>> &board) {
+    bool flag = false;
+    backtracking(board, 0, 0, flag);
+  }
+};
 ```
 
 

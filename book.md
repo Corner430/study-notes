@@ -12,6 +12,7 @@
   - [C++ Primer](#c-primer)
   - [程序员的自我修养](#程序员的自我修养)
   - [STL 源码剖析](#stl-源码剖析)
+  - [Linux 高性能服务器编程](#linux-高性能服务器编程)
 - [5 python](#5-python)
   - [python编程 从入门到实践 第2版](#python编程-从入门到实践-第2版)
 - [6 数据结构与算法](#6-数据结构与算法)
@@ -48,6 +49,8 @@
 ### [程序员的自我修养](https://reader-service.fcdn.sk/40eadf01e5be6f0aa8b5a84d4b3afc9ce800a682eac36764662c3361a86786be?download_location=https://zh.singlelogin.re/dl/5495924/f60584)
 
 ### [STL 源码剖析](https://reader-service.fcdn.sk/457889351604d723010cd7fee88110f3faa5ec4ceb104debdc7636b8e0120fcb?download_location=https://zh.singlelogin.re/dl/3509504/1d615a)
+
+### [Linux 高性能服务器编程](https://book.douban.com/subject/24722611/)
 
 ## 5 python
 

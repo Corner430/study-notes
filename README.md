@@ -45,6 +45,7 @@
 
 - [《C Primer Plus》](https://github.com/Corner430/study-notes/blob/main/book.md#c-primer-plus)
 - [《C++ Primer Plus》](https://github.com/Corner430/study-notes/blob/main/book.md#C-primer-plus-1)
+- [Linux 高性能服务器编程](https://github.com/Corner430/study-notes/blob/main/book.md#Linux-高性能服务器编程)
 - [《深入理解计算机系统》](https://github.com/Corner430/study-notes/blob/main/book.md#深入理解计算机系统)
 - [《程序员的自我修养》](https://github.com/Corner430/study-notes/blob/main/book.md#程序员的自我修养)
 - [《STL 源码剖析》](https://github.com/Corner430/study-notes/blob/main/book.md#STL-源码剖析)
@@ -56,6 +57,7 @@
 - [SGI 内存池 和 nginx 内存池](https://github.com/Corner430/study-notes/blob/main/cpp/SGI和nginx内存池.md)
 - [SGI STL 源码](https://github.com/Corner430/study-notes/tree/main/cpp/SGI-STL)
 - [数据库连接池](https://github.com/Corner430/study-notes/blob/main/cpp/数据库连接池.md)
+- [muduo 网络库](https://github.com/Corner430/study-notes/blob/main/cpp/muduo网络库.md)
 
 ## 5 工具
 

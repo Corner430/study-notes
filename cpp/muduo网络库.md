@@ -642,27 +642,26 @@ int main() {
 
 ### 3.3 IO 多路复用之 `epoll`
 
+![20240617162510](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240617162510.png)
+
 #### 3.3.1 `epoll` 提供的三个主要函数
 
-1. **创建 `epoll` 对象**
+1. `int epoll_create1(int flags)`：
 
-   ```c
-   // 建立一个 epoll 对象，并返回它的 id
-   int epoll_create(int size);
-   ```
+   - 用于创建一个`epoll`实例，并返回一个文件描述符。
+   - `flags`参数是一个位掩码，可以是 0 或者`EPOLL_CLOEXEC`。如果使用`EPOLL_CLOEXEC`标志，则`epoll`实例会在`exec`调用时自动关闭。
+   - 如果成功，返回一个非负整数作为`epoll`实例的文件描述符；失败时返回-1，并设置`errno`。
 
-2. **事件注册函数**
+2. `int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)`：
 
-   ```c
-   // 将需要监听的事件和需要监听的 fd 交给 epoll 对象
-   int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
-   ```
+   - 用于向`epoll`实例中添加、修改或删除事件。
+   - `epfd`是`epoll`实例的文件描述符；`op`是操作类型，可以是`EPOLL_CTL_ADD`（添加事件）、`EPOLL_CTL_MOD`（修改事件）或`EPOLL_CTL_DEL`（删除事件）；`fd`是要操作的文件描述符；`event`是指向`epoll_event`结构体的指针，包含要关注的事件类型和相关数据。
+   - 如果成功，返回 0；失败时返回-1，并设置`errno`。
 
-3. **等待注册的事件被触发或超时**
-   ```c
-   // 等待注册的事件被触发或者 timeout 发生
-   int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
-   ```
+3. `int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)`：
+   - 用于等待事件的发生。
+   - `epfd`是`epoll`实例的文件描述符；`events`是一个数组，用于存储发生的事件；`maxevents`是`events`数组的大小，表示最多可以存储多少个事件；`timeout`是超时时间，单位为毫秒，传入-1 表示阻塞直到有事件发生。
+   - 函数会阻塞，直到有事件发生或超时。如果有事件发生，则将事件存储在`events`数组中，并返回发生事件的数量；如果超时，则返回 0；如果出错，则返回-1，并设置`errno`。
 
 #### 3.3.2 `epoll` 的优势
 
@@ -683,14 +682,229 @@ int main() {
 
 #### 3.3.3 `epoll` 的触发模式
 
-1. **LT（水平触发）模式**
+1. **LT（水平触发）模式：内核数据没被读完，就会一直上报数据**
 
    - 当 `epoll_wait` 检查到描述符事件到达时，会通知进程。进程可以不立即处理该事件，下次调用 `epoll_wait` 时会再次通知进程。此模式是默认模式，支持阻塞和非阻塞操作。
 
-2. **ET（边缘触发）模式**
+2. **ET（边缘触发）模式：内核数据只上报一次**
+
    - 与 LT 模式不同，通知进程后，进程必须立即处理事件。下次调用 `epoll_wait` 时不会再得到事件通知。ET 模式减少了事件重复触发的次数，因此效率更高。此模式只支持非阻塞操作，以避免由于一个文件描述符的阻塞读/写操作导致处理多个文件描述符的任务被饿死。
 
-![20240617162510](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240617162510.png)
+> muduo 采用的是 LT
+
+- 不会丢失数据或者消息
+  - 应用没有读取完数据，内核是会不断上报的
+- 低延迟处理
+  - 每次读数据只需要一次系统调用；照顾了多个连接的公平性，不会因为某个连接上的数据量过大而影响其他连接处理消息
+- 跨平台处理
+  - 像 `select` 一样可以跨平台使用
+
+#### 3.3.4 示例代码
+
+```cpp
+// epoll_server.cpp
+#include <cstring>
+#include <iostream>
+#include <netinet/in.h>
+#include <sys/epoll.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+#define PORT 8080
+#define MAX_EVENTS 10
+
+int main() {
+  int server_fd, new_socket;     // 服务器套接字和新连接套接字
+  struct sockaddr_in address;    // 服务器地址
+  int opt = 1;                   // 套接字选项
+  int addrlen = sizeof(address); // 地址长度
+  char buffer[1024] = {0};       // 用来存储客户端消息
+  const char *hello = "Hello from server"; // 服务器消息
+
+  // 创建套接字
+  if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+    perror("socket failed");
+    exit(EXIT_FAILURE);
+  }
+
+  // 设置套接字选项，允许重用地址和端口
+  if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,
+                 sizeof(opt))) {
+    perror("setsockopt");
+    exit(EXIT_FAILURE);
+  }
+
+  address.sin_family = AF_INET;         // 使用 IPv4 地址
+  address.sin_addr.s_addr = INADDR_ANY; // 使用任意地址
+  address.sin_port = htons(PORT);       // 设置端口号
+
+  // 绑定套接字到端口
+  if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
+    perror("bind failed");
+    exit(EXIT_FAILURE);
+  }
+
+  // 监听端口，最大连接数为 3
+  if (listen(server_fd, 3) < 0) {
+    perror("listen");
+    exit(EXIT_FAILURE);
+  }
+
+  int epoll_fd = epoll_create1(0); // 创建 epoll 实例
+  if (epoll_fd == -1) {
+    perror("epoll_create1");
+    exit(EXIT_FAILURE);
+  }
+
+  struct epoll_event event, events[MAX_EVENTS]; // epoll 事件
+  event.events = EPOLLIN;                       // 监听读事件
+  event.data.fd = server_fd;                    // 监听服务器套接字
+
+  // 将服务器套接字加入 epoll 事件中
+  if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, server_fd, &event) == -1) {
+    perror("epoll_ctl");
+    exit(EXIT_FAILURE);
+  }
+
+  while (true) {
+    int num_events = epoll_wait(epoll_fd, events, MAX_EVENTS, -1);
+    if (num_events == -1) {
+      perror("epoll_wait");
+      exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < num_events; ++i) {
+      if (events[i].data.fd == server_fd) {
+        // 接受新连接
+        if ((new_socket = accept(server_fd, (struct sockaddr *)&address,
+                                 (socklen_t *)&addrlen)) < 0) {
+          perror("accept");
+          exit(EXIT_FAILURE);
+        }
+
+        // 将新连接加入 epoll 事件中
+        event.events = EPOLLIN;
+        event.data.fd = new_socket;
+        if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, new_socket, &event) == -1) {
+          perror("epoll_ctl");
+          exit(EXIT_FAILURE);
+        }
+      } else {
+        // 处理客户端消息
+        int valread = read(events[i].data.fd, buffer, 1024);
+        if (valread == 0) {
+          // 客户端断开连接，从 epoll 事件中删除，并关闭套接字
+          epoll_ctl(epoll_fd, EPOLL_CTL_DEL, events[i].data.fd, NULL);
+          close(events[i].data.fd);
+        } else {
+          // 回复客户端消息
+          send(events[i].data.fd, hello, strlen(hello), 0);
+        }
+      }
+    }
+  }
+
+  close(server_fd);
+  return 0;
+}
+```
+
+```cpp
+// epoll_client.cpp
+#include <arpa/inet.h>
+#include <cstring>
+#include <iostream>
+#include <sys/socket.h>
+#include <unistd.h>
+
+#define PORT 8080
+#define SERVER_ADDR "127.0.0.1"
+
+int main() {
+  int sock = 0, valread;                   // 客户端套接字和读取的值
+  struct sockaddr_in serv_addr;            // 服务器地址
+  const char *hello = "Hello from client"; // 客户端消息
+  char buffer[1024] = {0}; // 用来存储服务器返回的消息
+
+  // 创建套接字
+  if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+    std::cerr << "\nSocket creation error \n";
+    return -1;
+  }
+
+  serv_addr.sin_family = AF_INET;   // 使用 IPv4 地址
+  serv_addr.sin_port = htons(PORT); // 设置端口号
+
+  // 将点分十进制的 IP 地址转换为网络字节序的二进制值
+  if (inet_pton(AF_INET, SERVER_ADDR, &serv_addr.sin_addr) <= 0) {
+    std::cerr << "\nInvalid address/ Address not supported \n";
+    return -1;
+  }
+
+  // 连接到服务器
+  if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+    std::cerr << "\nConnection Failed \n";
+    return -1;
+  }
+
+  // 发送消息到服务器
+  send(sock, hello, strlen(hello), 0);
+  std::cout << "Hello message sent\n";
+
+  // 读取服务器返回的消息
+  valread = read(sock, buffer, 1024);
+  std::cout << "Message from server: " << buffer << std::endl;
+
+  // 关闭套接字
+  close(sock);
+  return 0;
+}
+```
+
+### 3.4 总结
+
+#### 3.4.1 `select`、`poll` 和 `epoll` 的比较
+
+**`select` 和 `poll` 的缺点**：
+
+1. 单个进程能够监视的文件描述符的数量存在最大限制，通常是 1024，当然可以更改数量，但由于 `select` 采用轮询的方式扫描文件描述符，文件描述符数量越多，性能越差；在 linux 内核头文件中，有这样的定义：`#define __FD_SETSIZE 1024`
+2. 内核 `/` 用户空间内存拷贝问题，`select` 需要复制大量的句柄数据结构，产生巨大的开销
+3. `select` 返回的是含有整个句柄的数组，应用程序需要遍历整个数组才能发现哪些句柄发生了事件
+4. `select` 的触发方式是水平触发，应用程序如果没有完成对一个已经就绪的文件描述符进行 IO 操作，那么之后每次 `select` 调用还是会将这些文件描述符通知进程
+
+相比 `select` 模型，`poll` 使用链表保存文件描述符，因此没有了监视文件数量的限制，但其他三个缺点依然存在。
+
+以 `select` 模型为例，假设服务器需要支持 100 万的并发连接，则在 `__FD_SETSIZE` 为 1024 的情况 下，至少需要开辟 1k 个进程才能实现 100 万的并发连接。除了进程间上下文切换的时间消耗外，从 内核/用户 空间大量的句柄结构内存拷贝、数组轮询等，是系统难以承受的。因此，基于 `select` 模型的服务器程序，要达到 100 万级别的并发访问，是一个很难完成的任务。
+
+**`epoll` 原理以及优势**
+
+`epoll` 的实现机制与 `select/poll` 机制完全不同，它们的缺点在 `epoll` 上不复存在。
+
+**设想一下如下场景**：有 100 万个客户端同时与一个服务器进程保持着 TCP 连接。而每一时刻，通常只有几百上千个 TCP 连接是活跃的(事实上大部分场景都是这种情况)。如何实现这样的高并发?
+
+在 `select/poll` 时代，服务器进程每次都把这 100 万个连接告诉操作系统(从用户态复制句柄数据结构到内核态)，让操作系统内核去查询这些套接字上是否有事件发生，轮询完成后，再将句柄数据复制到用户态，让服务器应用程序轮询处理已发生的网络事件，这一过程资源消耗较大，因此，`select/poll` 一般只能处理几千的并发连接。
+
+`epoll` 的设计和实现与 `select` 完全不同。`epoll` 通过在 Linux 内核中申请一个简易的文件系统(文件系统一般用 B+ 树实现，磁盘 IO 消耗低，效率很高)。把原先的 `select/poll` 调用分成以下 3 个部分：
+
+1. 调用 `epoll_create()` 建立一个 `epoll` 对象（在 `epoll` 文件系统中为这个句柄对象分配资源）
+2. 调用 `epoll_ctl` 向 `epoll` 对象中添加这 100 万个连接的套接字
+3. 调用 `epoll_wait` 收集发生的事件的 `fd` 资源
+
+如此一来，要实现上面说是的场景，只需要在进程启动时建立一个 `epoll` 对象，然后在需要的时候向这个 `epoll` 对象中添加或者删除事件。同时，`epoll_wait` 的效率也非常高，因为调用 `epoll_wait` 时，并没有向操作系统复制这 100 万个连接的句柄数据，内核也不需要去遍历全部的连接。
+
+`epoll_create` 在内核上创建的 `eventpoll` 结构如下:
+
+```cpp
+struct eventpoll {
+  ....
+  /*红黑树的根节点，这颗树中存储着所有添加到 epoll 中的需要监控的事件*/
+  struct rb_root rbr;
+
+  /*双链表中则存放着将要通过epoll_wait返回给用户的满足条件的事件*/
+  struct list_head rdlist;
+  ....
+};
+```
 
 ## 4 阻塞、非阻塞、同步、异步
 
@@ -901,68 +1115,6 @@ Reactor 设计模式是一种用于处理服务请求的事件处理模式，它
 3. **线程池**: 线程池管理多个子 Reactor 的线程，实现高并发处理。
 
 通过这种模型，Muduo 库能够高效地处理大规模并发连接，适用于高性能服务器的开发。
-
-## 8 epoll
-
-### 8.1 select 和 poll 的缺点
-
-**select 的缺点**：
-
-1. 单个进程能够监视的文件描述符的数量存在最大限制，通常是 1024，当然可以更改数量，但由于 `select` 采用轮询的方式扫描文件描述符，文件描述符数量越多，性能越差；(在 linux 内核头文件中，有这样的定义：`#define __FD_SETSIZE 1024`
-2. 内核 `/` 用户空间内存拷贝问题，`select` 需要复制大量的句柄数据结构，产生巨大的开销
-3. `select` 返回的是含有整个句柄的数组，应用程序需要遍历整个数组才能发现哪些句柄发生了事件
-4. `select` 的触发方式是水平触发，应用程序如果没有完成对一个已经就绪的文件描述符进行 IO 操作，那么之后每次 `select` 调用还是会将这些文件描述符通知进程
-
-相比 `select` 模型，`poll` 使用链表保存文件描述符，因此没有了监视文件数量的限制，但其他三个缺点依然存在。
-
-以 `select` 模型为例，假设服务器需要支持 100 万的并发连接，则在 `__FD_SETSIZE` 为 1024 的情况 下，至少需要开辟 1k 个进程才能实现 100 万的并发连接。除了进程间上下文切换的时间消耗外，从 内核/用户 空间大量的句柄结构内存拷贝、数组轮询等，是系统难以承受的。因此，基于 `select` 模型的服务器程序，要达到 100 万级别的并发访问，是一个很难完成的任务。
-
-### 8.2 epoll 原理以及优势
-
-`epoll` 的实现机制与 `select/poll` 机制完全不同，它们的缺点在 `epoll` 上不复存在。
-
-**设想一下如下场景**：有 100 万个客户端同时与一个服务器进程保持着 TCP 连接。而每一时刻，通常只有几百上千个 TCP 连接是活跃的(事实上大部分场景都是这种情况)。如何实现这样的高并发?
-
-在 `select/poll` 时代，服务器进程每次都把这 100 万个连接告诉操作系统(从用户态复制句柄数据结构到内核态)，让操作系统内核去查询这些套接字上是否有事件发生，轮询完成后，再将句柄数据复制到用户态，让服务器应用程序轮询处理已发生的网络事件，这一过程资源消耗较大，因此，`select/poll` 一般只能处理几千的并发连接。
-
-`epoll` 的设计和实现与 `select` 完全不同。`epoll` 通过在 Linux 内核中申请一个简易的文件系统(文件系统一般用 B+ 树实现，磁盘 IO 消耗低，效率很高)。把原先的 `select/poll` 调用分成以下 3 个部分：
-
-1. 调用 `epoll_create()` 建立一个 `epoll` 对象（在 `epoll` 文件系统中为这个句柄对象分配资源）
-2. 调用 `epoll_ctl` 向 `epoll` 对象中添加这 100 万个连接的套接字
-3. 调用 `epoll_wait` 收集发生的事件的 `fd` 资源
-
-如此一来，要实现上面说是的场景，只需要在进程启动时建立一个 `epoll` 对象，然后在需要的时候向这个 `epoll` 对象中添加或者删除事件。同时，`epoll_wait` 的效率也非常高，因为调用 `epoll_wait` 时，并没有向操作系统复制这 100 万个连接的句柄数据，内核也不需要去遍历全部的连接。
-
-`epoll_create` 在内核上创建的 `eventpoll` 结构如下:
-
-```cpp
-struct eventpoll {
-  ....
-  /*红黑树的根节点，这颗树中存储着所有添加到 epoll 中的需要监控的事件*/
-  struct rb_root rbr;
-
-  /*双链表中则存放着将要通过epoll_wait返回给用户的满足条件的事件*/
-  struct list_head rdlist;
-  ....
-};
-```
-
-### 8.3 LT 模式
-
-内核数据没被读完，就会一直上报数据。
-
-### 8.4 ET 模式
-
-内核数据只上报一次。
-
-> muduo 采用的是 LT
-
-- 不会丢失数据或者消息
-  - 应用没有读取完数据，内核是会不断上报的
-- 低延迟处理
-  - 每次读数据只需要一次系统调用；照顾了多个连接的公平性，不会因为某个连接上的数据量过大而影响其他连接处理消息
-- 跨平台处理
-  - 像 `select` 一样可以跨平台使用
 
 ## 9 `muduo` 网络库的核心代码模块
 

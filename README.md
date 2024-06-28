@@ -83,7 +83,7 @@
 
 - [《网络是怎样连接的》](https://github.com/Corner430/study-notes/blob/main/book.md#网络是怎样连接的)
 - [《计算机网络 第七版（谢希仁）》](https://github.com/Corner430/study-notes/blob/main/book.md#计算机网络)
-- [《TCP/IP 网络编程》](https://github.com/Corner430/TCP-IP-NetworkNote)(https://github.com/Corner430/study-notes/blob/main/book.md#TCP-IP网络编程)
+- [《TCP/IP 网络编程》](https://github.com/Corner430/study-notes/blob/main/book.md#TCP-IP网络编程)
 
 - [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的学习笔记.md)
 - [计算机网络学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络学习笔记.md)

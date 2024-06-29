@@ -59,7 +59,7 @@
 - [数据库连接池](https://github.com/Corner430/study-notes/blob/main/cpp/数据库连接池.md)
 - [线程池](https://github.com/Corner430/study-notes/blob/main/cpp/线程池.md)
 - [基于muduo的集群聊天服务器](https://github.com/Corner430/study-notes/blob/main/cpp/基于muduo的集群聊天服务器.md)
-- [muduo 网络库](https://github.com/Corner430/study-notes/blob/main/cpp/muduo网络库.md)
+- [muduo 网络库](https://github.com/Corner430/mymuduo)
 
 ## 5 工具
 

@@ -474,7 +474,7 @@ public:
             int mid = left + (right - left) / 2;
             if ((long)mid * mid == num)
                 return true;
-            else if ((long)mid * mid < num)
+            else if (mid < num / mid)
                 left = mid + 1;
             else
                 right = mid - 1;
@@ -523,19 +523,30 @@ class Solution(object):
 
 ***cpp***
 ```cpp
+// 左右指针
 class Solution {
 public:
     int removeElement(vector<int>& nums, int val) {
-        int left = 0, right = nums.size() - 1; // []
+        int left = 0, right = nums.size() - 1;
         while (left <= right) {
-            while (left <= right && nums[left] != val)
-                left++;
-            while (left <= right && nums[right] == val)
-                right--;
-            if (left <= right)
-                nums[left++] = nums[right--];
+            while (left <= right && nums[left] != val) ++left;
+            while (left <= right && nums[right] == val) --right;
+            if (left <= right) nums[left++] = nums[right--];
         }
         return left;
+    }
+};
+
+// 快慢指针
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int slow = 0, fast = 0;
+        while (fast < nums.size()) {
+            if (nums[fast] != val) nums[slow++] = nums[fast];
+            ++fast;
+        }
+        return slow;
     }
 };
 ```
@@ -579,15 +590,11 @@ class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
         int slow = 0, fast = 0;
-        while (fast < nums.size()) {
-            if (fast < nums.size() - 1 && nums[fast] == nums[fast + 1]){
-                fast++;
-                continue;
-            }
-            else
-                nums[slow++] = nums[fast];
-            fast++;
+        while (fast < nums.size() - 1) {
+            if (nums[fast] != nums[fast + 1]) nums[slow++] = nums[fast];
+            ++fast;
         }
+        nums[slow++] = nums[fast];
         return slow;
     }
 };
@@ -699,28 +706,28 @@ class Solution:
 ***cpp***
 
 ```cpp
-class Solution
-{
-public:
-    bool backspaceCompare(string s, string t)
-    {
-        modifyString(s);
-        modifyString(t);
-        return s == t;
-    }
-
+class Solution {
 private:
-    void modifyString(string &s)
-    {
+    void help(string& s) {
         int slow = 0, fast = 0;
-        for (; fast < s.length(); ++fast)
-            if (s[fast] == '#' && slow > 0)
-                --slow;
-            else if (s[fast] != '#')
+        while (fast < s.size()) {
+            if (s[fast] == '#') {
+                if (slow > 0)
+                    --slow;
+            } else
                 s[slow++] = s[fast];
+            ++fast;
+        }
         s.resize(slow);
     }
-};
+
+public:
+    bool backspaceCompare(string s, string t) {
+        help(s);
+        help(t);
+        return s == t;
+    }
+}
 ```
 
 ***js***
@@ -776,9 +783,9 @@ public:
             num = num * num;
 
         vector<int> res(nums.size());
-        for (int i = 0, j = nums.size() - 1, k = j; k >= 0; --k)
-            nums[i] >= nums[j] ? res[k] = nums[i++] : res[k] = nums[j--];
-
+        int i = nums.size() - 1, left = 0, right = nums.size() - 1;
+        while (i >= 0)
+            res[i--] = nums[right] >= nums[left] ? nums[right--] : nums[left++];
         return res;
     }
 };
@@ -839,14 +846,12 @@ class Solution:
 class Solution {
 public:
     int minSubArrayLen(int target, vector<int>& nums) {
-        int res = INT32_MAX;
-        int sum = 0;
-        for (size_t i = 0, j = 0; i < nums.size(); ++i) {
-            sum += nums[i];
+        int sum = 0, res = INT32_MAX;
+        for (int slow = 0, fast = 0; fast < nums.size(); ++fast) {
+            sum += nums[fast];
             while (sum >= target) {
-                int subLength = i - j + 1;
-                res = res < subLength ? res : subLength;
-                sum -= nums[j++];
+                res = min(res, fast - slow + 1);
+                sum -= nums[slow++];
             }
         }
         return res == INT32_MAX ? 0 : res;
@@ -917,28 +922,21 @@ class Solution {
 public:
     int totalFruit(vector<int>& fruits) {
         unordered_map<int, int> umap;
-        int res = 0, temp_res = 0;
-        int left = 0, right = 0;
-        while (right < fruits.size()) {
-            ++umap[fruits[right]]; // 加入元素
-            right++;
-
-            if (umap.size() <= 2) { // 收获结果
-                temp_res += 1;
-                res = max(res, temp_res);
-            } else {    // 收缩窗口
+        int res = 0;
+        int slow = 0, fast = 0;
+        while (fast < fruits.size()) {
+            ++umap[fruits[fast++]];
+            if (umap.size() <= 2) res = max(res, fast - slow);
+            else
                 while (umap.size() > 2) {
-                    --umap[fruits[left]];
-                    if (umap[fruits[left]] == 0)
-                        umap.erase(fruits[left]);
-                    ++left;
+                    if (umap[fruits[slow]] == 1) umap.erase(fruits[slow]);
+                    else --umap[fruits[slow]];
+                    ++slow;
                 }
-                temp_res = right - left;
-            }
         }
         return res;
     }
-};
+}
 ```
 
 ***js***
@@ -1022,34 +1020,32 @@ class Solution {
 public:
     string minWindow(string s, string t) {
         unordered_map<char, int> umap;
-        for (char c : t)
-            umap[c]++;
-        int left = 0, right = 0; // [)
+        for (const char& c : t)
+            ++umap[c];
         int invalid = umap.size();
         int start_index = 0, length = 100001;
-        while (right < s.size()) {
+        int slow = 0, fast = 0;
+        while (fast < s.size()) {
             // 扩大窗口
-            auto it = umap.find(s[right++]);
+            auto it = umap.find(s[fast++]);
             if (it != umap.end()) {
                 --it->second;
                 if (it->second == 0)
-                    invalid--;
+                    --invalid;
             }
 
             // 收缩窗口
             while (invalid == 0) {
-                auto it = umap.find(s[left]);
+                if (fast - slow < length) { // 收获结果
+                    start_index = slow;
+                    length = fast - slow;
+                }
+                auto it = umap.find(s[slow++]);
                 if (it != umap.end()) {
                     ++it->second;
-                    if (it->second > 0) {
-                        invalid++;
-                        if (right - left < length) { // 收获结果
-                            start_index = left;
-                            length = right - left;
-                        }
-                    }
+                    if (it->second == 1)
+                        ++invalid;
                 }
-                ++left;
             }
         }
         return length == 100001 ? "" : s.substr(start_index, length);
@@ -1259,46 +1255,46 @@ class Solution:
                 res.append(matrix[i][left_bound])
             left_bound += 1
         return res
-            
 ```
 
 ***cpp***
 
 ```cpp
 class Solution {
-  public:
-  vector<int> spiralOrder(vector<vector<int>>& matrix) {
-    vector<int> res;
-    int m = matrix.size(), n = matrix[0].size();  // 行 列
-    int up_bound = 0, down_bound = m - 1;
-    int left_bound = 0, right_bound = n - 1;
-    while (up_bound <= down_bound && left_bound <= right_bound)
-    {
-      // 上
-      for (int j = left_bound; j <= right_bound; j++)
-        res.push_back(matrix[up_bound][j]);
-      up_bound++;
-      if (up_bound > down_bound) break;
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> res;
+        int m = matrix.size(), n = matrix[0].size();
+        res.reserve(m * n);
+        int leftBound = 0, rightBound = n - 1;
+        int upBound = 0, downBound = m - 1;
+        int count = m * n;
+        while (count) {
+            for (int j = leftBound; j <= rightBound; ++j)
+                res.push_back(matrix[upBound][j]);
+            count -= (rightBound - leftBound + 1);
+            if (count == 0) break;
+            ++upBound;
 
-      // 右
-      for (int i = up_bound; i <= down_bound; i++)
-        res.push_back(matrix[i][right_bound]);
-      right_bound--;
-      if (left_bound > right_bound) break;
+            for (int i = upBound; i <= downBound; ++i)
+                res.push_back(matrix[i][rightBound]);
+            count -= (downBound - upBound + 1);
+            if (count == 0) break;
+            --rightBound;
 
-      // 下
-      for (int j = right_bound; j >= left_bound; j--)
-        res.push_back(matrix[down_bound][j]);
-      down_bound--;
+            for (int j = rightBound; j >= leftBound; --j)
+                res.push_back(matrix[downBound][j]);
+            count -= (rightBound - leftBound + 1);
+            --downBound;
 
-      // 左
-      for (int i = down_bound; i >= up_bound; i--)
-        res.push_back(matrix[i][left_bound]);
-      left_bound++;
+            for (int i = downBound; i >= upBound; --i)
+                res.push_back(matrix[i][leftBound]);
+            count -= (downBound - upBound + 1);
+            ++leftBound;
+        }
+        return res;
     }
-    return res;
-  }
-};
+}
 ```
 
 ***js***
@@ -1390,13 +1386,13 @@ class Solution {
 public:
     vector<int> twoSum(vector<int>& numbers, int target) {
         int left = 0, right = numbers.size() - 1;
-        while(left < right){
+        while (left < right) {
             int sum = numbers[left] + numbers[right];
-            if(target == sum) return vector<int> {left+1,right+1};
-            else if(target < sum) right--;
-            else left++;
+            if (target == sum) return {left + 1, right + 1};
+            else if (target < sum) --right;
+            else ++left;
         }
-        return vector<int> {-1,-1};
+        return {-1, -1};
     }
 };
 
@@ -1405,12 +1401,12 @@ class Solution {
 public:
     vector<int> twoSum(vector<int>& numbers, int target) {
         unordered_map<int, int> umap;
-        for (int i = 0 ; i < numbers.size(); i++){
+        for (int i = 0; i < numbers.size(); ++i) {
             auto it = umap.find(target - numbers[i]);
-            if(it != umap.end()) return vector<int> {it->second + 1, i + 1};
+            if (it != umap.end()) return {it->second + 1, i + 1};
             umap[numbers[i]] = i;
         }
-        return vector<int> {-1, -1};
+        return {-1, -1};
     }
 };
 ```
@@ -1476,9 +1472,9 @@ class Solution:
 class Solution {
 public:
     void reverseString(vector<char>& s) {
-        int i = 0, j = s.size() - 1;
-        while (i < j)
-            swap(s[i++], s[j--]);
+        int left = 0, right = s.size() - 1;
+        while (left < right)
+            swap(s[left++], s[right--]);
     }
 };
 ```
@@ -1538,34 +1534,25 @@ class Solution:
 ```cpp
 class Solution {
 private:
-  int extend(string &s, int i, int j) {
-    int res = 0;
-    while (i >= 0 && j < s.size() && s[i] == s[j]) {
-      if (i != j)
-        res += 2;
-      else
-        res++;
-      i--;
-      j++;
+    int extend(const string& s, int i, int j) {
+        int length = 0;
+        for (; i >= 0 && j < s.size() && s[i] == s[j]; --i, ++j)
+            length += i == j ? 1 : 2;
+        return length;
     }
-    return res;
-  }
 
 public:
-  string longestPalindrome(string s) {
-    int length = 1;
-    int startIndex = 0;
-    for (int i = 0; i < s.size(); i++) {
-      int length1 = extend(s, i, i);
-      int length2 = extend(s, i, i + 1);
-      length = max({length, length1, length2});
-      if (length == length1)
-        startIndex = i - (length1 - 1) / 2;
-      else if (length == length2)
-        startIndex = i - length2 / 2 + 1;
+    string longestPalindrome(string s) {
+        int mid_index = 0, length = 0;
+        for (int i = 0; i < s.size(); ++i) {
+            int temp_length = max(extend(s, i, i), extend(s, i, i + 1));
+            if (temp_length > length) {
+                length = temp_length;
+                mid_index = i;
+            }
+        }
+        return s.substr(mid_index - (length - 1) / 2, length);
     }
-    return s.substr(startIndex, length);
-  }
 };
 ```
 

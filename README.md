@@ -58,8 +58,9 @@
 - [SGI STL 源码](https://github.com/Corner430/study-notes/tree/main/cpp/SGI-STL)
 - [数据库连接池](https://github.com/Corner430/study-notes/blob/main/cpp/数据库连接池.md)
 - [线程池](https://github.com/Corner430/study-notes/blob/main/cpp/线程池.md)
-- [基于muduo的集群聊天服务器](https://github.com/Corner430/study-notes/blob/main/cpp/基于muduo的集群聊天服务器.md)
-- [muduo 网络库](https://github.com/Corner430/mymuduo)
+- [基于 muduo 的集群聊天服务器](https://github.com/Corner430/study-notes/blob/main/cpp/基于muduo的集群聊天服务器.md)
+- [重构 muduo 网络库](https://github.com/Corner430/mymuduo)
+- [c++ 面试题](https://github.com/Corner430/study-notes/blob/main/cpp/interview.md)
 
 ## 5 工具
 
@@ -99,6 +100,7 @@
 
 ## 9 设计模式
 
+- [kama-DesignPattern](https://github.com/youngyangyang04/kama-DesignPattern?tab=readme-ov-file)
 - [设计模式学习笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp高级笔记.md#5-设计模式)
 
 ## 10 前端
@@ -119,3 +121,4 @@
 - [riba2534/TCP-IP-NetworkNote](https://github.com/riba2534/TCP-IP-NetworkNote)
 - [CHLOROBLOG](https://chlorie.github.io/ChloroBlog/)
 - [progschj/ThreadPool](https://github.com/progschj/ThreadPool)
+- [kama-DesignPattern](https://github.com/youngyangyang04/kama-DesignPattern?tab=readme-ov-file)

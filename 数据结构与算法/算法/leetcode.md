@@ -14,7 +14,7 @@
   - [76. 最小覆盖子串](#76-最小覆盖子串)
   - [59. 螺旋矩阵 II](#59-螺旋矩阵-ii)
   - [54. 螺旋矩阵](#54-螺旋矩阵)
-  - [剑指Offer 29. 顺时针打印矩阵](#剑指offer-29-顺时针打印矩阵)
+  - [剑指 Offer 29. 顺时针打印矩阵](#剑指-offer-29-顺时针打印矩阵)
   - [167. 两数之和 II - 输入有序数组](#167-两数之和-ii---输入有序数组)
   - [344. 反转字符串](#344-反转字符串)
   - [5. 最长回文子串](#5-最长回文子串)
@@ -26,10 +26,10 @@
   - [92. 反转链表 II](#92-反转链表-ii)
   - [25. K 个一组翻转链表](#25-k-个一组翻转链表)
   - [24. 两两交换链表中的节点](#24-两两交换链表中的节点)
-  - [19.删除链表的倒数第N个节点](#19删除链表的倒数第n个节点)
+  - [19.删除链表的倒数第 N 个节点](#19删除链表的倒数第-n-个节点)
   - [面试题 02.07. 链表相交](#面试题-0207-链表相交)
   - [141. 环形链表](#141-环形链表)
-  - [142.环形链表II](#142环形链表ii)
+  - [142.环形链表 II](#142环形链表-ii)
   - [21. 合并两个有序链表](#21-合并两个有序链表)
   - [23. 合并 K 个升序链表](#23-合并-k-个升序链表)
   - [86. 分隔链表](#86-分隔链表)
@@ -44,12 +44,12 @@
   - [350. 两个数组的交集 II](#350-两个数组的交集-ii)
   - [202. 快乐数](#202-快乐数)
   - [1. 两数之和](#1-两数之和)
-  - [454. 四数相加II](#454-四数相加ii)
+  - [454. 四数相加 II](#454-四数相加-ii)
   - [15. 三数之和](#15-三数之和)
   - [18. 四数之和](#18-四数之和)
 - [4 字符串](#4-字符串)
   - [344. 反转字符串](#344-反转字符串-1)
-  - [541. 反转字符串II](#541-反转字符串ii)
+  - [541. 反转字符串 II](#541-反转字符串-ii)
   - [替换数字（第八期模拟笔试）](#替换数字第八期模拟笔试)
   - [151. 翻转字符串里的单词](#151-翻转字符串里的单词)
   - [55. 右旋字符串（第八期模拟笔试）](#55-右旋字符串第八期模拟笔试)
@@ -62,9 +62,9 @@
   - [替换数字（第八期模拟笔试）](#替换数字第八期模拟笔试-1)
   - [151. 翻转字符串里的单词](#151-翻转字符串里的单词-1)
   - [206.反转链表](#206反转链表-1)
-  - [19.删除链表的倒数第N个节点](#19删除链表的倒数第n个节点-1)
+  - [19.删除链表的倒数第 N 个节点](#19删除链表的倒数第-n-个节点-1)
   - [面试题 02.07. 链表相交](#面试题-0207-链表相交-1)
-  - [142.环形链表II](#142环形链表ii-1)
+  - [142.环形链表 II](#142环形链表-ii-1)
   - [15. 三数之和](#15-三数之和-1)
   - [18. 四数之和](#18-四数之和-1)
 - [6 栈与队列](#6-栈与队列)
@@ -83,7 +83,7 @@
   - [107. 二叉树的层序遍历 II](#107-二叉树的层序遍历-ii)
   - [199. 二叉树的右视图](#199-二叉树的右视图)
   - [637. 二叉树的层平均值](#637-二叉树的层平均值)
-  - [429. N叉树的层序遍历](#429-n叉树的层序遍历)
+  - [429. N 叉树的层序遍历](#429-n-叉树的层序遍历)
   - [515. 在每个树行中找最大值](#515-在每个树行中找最大值)
   - [116. 填充每个节点的下一个右侧节点指针](#116-填充每个节点的下一个右侧节点指针)
   - [117. 填充每个节点的下一个右侧节点指针 II](#117-填充每个节点的下一个右侧节点指针-ii)
@@ -93,14 +93,14 @@
   - [101. 对称二叉树](#101-对称二叉树)
   - [100. 相同的树](#100-相同的树)
   - [572. 另一棵树的子树](#572-另一棵树的子树)
-  - [559. n叉树的最大深度](#559-n叉树的最大深度)
+  - [559. n 叉树的最大深度](#559-n-叉树的最大深度)
   - [222. 完全二叉树的节点个数](#222-完全二叉树的节点个数)
   - [110. 平衡二叉树](#110-平衡二叉树)
   - [257. 二叉树的所有路径](#257-二叉树的所有路径)
   - [404. 左叶子之和](#404-左叶子之和)
   - [513. 找树左下角的值](#513-找树左下角的值)
   - [112. 路径总和](#112-路径总和)
-  - [113. 路径总和ii](#113-路径总和ii)
+  - [113. 路径总和 ii](#113-路径总和-ii)
   - [106. 从中序与后序遍历序列构造二叉树](#106-从中序与后序遍历序列构造二叉树)
   - [105.从前序与中序遍历序列构造二叉树](#105从前序与中序遍历序列构造二叉树)
   - [654. 最大二叉树](#654-最大二叉树)
@@ -121,16 +121,16 @@
   - [216. 组合总和 III](#216-组合总和-iii)
   - [17. 电话号码的字母组合](#17-电话号码的字母组合)
   - [39. 组合总和](#39-组合总和)
-  - [40. 组合总和II](#40-组合总和ii)
+  - [40. 组合总和 II](#40-组合总和-ii)
   - [131. 分割回文串](#131-分割回文串)
-  - [93. 复原IP地址](#93-复原ip地址)
+  - [93. 复原 IP 地址](#93-复原-ip-地址)
   - [78. 子集](#78-子集)
-  - [90. 子集II](#90-子集ii)
+  - [90. 子集 II](#90-子集-ii)
   - [491. 非递减子序列](#491-非递减子序列)
   - [46. 全排列](#46-全排列)
   - [47. 全排列 II](#47-全排列-ii)
   - [332. 重新安排行程](#332-重新安排行程)
-  - [51. N皇后](#51-n皇后)
+  - [51. N 皇后](#51-n-皇后)
   - [37. 解数独](#37-解数独)
 - [9 贪心算法](#9-贪心算法)
   - [455. 分发饼干](#455-分发饼干)
@@ -139,7 +139,7 @@
   - [122. 买卖股票的最佳时机 II](#122-买卖股票的最佳时机-ii)
   - [55. 跳跃游戏](#55-跳跃游戏)
   - [45. 跳跃游戏 II](#45-跳跃游戏-ii)
-  - [1005. K次取反后最大化的数组和](#1005-k次取反后最大化的数组和)
+  - [1005. K 次取反后最大化的数组和](#1005-k-次取反后最大化的数组和)
   - [134. 加油站](#134-加油站)
   - [135. 分发糖果](#135-分发糖果)
   - [860. 柠檬水找零](#860-柠檬水找零)
@@ -152,14 +152,14 @@
   - [968. 监控二叉树](#968-监控二叉树)
   - [1553. 吃掉 N 个橘子的最少天数](#1553-吃掉-n-个橘子的最少天数)
 
-
 ## 1 数组
 
 ### 704. 二分查找
 
 [704. 二分查找](https://leetcode.cn/problems/binary-search/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
@@ -175,7 +175,8 @@ class Solution:
         return -1
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -195,18 +196,19 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
 var search = function (nums, target) {
-    let l = 0, r = nums.length - 1; // []
-    while (l <= r) {
-        let mid = (r + l) >> 1;
-        if (nums[mid] === target) return mid;
-        else if (nums[mid] < target)
-            l = mid + 1;
-        else r = mid - 1;
-    }
-    return -1;
+  let l = 0,
+    r = nums.length - 1; // []
+  while (l <= r) {
+    let mid = (r + l) >> 1;
+    if (nums[mid] === target) return mid;
+    else if (nums[mid] < target) l = mid + 1;
+    else r = mid - 1;
+  }
+  return -1;
 };
 ```
 
@@ -214,7 +216,8 @@ var search = function (nums, target) {
 
 [35. 搜索插入位置](https://leetcode.cn/problems/search-insert-position/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def searchInsert(self, nums: List[int], target: int) -> int:
@@ -230,7 +233,8 @@ class Solution:
         return left
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -242,7 +246,7 @@ public:
                 return mid;
             else if (nums[mid] > target)
                 right = mid - 1;
-            else 
+            else
                 left = mid + 1;
         }
         return left;
@@ -250,19 +254,19 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
 var searchInsert = function (nums, target) {
-    let left = 0, right = nums.length - 1;
-    while (left <= right) {
-        let mid = (left + right) >> 1;
-        if (nums[mid] === target)
-            return mid;
-        else if (nums[mid] < target)
-            left = mid + 1;
-        else right = mid - 1;
-    }
-    return left;
+  let left = 0,
+    right = nums.length - 1;
+  while (left <= right) {
+    let mid = (left + right) >> 1;
+    if (nums[mid] === target) return mid;
+    else if (nums[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return left;
 };
 ```
 
@@ -270,7 +274,8 @@ var searchInsert = function (nums, target) {
 
 [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
@@ -305,7 +310,8 @@ class Solution:
         return [leftBound, getRightBound(nums, target)]
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -345,48 +351,44 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
 var searchLeftBound = function (nums, target) {
-    while (left <= right) {
-        let mid = (left + right) >> 1;
-        if (nums[mid] >= target)
-            right = mid - 1;
-        else
-            left = mid + 1;
-    }
-    if (left < nums.length && nums[left] === target)
-        return left;
-    return -1;
+  while (left <= right) {
+    let mid = (left + right) >> 1;
+    if (nums[mid] >= target) right = mid - 1;
+    else left = mid + 1;
+  }
+  if (left < nums.length && nums[left] === target) return left;
+  return -1;
 };
 
 var searchRightBound = function (nums, target) {
-    right = nums.length - 1;
-    while (left <= right) {
-        let mid = (left + right) >> 1;
-        if (nums[mid] <= target)
-            left = mid + 1;
-        else
-            right = mid - 1;
-    }
-    return right;
+  right = nums.length - 1;
+  while (left <= right) {
+    let mid = (left + right) >> 1;
+    if (nums[mid] <= target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return right;
 };
 
 var searchRange = function (nums, target) {
-    left = 0;
-    right = nums.length - 1;
-    let leftBound = searchLeftBound(nums, target);
-    if (leftBound === -1) return [-1, -1];
-    return [leftBound, searchRightBound(nums, target)];
+  left = 0;
+  right = nums.length - 1;
+  let leftBound = searchLeftBound(nums, target);
+  if (leftBound === -1) return [-1, -1];
+  return [leftBound, searchRightBound(nums, target)];
 };
 ```
-
 
 ### 69. x 的平方根
 
 [69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def mySqrt(self, x: int) -> int:
@@ -404,7 +406,8 @@ class Solution:
         return right
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -426,21 +429,20 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
 var mySqrt = function (x) {
-    if (x === 0) return x;
-    let left = 1, right = x;
-    while (left <= right) {
-        let mid = left + ((right - left) >> 1);
-        if (mid === Math.floor(x / mid))
-            return mid;
-        else if (mid < Math.floor(x / mid))
-            left = mid + 1;
-        else
-            right = mid - 1;
-    }
-    return right;
+  if (x === 0) return x;
+  let left = 1,
+    right = x;
+  while (left <= right) {
+    let mid = left + ((right - left) >> 1);
+    if (mid === Math.floor(x / mid)) return mid;
+    else if (mid < Math.floor(x / mid)) left = mid + 1;
+    else right = mid - 1;
+  }
+  return right;
 };
 ```
 
@@ -448,7 +450,8 @@ var mySqrt = function (x) {
 
 [367. 有效的完全平方数](https://leetcode-cn.com/problems/valid-perfect-square/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def isPerfectSquare(self, num: int) -> bool:
@@ -464,7 +467,8 @@ class Solution:
         return False
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -484,19 +488,19 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
 var isPerfectSquare = function (num) {
-    let left = 1, right = num;
-    while (left <= right) {
-        let mid = left + ((right - left) >> 1);
-        if (mid * mid == num)
-            return true;
-        else if (mid * mid < num)
-            left = mid + 1;
-        else right = mid - 1;
-    }
-    return false;
+  let left = 1,
+    right = num;
+  while (left <= right) {
+    let mid = left + ((right - left) >> 1);
+    if (mid * mid == num) return true;
+    else if (mid * mid < num) left = mid + 1;
+    else right = mid - 1;
+  }
+  return false;
 };
 ```
 
@@ -504,7 +508,8 @@ var isPerfectSquare = function (num) {
 
 [27. 移除元素](https://leetcode-cn.com/problems/remove-element/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution(object):
     def removeElement(self, nums, val):
@@ -521,7 +526,8 @@ class Solution(object):
         return left
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 左右指针
 class Solution {
@@ -551,14 +557,15 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
-var removeElement = function(nums, val) {
-    let slow = 0, fast = 0;
-    for(; fast < nums.length; fast++)
-        if (nums[fast] != val)
-            nums[slow++] = nums[fast];
-    return slow;
+var removeElement = function (nums, val) {
+  let slow = 0,
+    fast = 0;
+  for (; fast < nums.length; fast++)
+    if (nums[fast] != val) nums[slow++] = nums[fast];
+  return slow;
 };
 ```
 
@@ -566,7 +573,7 @@ var removeElement = function(nums, val) {
 
 [26. 删除排序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -583,7 +590,7 @@ class Solution:
         return slow
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -600,16 +607,17 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
-var removeDuplicates = function(nums) {
-    let slow = 1, fast = 0;
-    while (fast < nums.length){
-        if (fast > 0 && nums[fast] != nums[fast - 1])
-            nums[slow++] = nums[fast];
-        fast++;
-    }
-    return slow;
+var removeDuplicates = function (nums) {
+  let slow = 1,
+    fast = 0;
+  while (fast < nums.length) {
+    if (fast > 0 && nums[fast] != nums[fast - 1]) nums[slow++] = nums[fast];
+    fast++;
+  }
+  return slow;
 };
 ```
 
@@ -617,7 +625,7 @@ var removeDuplicates = function(nums) {
 
 [283. 移动零](https://leetcode-cn.com/problems/move-zeroes/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -633,7 +641,7 @@ class Solution:
             slow += 1
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -650,16 +658,16 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
 var moveZeroes = function (nums) {
-    let slow = 0, fast = 0;
-    for (; fast < nums.length; fast++)
-        if (nums[fast] != 0)
-            nums[slow++] = nums[fast];
+  let slow = 0,
+    fast = 0;
+  for (; fast < nums.length; fast++)
+    if (nums[fast] != 0) nums[slow++] = nums[fast];
 
-    while (slow < nums.length)
-        nums[slow++] = 0;
+  while (slow < nums.length) nums[slow++] = 0;
 };
 ```
 
@@ -667,7 +675,7 @@ var moveZeroes = function (nums) {
 
 [844. 比较含退格的字符串](https://leetcode-cn.com/problems/backspace-string-compare/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -688,7 +696,7 @@ class Solution:
 class Solution:
     def backspaceCompare(self, s: str, t: str) -> bool:
         return self.modifyString(s) == self.modifyString(t)
-    
+
     def modifyString(self, s: str) -> str:
         slow, fast = 0, 0
         s_list = list(s)
@@ -703,7 +711,7 @@ class Solution:
         return ''.join(s_list[:slow])
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -730,23 +738,23 @@ public:
 }
 ```
 
-***js***
+**_js_**
+
 ```js
 var backspaceCompare = function (s, t) {
-    modify = function (s) {
-        let slow = 0, sArr = s.split('');
-        for (let fast = 0; fast < sArr.length; fast++) {
-            if (sArr[fast] != '#')
-                sArr[slow++] = sArr[fast];
-            else if (slow > 0)
-                slow--;
-        }
-        sArr.length = slow;
-        return sArr.join('');
+  modify = function (s) {
+    let slow = 0,
+      sArr = s.split("");
+    for (let fast = 0; fast < sArr.length; fast++) {
+      if (sArr[fast] != "#") sArr[slow++] = sArr[fast];
+      else if (slow > 0) slow--;
     }
-    s = modify(s);
-    t = modify(t);
-    return s == t;
+    sArr.length = slow;
+    return sArr.join("");
+  };
+  s = modify(s);
+  t = modify(t);
+  return s == t;
 };
 ```
 
@@ -754,7 +762,7 @@ var backspaceCompare = function (s, t) {
 
 [977. 有序数组的平方](https://leetcode-cn.com/problems/squares-of-a-sorted-array/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -773,7 +781,7 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -791,7 +799,7 @@ public:
 };
 ```
 
-***js***
+**_js_**
 
 ```js
 /**
@@ -799,21 +807,23 @@ public:
  * @return {number[]}
  */
 var sortedSquares = function (nums) {
-    // 将 nums 数组中的每个元素取平方，并生成一个新的数组
-    nums = nums.map(num => num * num)
-    let res = new Array(nums.length);
-    let i = 0, j = nums.length - 1, k = nums.length - 1;
-    while (k >= 0) {
-        if (nums[i] >= nums[j]) {
-            res[k] = nums[i];
-            i++;
-        } else {
-            res[k] = nums[j];
-            j--;
-        }
-        k--;
+  // 将 nums 数组中的每个元素取平方，并生成一个新的数组
+  nums = nums.map((num) => num * num);
+  let res = new Array(nums.length);
+  let i = 0,
+    j = nums.length - 1,
+    k = nums.length - 1;
+  while (k >= 0) {
+    if (nums[i] >= nums[j]) {
+      res[k] = nums[i];
+      i++;
+    } else {
+      res[k] = nums[j];
+      j--;
     }
-    return res;
+    k--;
+  }
+  return res;
 };
 ```
 
@@ -821,7 +831,7 @@ var sortedSquares = function (nums) {
 
 [209. 长度最小的子数组](https://leetcode-cn.com/problems/minimum-size-subarray-sum/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -840,7 +850,7 @@ class Solution:
         return 0 if res == len(nums) + 1 else res
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -859,7 +869,7 @@ public:
 };
 ```
 
-***js***
+**_js_**
 
 ```js
 /**
@@ -868,18 +878,19 @@ public:
  * @return {number}
  */
 var minSubArrayLen = function (target, nums) {
-    let left = 0, right = 0;    // [)
-    let sum = 0;
-    let res = nums.length + 1;
-    while (right < nums.length) {
-        sum += nums[right];
-        right++;
-        while (sum >= target) {
-            res = Math.min(res, right - left);  // 注意是Math.min()
-            sum -= nums[left++];
-        }
+  let left = 0,
+    right = 0; // [)
+  let sum = 0;
+  let res = nums.length + 1;
+  while (right < nums.length) {
+    sum += nums[right];
+    right++;
+    while (sum >= target) {
+      res = Math.min(res, right - left); // 注意是Math.min()
+      sum -= nums[left++];
     }
-    return res === nums.length + 1 ? 0 : res;
+  }
+  return res === nums.length + 1 ? 0 : res;
 };
 ```
 
@@ -887,7 +898,7 @@ var minSubArrayLen = function (target, nums) {
 
 [904. 水果成篮](https://leetcode-cn.com/problems/fruit-into-baskets/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -900,7 +911,7 @@ class Solution:
                 fruit_map[fruit] += 1
             else:
                 fruit_map[fruit] = 1
-            
+
             if len(fruit_map) <= 2:
                 temp_res += 1
                 res = max(res, temp_res)
@@ -915,7 +926,7 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -939,7 +950,7 @@ public:
 }
 ```
 
-***js***
+**_js_**
 
 ```js
 /**
@@ -947,28 +958,30 @@ public:
  * @return {number}
  */
 var totalFruit = function (fruits) {
-    const fruitMap = new Map();
-    let res = 0, tempRes = 0;
-    let slow = 0, fast = 0;
-    for (const fruit of fruits) {
-        fruitMap.set(fruit, (fruitMap.get(fruit) || 0) + 1);
+  const fruitMap = new Map();
+  let res = 0,
+    tempRes = 0;
+  let slow = 0,
+    fast = 0;
+  for (const fruit of fruits) {
+    fruitMap.set(fruit, (fruitMap.get(fruit) || 0) + 1);
 
-        if (fruitMap.size <= 2) {
-            tempRes += 1;
-            res = Math.max(res, tempRes);
-        } else {
-            while (fruitMap.size > 2) {
-                fruitMap.set(fruits[slow], fruitMap.get(fruits[slow]) - 1);
-                if (fruitMap.get(fruits[slow]) === 0) {
-                    fruitMap.delete(fruits[slow]);
-                }
-                slow += 1;
-            }
-            tempRes = fast - slow + 1;
+    if (fruitMap.size <= 2) {
+      tempRes += 1;
+      res = Math.max(res, tempRes);
+    } else {
+      while (fruitMap.size > 2) {
+        fruitMap.set(fruits[slow], fruitMap.get(fruits[slow]) - 1);
+        if (fruitMap.get(fruits[slow]) === 0) {
+          fruitMap.delete(fruits[slow]);
         }
-        fast += 1;
+        slow += 1;
+      }
+      tempRes = fast - slow + 1;
     }
-    return res;
+    fast += 1;
+  }
+  return res;
 };
 ```
 
@@ -976,7 +989,7 @@ var totalFruit = function (fruits) {
 
 [76. 最小覆盖子串](https://leetcode-cn.com/problems/minimum-window-substring/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -1010,10 +1023,10 @@ class Solution:
                             length = right - left
                 left += 1
         return "" if length == 100001 else s[start_index:start_index + length]
-        
+
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -1053,7 +1066,7 @@ public:
 };
 ```
 
-***js***
+**_js_**
 
 ```js
 /**
@@ -1062,41 +1075,44 @@ public:
  * @return {string}
  */
 var minWindow = function (s, t) {
-    let umap = new Map();
-    for (let c of t) {
-        umap.set(c, (umap.get(c) || 0) + 1);
-    }
-    let left = 0, right = 0;
-    let invalid = umap.size;
-    let start_index = 0, length = 100001;
+  let umap = new Map();
+  for (let c of t) {
+    umap.set(c, (umap.get(c) || 0) + 1);
+  }
+  let left = 0,
+    right = 0;
+  let invalid = umap.size;
+  let start_index = 0,
+    length = 100001;
 
-    while (right < s.length) {
-        // 扩大窗口
-        let char = s[right++];
-        if (umap.has(char)) {
-            umap.set(char, umap.get(char) - 1);
-            if (umap.get(char) === 0) {
-                invalid--;
-            }
-        }
-
-        // 收缩窗口
-        while (invalid === 0) {
-            let charLeft = s[left];
-            if (umap.has(charLeft)) {
-                umap.set(charLeft, umap.get(charLeft) + 1);
-                if (umap.get(charLeft) > 0) {
-                    invalid++;
-                    if (right - left < length) { // 收获结果
-                        start_index = left;
-                        length = right - left;
-                    }
-                }
-            }
-            left++;
-        }
+  while (right < s.length) {
+    // 扩大窗口
+    let char = s[right++];
+    if (umap.has(char)) {
+      umap.set(char, umap.get(char) - 1);
+      if (umap.get(char) === 0) {
+        invalid--;
+      }
     }
-    return length === 100001 ? "" : s.substr(start_index, length);
+
+    // 收缩窗口
+    while (invalid === 0) {
+      let charLeft = s[left];
+      if (umap.has(charLeft)) {
+        umap.set(charLeft, umap.get(charLeft) + 1);
+        if (umap.get(charLeft) > 0) {
+          invalid++;
+          if (right - left < length) {
+            // 收获结果
+            start_index = left;
+            length = right - left;
+          }
+        }
+      }
+      left++;
+    }
+  }
+  return length === 100001 ? "" : s.substr(start_index, length);
 };
 ```
 
@@ -1104,7 +1120,7 @@ var minWindow = function (s, t) {
 
 [59. 螺旋矩阵 II](https://leetcode-cn.com/problems/spiral-matrix-ii/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -1142,7 +1158,7 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -1178,7 +1194,7 @@ public:
 };
 ```
 
-***js***
+**_js_**
 
 ```js
 /**
@@ -1186,33 +1202,31 @@ public:
  * @return {number[][]}
  */
 var generateMatrix = function (n) {
-    let res = new Array(n).fill().map(() => new Array(n).fill(0));
-    let leftBound = 0, rightBound = n - 1;
-    let upBound = 0, downBound = n - 1;
-    let count = 1;
+  let res = new Array(n).fill().map(() => new Array(n).fill(0));
+  let leftBound = 0,
+    rightBound = n - 1;
+  let upBound = 0,
+    downBound = n - 1;
+  let count = 1;
 
-    while (count <= n * n) {
-        // 上边
-        for (let j = leftBound; j <= rightBound; j++)
-            res[upBound][j] = count++;
-        upBound++;
+  while (count <= n * n) {
+    // 上边
+    for (let j = leftBound; j <= rightBound; j++) res[upBound][j] = count++;
+    upBound++;
 
-        // 右边
-        for (let i = upBound; i <= downBound; i++)
-            res[i][rightBound] = count++;
-        rightBound--;
+    // 右边
+    for (let i = upBound; i <= downBound; i++) res[i][rightBound] = count++;
+    rightBound--;
 
-        // 下边
-        for (let j = rightBound; j >= leftBound; j--)
-            res[downBound][j] = count++;
-        downBound--;
+    // 下边
+    for (let j = rightBound; j >= leftBound; j--) res[downBound][j] = count++;
+    downBound--;
 
-        // 左边
-        for (let i = downBound; i >= upBound; i--)
-            res[i][leftBound] = count++;
-        leftBound++;
-    }
-    return res;
+    // 左边
+    for (let i = downBound; i >= upBound; i--) res[i][leftBound] = count++;
+    leftBound++;
+  }
+  return res;
 };
 ```
 
@@ -1220,7 +1234,7 @@ var generateMatrix = function (n) {
 
 [54. 螺旋矩阵](https://leetcode-cn.com/problems/spiral-matrix/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -1237,14 +1251,14 @@ class Solution:
             up_bound += 1
             if up_bound > down_bound:
                 break
-            
+
             # 右边
             for i in range(up_bound, down_bound + 1):
                 res.append(matrix[i][right_bound])
             right_bound -= 1
             if left_bound > right_bound:
                 break
-            
+
             # 下边
             for j in range(right_bound, left_bound - 1, -1):
                 res.append(matrix[down_bound][j])
@@ -1257,7 +1271,7 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -1297,7 +1311,7 @@ public:
 }
 ```
 
-***js***
+**_js_**
 
 ```js
 /**
@@ -1305,45 +1319,48 @@ public:
  * @return {number[]}
  */
 var spiralOrder = function (matrix) {
-    let res = [];
-    let m = matrix.length, n = matrix[0].length;
-    let upBound = 0, downBound = m - 1;
-    let leftBound = 0, rightBound = n - 1;
+  let res = [];
+  let m = matrix.length,
+    n = matrix[0].length;
+  let upBound = 0,
+    downBound = m - 1;
+  let leftBound = 0,
+    rightBound = n - 1;
 
-    while (upBound <= downBound && leftBound <= rightBound) {
-        // 上
-        for (let j = leftBound; j <= rightBound; j++) {
-            res.push(matrix[upBound][j]);
-        }
-        upBound++;
-        if (upBound > downBound) break;
-
-        // 右
-        for (let i = upBound; i <= downBound; i++) {
-            res.push(matrix[i][rightBound]);
-        }
-        rightBound--;
-        if (leftBound > rightBound) break;
-
-        // 下
-        for (let j = rightBound; j >= leftBound; j--) {
-            res.push(matrix[downBound][j]);
-        }
-        downBound--;
-
-        // 左
-        for (let i = downBound; i >= upBound; i--) {
-            res.push(matrix[i][leftBound]);
-        }
-        leftBound++;
+  while (upBound <= downBound && leftBound <= rightBound) {
+    // 上
+    for (let j = leftBound; j <= rightBound; j++) {
+      res.push(matrix[upBound][j]);
     }
-    return res;
+    upBound++;
+    if (upBound > downBound) break;
+
+    // 右
+    for (let i = upBound; i <= downBound; i++) {
+      res.push(matrix[i][rightBound]);
+    }
+    rightBound--;
+    if (leftBound > rightBound) break;
+
+    // 下
+    for (let j = rightBound; j >= leftBound; j--) {
+      res.push(matrix[downBound][j]);
+    }
+    downBound--;
+
+    // 左
+    for (let i = downBound; i >= upBound; i--) {
+      res.push(matrix[i][leftBound]);
+    }
+    leftBound++;
+  }
+  return res;
 };
 ```
 
-### 剑指Offer 29. 顺时针打印矩阵
+### 剑指 Offer 29. 顺时针打印矩阵
 
-[剑指Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/description/)
+[剑指 Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/description/)
 
 同 [54. 螺旋矩阵](#54-螺旋矩阵)
 
@@ -1351,7 +1368,7 @@ var spiralOrder = function (matrix) {
 
 [167. 两数之和 II - 输入有序数组](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/)
 
-***python***
+**_python_**
 
 ```python
 # 左右指针
@@ -1378,7 +1395,7 @@ class Solution:
             umap[num] = i
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 // 左右指针
@@ -1411,7 +1428,7 @@ public:
 };
 ```
 
-***js***
+**_js_**
 
 ```js
 /**
@@ -1421,29 +1438,30 @@ public:
  */
 // 左右指针
 var twoSum = function (numbers, target) {
-    let left = 0, right = numbers.length - 1;
-    while (left < right) {
-        let sum = numbers[left] + numbers[right];
-        if (target === sum) {
-            return [left + 1, right + 1];
-        } else if (target < sum) {
-            right--;
-        } else {
-            left++;
-        }
+  let left = 0,
+    right = numbers.length - 1;
+  while (left < right) {
+    let sum = numbers[left] + numbers[right];
+    if (target === sum) {
+      return [left + 1, right + 1];
+    } else if (target < sum) {
+      right--;
+    } else {
+      left++;
     }
-    return [-1, -1];
+  }
+  return [-1, -1];
 };
 
 // 哈希
 var twoSum = function (numbers, target) {
-    let umap = new Map();
-    for (let i = 0; i < numbers.length; i++) {
-        if (umap.has(target - numbers[i])) {
-            return [umap.get(target - numbers[i]) + 1, i + 1];
-        }
-        umap.set(numbers[i], i);
+  let umap = new Map();
+  for (let i = 0; i < numbers.length; i++) {
+    if (umap.has(target - numbers[i])) {
+      return [umap.get(target - numbers[i]) + 1, i + 1];
     }
+    umap.set(numbers[i], i);
+  }
 };
 ```
 
@@ -1451,7 +1469,7 @@ var twoSum = function (numbers, target) {
 
 [344. 反转字符串](https://leetcode-cn.com/problems/reverse-string/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -1466,7 +1484,7 @@ class Solution:
             right -= 1
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -1479,7 +1497,7 @@ public:
 };
 ```
 
-***js***
+**_js_**
 
 ```js
 /**
@@ -1487,12 +1505,13 @@ public:
  * @return {void} Do not return anything, modify s in-place instead.
  */
 var reverseString = function (s) {
-    let i = 0, j = s.length - 1;
-    while (i < j) {
-        [s[i], s[j]] = [s[j], s[i]];
-        i++;
-        j--;
-    }
+  let i = 0,
+    j = s.length - 1;
+  while (i < j) {
+    [s[i], s[j]] = [s[j], s[i]];
+    i++;
+    j--;
+  }
 };
 ```
 
@@ -1500,7 +1519,7 @@ var reverseString = function (s) {
 
 [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -1529,7 +1548,7 @@ class Solution:
         return s[start_index : start_index + length]
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -1556,7 +1575,7 @@ public:
 };
 ```
 
-***js***
+**_js_**
 
 ```js
 /**
@@ -1565,38 +1584,38 @@ public:
  */
 
 var extend = function (s, i, j) {
-    let res = 0;
-    while (i >= 0 && j < s.length && s[i] === s[j]) {
-        if (i !== j) {
-            res += 2;
-        } else {
-            res += 1;
-        }
-        i--;
-        j++;
+  let res = 0;
+  while (i >= 0 && j < s.length && s[i] === s[j]) {
+    if (i !== j) {
+      res += 2;
+    } else {
+      res += 1;
     }
-    return res;
-}
+    i--;
+    j++;
+  }
+  return res;
+};
 
 var longestPalindrome = function (s) {
-    let length = 1;
-    let startIndex = 0;
-    for (let i = 0; i < s.length; i++) {
-        let length1 = extend(s, i, i);
-        let length2 = extend(s, i, i + 1);
-        let lengthTemp = Math.max(length, length1, length2);
-        if (lengthTemp === length1) {
-            startIndex = i - Math.floor((length1 - 1) / 2);
-        } else if (lengthTemp === length2) {
-            startIndex = i - Math.floor(length2 / 2) + 1;
-        }
-        length = lengthTemp;
+  let length = 1;
+  let startIndex = 0;
+  for (let i = 0; i < s.length; i++) {
+    let length1 = extend(s, i, i);
+    let length2 = extend(s, i, i + 1);
+    let lengthTemp = Math.max(length, length1, length2);
+    if (lengthTemp === length1) {
+      startIndex = i - Math.floor((length1 - 1) / 2);
+    } else if (lengthTemp === length2) {
+      startIndex = i - Math.floor(length2 / 2) + 1;
     }
-    return s.substring(startIndex, startIndex + length);
+    length = lengthTemp;
+  }
+  return s.substring(startIndex, startIndex + length);
 };
 ```
 
-----------------------------
+---
 
 ## 2 链表
 
@@ -1604,7 +1623,7 @@ var longestPalindrome = function (s) {
 
 [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -1620,7 +1639,7 @@ class Solution:
         return head
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 class Solution {
@@ -1642,31 +1661,30 @@ public:
 };
 ```
 
-***js***
+**_js_**
 
 ```js
 var deleteDuplicates = function (head) {
-     if (!head || !head.next) 
-        return head;
+  if (!head || !head.next) return head;
 
-    let p = head;
-    while (p.next) {
-        if (p.next.val === p.val) {
-            p.next = p.next.next;
-        } else {
-            p = p.next;
-        }
+  let p = head;
+  while (p.next) {
+    if (p.next.val === p.val) {
+      p.next = p.next.next;
+    } else {
+      p = p.next;
     }
-    return head;
+  }
+  return head;
 };
 ```
-
 
 ### 203.移除链表元素
 
 [203.移除链表元素](https://leetcode.cn/problems/remove-linked-list-elements/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
@@ -1680,7 +1698,8 @@ class Solution:
         return dummyHead.next
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -1700,21 +1719,22 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
 var removeElements = function (head, val) {
-    const dummyHead = new ListNode(0, head);
-    let p = dummyHead;
-    while (p.next) {
-        if (p.next.val === val) {
-            const temp = p.next;
-            p.next = temp.next;
-            temp.next = null; // Optional: Helps in garbage collection
-        } else {
-            p = p.next;
-        }
+  const dummyHead = new ListNode(0, head);
+  let p = dummyHead;
+  while (p.next) {
+    if (p.next.val === val) {
+      const temp = p.next;
+      p.next = temp.next;
+      temp.next = null; // Optional: Helps in garbage collection
+    } else {
+      p = p.next;
     }
-    return dummyHead.next;
+  }
+  return dummyHead.next;
 };
 ```
 
@@ -1722,7 +1742,8 @@ var removeElements = function (head, val) {
 
 [707. 设计链表](https://leetcode.cn/problems/design-linked-list/description/)
 
-***python***
+**_python_**
+
 ```python
 class ListNode:
     def __init__(self, val = 0,next = None):
@@ -1783,45 +1804,42 @@ class MyLinkedList:
 # obj.deleteAtIndex(index)
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class MyLinkedList {
 private:
-    // 定义链表
     struct ListNode {
         int val;
         ListNode* next;
-        ListNode() : val(0), next(nullptr) {}
-        ListNode(int x) : val(x), next(nullptr) {}
-        ListNode(int x, ListNode* next) : val(x), next(next) {}
+        ListNode(int val = 0, ListNode* next = nullptr)
+            : val(val), next(next) {}
     };
-
-    ListNode* _dummyHead;
+    ListNode* dummyHead;
     int _size;
 
 public:
     MyLinkedList() {
-        _dummyHead = new ListNode();
+        dummyHead = new ListNode();
         _size = 0;
     }
 
     int get(int index) {
         if (index < 0 || index >= _size)
             return -1;
-        ListNode* p = _dummyHead->next;
+        ListNode* p = dummyHead->next;
         while (index--)
             p = p->next;
         return p->val;
     }
 
     void addAtHead(int val) {
-        ListNode* p = new ListNode(val, _dummyHead->next);
-        _dummyHead->next = p;
+        dummyHead->next = new ListNode(val, dummyHead->next);
         ++_size;
     }
 
     void addAtTail(int val) {
-        ListNode* p = _dummyHead;
+        ListNode* p = dummyHead;
         while (p->next)
             p = p->next;
         p->next = new ListNode(val);
@@ -1829,115 +1847,100 @@ public:
     }
 
     void addAtIndex(int index, int val) {
-        ListNode* p = _dummyHead;
         if (index < 0 || index > _size)
             return;
+        ListNode* p = dummyHead;
         while (index--)
             p = p->next;
-        ListNode* temp = new ListNode(val, p->next);
-        p->next = temp;
+        p->next = new ListNode(val, p->next);
         ++_size;
     }
 
     void deleteAtIndex(int index) {
         if (index < 0 || index >= _size)
             return;
-        ListNode* p = _dummyHead;
+        ListNode* p = dummyHead;
         while (index--)
             p = p->next;
         ListNode* temp = p->next;
-        p->next = p->next->next;
+        p->next = temp->next;
         delete temp;
+        temp = nullptr;
         --_size;
     }
 };
 
-/**
- * Your MyLinkedList object will be instantiated and called as such:
- * MyLinkedList* obj = new MyLinkedList();
- * int param_1 = obj->get(index);
- * obj->addAtHead(val);
- * obj->addAtTail(val);
- * obj->addAtIndex(index,val);
- * obj->deleteAtIndex(index);
- */
 ```
 
-***js***
+**_js_**
+
 ```js
 var ListNode = function (val = 0, next = null) {
-    this.val = val;
-    this.next = next;
+  this.val = val;
+  this.next = next;
 };
 
 var MyLinkedList = function () {
-    this._dummyHead = new ListNode();
-    this._size = 0;
+  this._dummyHead = new ListNode();
+  this._size = 0;
 };
 
-/** 
+/**
  * @param {number} index
  * @return {number}
  */
 MyLinkedList.prototype.get = function (index) {
-    if (index < 0 || index >= this._size)
-        return -1;
-    let p = this._dummyHead.next;
-    while (index--)
-        p = p.next;
-    return p.val;
+  if (index < 0 || index >= this._size) return -1;
+  let p = this._dummyHead.next;
+  while (index--) p = p.next;
+  return p.val;
 };
 
-/** 
+/**
  * @param {number} val
  * @return {void}
  */
 MyLinkedList.prototype.addAtHead = function (val) {
-    const p = new ListNode(val, this._dummyHead.next);
-    this._dummyHead.next = p;
-    this._size++;
+  const p = new ListNode(val, this._dummyHead.next);
+  this._dummyHead.next = p;
+  this._size++;
 };
 
-/** 
+/**
  * @param {number} val
  * @return {void}
  */
 MyLinkedList.prototype.addAtTail = function (val) {
-    let p = this._dummyHead;
-    while (p.next)
-        p = p.next;
-    p.next = new ListNode(val);
-    this._size++;
+  let p = this._dummyHead;
+  while (p.next) p = p.next;
+  p.next = new ListNode(val);
+  this._size++;
 };
 
-/** 
- * @param {number} index 
+/**
+ * @param {number} index
  * @param {number} val
  * @return {void}
  */
 MyLinkedList.prototype.addAtIndex = function (index, val) {
-    if (index < 0 || index > this._size)
-        return;
-    let p = this._dummyHead;
-    while (index--)
-        p = p.next;
-    const temp = new ListNode(val, p.next);
-    p.next = temp;
-    this._size++;
+  if (index < 0 || index > this._size) return;
+  let p = this._dummyHead;
+  while (index--) p = p.next;
+  const temp = new ListNode(val, p.next);
+  p.next = temp;
+  this._size++;
 };
 
-/** 
+/**
  * @param {number} index
  * @return {void}
  */
 MyLinkedList.prototype.deleteAtIndex = function (index) {
-    if (index < 0 || index >= this._size)
-        return;
-    let p = this._dummyHead;
-    while (index--)
-        p = p.next;
-    p.next = p.next.next;
-    this._size--;
+  if (index < 0 || index >= this._size) return;
+  let p = this._dummyHead;
+  while (index--) p = p.next;
+  p.next = p.next.next;
+  this._size--;
 };
 
 /**
@@ -1955,7 +1958,8 @@ MyLinkedList.prototype.deleteAtIndex = function (index) {
 
 [206.反转链表](https://leetcode.cn/problems/reverse-linked-list/description/)
 
-***python***
+**_python_**
+
 ```python
 # Definition for singly-linked list.
 # class ListNode:
@@ -1979,23 +1983,22 @@ class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if head == None or head.next == None:
             return head
-        
+
         last = self.reverseList(head.next)
         head.next.next = head
         head.next = None
         return last
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 逐个翻转每个节点的指向
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        ListNode *pre = nullptr;
-        ListNode *cur = head;
-        while (cur)
-        {
+        ListNode *pre = nullptr, cur = head;
+        while (cur) {
             ListNode *temp = cur->next;
             cur->next = pre;
             pre = cur;
@@ -2009,7 +2012,7 @@ public:
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        if(head==nullptr || head->next == nullptr) return head;
+        if(!head || head->next == nullptr) return head;
         ListNode *last = reverseList(head->next);
         head->next->next = head;
         head->next = nullptr;
@@ -2018,7 +2021,8 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
 /**
  * Definition for singly-linked list.
@@ -2033,26 +2037,25 @@ public:
  */
 // 逐个节点反转
 var reverseList = function (head) {
-    let pre = null;
-    let cur = head;
-    while (cur) {
-        const temp = cur.next;
-        cur.next = pre;
-        pre = cur;
-        cur = temp;
-    }
-    return pre;
+  let pre = null;
+  let cur = head;
+  while (cur) {
+    const temp = cur.next;
+    cur.next = pre;
+    pre = cur;
+    cur = temp;
+  }
+  return pre;
 };
 
 // 递归
 var reverseList = function (head) {
-    if (head === null || head.next === null)
-        return head;
+  if (head === null || head.next === null) return head;
 
-    const last = reverseList(head.next);
-    head.next.next = head;
-    head.next = null;
-    return last;
+  const last = reverseList(head.next);
+  head.next.next = head;
+  head.next = null;
+  return last;
 };
 ```
 
@@ -2060,7 +2063,8 @@ var reverseList = function (head) {
 
 [92. 反转链表 II](https://leetcode.cn/problems/reverse-linked-list-ii/description/)
 
-***python***
+**_python_**
+
 ```python
 # 迭代法
 class Solution:
@@ -2112,7 +2116,8 @@ class Solution:
         return dummyHead.next
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 迭代法
 class Solution {
@@ -2143,35 +2148,35 @@ public:
 
 // 递归
 class Solution {
-public:
-    ListNode* backup = nullptr;     // right 的后继
-    ListNode* reverse(ListNode* q, int& count, const int& right) {
-        if (count == right) {
-            backup = q->next;
-            return q;
+private:
+    ListNode* backup = nullptr;
+    ListNode* reverse(ListNode* head, int count) {  // head 和 其后的 count 个节点反转
+        if (!count) {
+            backup = head->next;
+            return head;
         }
-        ++count;
-        ListNode* last = reverse(q->next, count, right);
-        q->next->next = q;      // 调转指向
-        q->next = backup;       // 指向 right 的后继
+        ListNode* last = reverse(head->next, count - 1);
+        head->next->next = head;
+        head->next = backup;
         return last;
     }
 
+public:
     ListNode* reverseBetween(ListNode* head, int left, int right) {
         if (left == right)
             return head;
         ListNode* dummyHead = new ListNode(0, head);
         ListNode* p = dummyHead;
-        for (int count = 1; count < left; count++)
+        for (int count = 1; count < left; ++count)  // left 的前驱
             p = p->next;
-        // 此时 p 指向 left 的前驱
-        p->next = reverse(p->next, left, right);
+        p->next = reverse(p->next, right - left);
         return dummyHead->next;
     }
 };
 ```
 
-***js***
+**_js_**
+
 ```js
 
 ```
@@ -2180,7 +2185,8 @@ public:
 
 [25. K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def reverse(self, head: ListNode, tail: ListNode):  # [)
@@ -2204,49 +2210,48 @@ class Solution:
         return last
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 private:
-  ListNode* reverse(ListNode* a, ListNode* b) { // [)
-    ListNode* pre = nullptr;
-    ListNode *cur = a, *next = a;
-    while (cur != b) {
-      next = cur->next;
-      cur->next = pre;
-      pre = cur;
-      cur = next;
+    ListNode* reverse(ListNode* left, ListNode* right) { // [)
+        ListNode *pre = right, *cur = left;
+        while (cur != right) {
+            ListNode* temp = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = temp;
+        }
+        return pre;
     }
-    return pre;
-  }
 
 public:
-  ListNode* reverseKGroup(ListNode* head, int k) {
-    if (head == nullptr) return head;
-    ListNode *a, *b;
-    a = b = head;
-    for (int i = 0; i < k; i++) {
-      if (b == nullptr) return head;
-      b = b->next;
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode *left = head, *right = head;
+        for (int i = 0; i < k; ++i) {
+            if (!right) return head;
+            right = right->next;
+        }
+        ListNode* newHead = reverse(left, right);
+        left->next = reverseKGroup(right, k);
+        return newHead;
     }
-
-    // 此时 b 指向下一组的头节点
-    ListNode* newHead = reverse(a, b);
-    a->next = reverseKGroup(b, k);
-    return newHead;
-  }
 };
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
 ### 24. 两两交换链表中的节点
 
 [24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
@@ -2261,7 +2266,8 @@ class Solution:
         return dummyHead.next
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -2271,7 +2277,7 @@ public:
         while (p->next && p->next->next) {
             ListNode* temp = p->next;
             p->next = temp->next;
-            temp->next = temp->next->next;
+            temp->next = p->next->next;
             p->next->next = temp;
             p = temp;
         }
@@ -2280,15 +2286,18 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
-### 19.删除链表的倒数第N个节点
+### 19.删除链表的倒数第 N 个节点
 
-[19.删除链表的倒数第N个节点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/)
+[19.删除链表的倒数第 N 个节点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
@@ -2303,7 +2312,8 @@ class Solution:
         return dummyHead.next
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -2327,15 +2337,18 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
 ### 面试题 02.07. 链表相交
 
 [面试题 02.07. 链表相交](https://leetcode.cn/problems/intersection-of-two-linked-lists-lcci/description/)
 
-***python***
+**_python_**
+
 ```python
 # 方法一：提前记载各自长度
 class Solution:
@@ -2384,7 +2397,8 @@ class Solution:
         return q
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 方法一：提前记载各自长度
 class Solution {
@@ -2436,15 +2450,18 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
 ### 141. 环形链表
 
 [141. 环形链表](https://leetcode.cn/problems/linked-list-cycle/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
@@ -2457,7 +2474,8 @@ class Solution:
         return False
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -2473,15 +2491,18 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
-### 142.环形链表II
+### 142.环形链表 II
 
-[142.环形链表II](https://leetcode.cn/problems/linked-list-cycle-ii/description/)
+[142.环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
@@ -2499,41 +2520,42 @@ class Solution:
         return None
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
     ListNode* detectCycle(ListNode* head) {
         ListNode *fast = head, *slow = head;
-
         while (fast && fast->next) {
             fast = fast->next->next;
             slow = slow->next;
-
-            if (fast == slow) {
-                ListNode* p = fast;
-                ListNode* q = head;
-                while (q != p) {
-                    q = q->next;
-                    p = p->next;
-                }
-                return q;
-            }
+            if (fast == slow) break;
         }
-        return nullptr;
+        if (!fast || fast->next == nullptr)
+            return nullptr;
+        slow = head;
+        while (slow != fast) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        return fast;
     }
-};
+}
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
 ### 21. 合并两个有序链表
 
 [21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
@@ -2552,7 +2574,8 @@ class Solution:
         return dummyHead.next
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -2575,15 +2598,18 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
 ### 23. 合并 K 个升序链表
 
 [23. 合并 K 个升序链表](https://leetcode.cn/problems/merge-k-sorted-lists/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
@@ -2605,26 +2631,26 @@ class Solution:
         return dummyHead.next
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
-    struct compare { // 小顶堆
-        bool operator()(const ListNode* const& l, const ListNode* const& r) {
+    struct compare { // min heap
+        bool operator()(const ListNode* const& l,
+                        const ListNode* const& r) const {
             return l->val > r->val;
         }
     };
 
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        if (lists.empty())
-            return nullptr;
-        ListNode* dummyHead = new ListNode(0);
+        priority_queue<ListNode*, vector<ListNode*>, compare> pq;
+        ListNode* dummyHead = new ListNode();
         ListNode* p = dummyHead;
 
-        priority_queue<ListNode*, vector<ListNode*>, compare> pq;
-        for (auto head : lists) // 将 k 个头结点入队
-            if (head)
-                pq.push(head);
+        for (auto list : lists)
+            if (list)
+                pq.push(list);
 
         while (!pq.empty()) {
             ListNode* cur = pq.top();
@@ -2639,15 +2665,18 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
 ### 86. 分隔链表
 
 [86. 分隔链表](https://leetcode.cn/problems/partition-list/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
@@ -2668,7 +2697,8 @@ class Solution:
         return dummyHead.next
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -2679,7 +2709,8 @@ public:
             p = p->next;
 
         ListNode* q = p->next; // 此时 q 指向右半节点的头，p 指向左半节点的头
-        while (q && q->next)
+        if (!q) return head;
+        while (q->next)
             if (q->next->val < x) {
                 ListNode* cur = q->next;
                 q->next = cur->next;
@@ -2694,15 +2725,18 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
 ### 876. 链表的中间结点
 
 [876. 链表的中间结点](https://leetcode.cn/problems/middle-of-the-linked-list/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
@@ -2713,7 +2747,8 @@ class Solution:
         return slow
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -2728,14 +2763,18 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
 ### 234. 回文链表
+
 [234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/description/)
 
-***python***
+**_python_**
+
 ```python
 # 借用空间
 class Solution:
@@ -2798,7 +2837,8 @@ class Solution:
         return True
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 借用空间
 class Solution {
@@ -2867,11 +2907,13 @@ public:
 };
 ```
 
-***js***
+**_js_**
+
 ```js
+
 ```
 
-------------------------------
+---
 
 ## 3 哈希表
 
@@ -2879,7 +2921,8 @@ public:
 
 [242.有效的字母异位词](https://leetcode.cn/problems/valid-anagram/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
@@ -2899,7 +2942,8 @@ class Solution:
         return True
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -2907,15 +2951,15 @@ public:
         if (s.size() != t.size())
             return false;
         int a[26] = {0};
-        for (char ch : s)
+        for (const char &ch : s)
             ++a[ch - 'a'];
-        for (char ch : t)
+        for (const char &ch : t)
             --a[ch - 'a'];
-        
+
         for (int i = 0; i < 26; ++i)
             if (a[i])
                 return false;
-        
+
         return true;
     }
 };
@@ -2925,7 +2969,8 @@ public:
 
 [383. 赎金信](https://leetcode.cn/problems/ransom-note/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
@@ -2943,23 +2988,24 @@ class Solution:
         return True
 ```
 
+**_cpp_**
 
-***cpp***
 ```cpp
 class Solution {
 public:
     bool canConstruct(string ransomNote, string magazine) {
+        if (magazine.size() < ransomNote.size()) return false
         int record[26] = {0};
-        for (char ch : magazine)
+        for (const char &ch : magazine)
             ++record[ch - 'a'];
-        
-        for (char ch : ransomNote)
+
+        for (const char &ch : ransomNote)
             --record[ch - 'a'];
-        
+
         for (int i = 0; i < 26; ++i)
             if (record[i] < 0)
                 return false;
-        
+
         return true;
     }
 };
@@ -2969,7 +3015,8 @@ public:
 
 [49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
@@ -2983,30 +3030,32 @@ class Solution:
         return list(umap.values())  # 返回字典的值, 并转换为列表
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
         unordered_map<string, vector<string>> umap;
         for (const string& str : strs) {
-            string temp = str;
-            sort(temp.begin(), temp.end());
-            umap[temp].emplace_back(str);
+            string key = str;
+            sort(key.begin(), key.end());
+            umap[key].emplace_back(str);
         }
         vector<vector<string>> res;
         for (auto it = umap.begin(); it != umap.end(); ++it)
-            res.push_back(it->second);
+            res.emplace_back(it->second);
         return res;
     }
-};
+}
 ```
 
 ### 438. 找到字符串中所有字母异位词
 
 [438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def findAnagrams(self, s: str, p: str) -> List[int]:
@@ -3040,7 +3089,8 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3081,7 +3131,8 @@ public:
 
 [349. 两个数组的交集](https://leetcode.cn/problems/intersection-of-two-arrays/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
@@ -3096,7 +3147,8 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution{
 public:
@@ -3121,7 +3173,8 @@ public:
 
 [350. 两个数组的交集 II](https://leetcode.cn/problems/intersection-of-two-arrays-ii/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
@@ -3140,7 +3193,8 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3166,7 +3220,8 @@ public:
 
 [202. 快乐数](https://leetcode.cn/problems/happy-number/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def isHappy(self, n: int) -> bool:
@@ -3183,7 +3238,8 @@ class Solution:
         return True
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3209,7 +3265,8 @@ public:
 
 [1. 两数之和](https://leetcode.cn/problems/two-sum/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
@@ -3220,7 +3277,8 @@ class Solution:
             umap[num] = idx
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3237,11 +3295,12 @@ public:
 };
 ```
 
-### 454. 四数相加II
+### 454. 四数相加 II
 
-[454. 四数相加II](https://leetcode.cn/problems/4sum-ii/description/)
+[454. 四数相加 II](https://leetcode.cn/problems/4sum-ii/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def fourSumCount(
@@ -3265,7 +3324,8 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3293,7 +3353,8 @@ public:
 
 [15. 三数之和](https://leetcode.cn/problems/3sum/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
@@ -3323,7 +3384,8 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3361,7 +3423,8 @@ public:
 
 [18. 四数之和](https://leetcode.cn/problems/4sum/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
@@ -3400,7 +3463,8 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3449,8 +3513,7 @@ public:
 };
 ```
 
-
-----------------------------------------
+---
 
 ## 4 字符串
 
@@ -3458,7 +3521,8 @@ public:
 
 [344. 反转字符串](https://leetcode.cn/problems/reverse-string/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def reverseString(self, s: List[str]) -> None:
@@ -3472,7 +3536,8 @@ class Solution:
             right -= 1
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3484,11 +3549,12 @@ public:
 };
 ```
 
-### 541. 反转字符串II
+### 541. 反转字符串 II
 
-[541. 反转字符串II](https://leetcode.cn/problems/reverse-string-ii/description/)
+[541. 反转字符串 II](https://leetcode.cn/problems/reverse-string-ii/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def reverseStr(self, s: str, k: int) -> str:
@@ -3513,7 +3579,8 @@ class Solution:
         return s
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3536,7 +3603,8 @@ public:
 
 [替换数字（第八期模拟笔试）](https://kamacoder.com/problempage.php?pid=1064)
 
-***python***
+**_python_**
+
 ```python
 s = input()
 
@@ -3550,7 +3618,8 @@ for ch in s:
 print(res)
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 #include <iostream>
 #include <string>
@@ -3577,7 +3646,8 @@ int main() {
 
 [151. 翻转字符串里的单词](https://leetcode.cn/problems/reverse-words-in-a-string/description/)
 
-***python***
+**_python_**
+
 ```python
 s = input()
 
@@ -3591,7 +3661,8 @@ for ch in s:
 print(res)
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 #include <iostream>
 #include <string>
@@ -3618,7 +3689,8 @@ int main() {
 
 [55. 右旋字符串（第八期模拟笔试）](https://kamacoder.com/problempage.php?pid=1065)
 
-***python***
+**_python_**
+
 ```python
 def rotate_string(s, k):
     k %= len(s)  # Ensure k is within the bounds of the string length
@@ -3635,7 +3707,8 @@ print(rotate_string(s, k))
 
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 #include <algorithm>
 #include <iostream>
@@ -3665,11 +3738,11 @@ int main() {
 KMP 算法对 `pat[]` 进行预处理，得到 `next[]` 数组，`next[i]` 表示 `pat[0..i]` 的**最长真前缀后缀匹配长度**，所谓**真**是指不允许包含整个字符串的前缀
 
 **预处理（求 `next[]` 数组）算法**
+
 - 计算 `next[]` 中的值。为此，跟踪前一个索引的最长前缀后缀值得长度（使用 `len` 变量）
 - `next[0]` 和 `len` 都初始化为 `0`
 - 如果 `pat[len]` 和 `pat[i]` 匹配，将 `len` 加 `1`，并将增加后的值赋给 `lps[i]`
 - 如果 `pat[i]` 和 `pat[len]` 不匹配并且 `len` 不为 `0`，我们将 `len` 更新为 `lps[len-1]`
-
 
 **KMP 算法的实现**
 
@@ -3723,12 +3796,12 @@ private:
 };
 ```
 
------------------------------------
-
+---
 
 [28. 找出字符串中第一个匹配项的下标](https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
@@ -3764,7 +3837,8 @@ class Solution:
         return -1
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3811,14 +3885,16 @@ private:
 `s` repeated => `s` in `s + s`
 `s` no in `s + s` => `s` not repeated
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def repeatedSubstringPattern(self, s: str) -> bool:
         return (s + s).find(s, 1) != len(s)
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -3831,14 +3907,23 @@ public:
 ## 5 双指针
 
 ### [27. 移除元素](#27-移除元素)
+
 ### [344. 反转字符串](#344-反转字符串-1)
+
 ### [替换数字（第八期模拟笔试）](#替换数字第八期模拟笔试)
+
 ### [151. 翻转字符串里的单词](#151-翻转字符串里的单词)
+
 ### [206.反转链表](#206反转链表)
-### [19.删除链表的倒数第N个节点](#19删除链表的倒数第n个节点)
+
+### [19.删除链表的倒数第 N 个节点](#19删除链表的倒数第n个节点)
+
 ### [面试题 02.07. 链表相交](#面试题-0207-链表相交)
-### [142.环形链表II](#142环形链表ii)
+
+### [142.环形链表 II](#142环形链表ii)
+
 ### [15. 三数之和](#15-三数之和)
+
 ### [18. 四数之和](#18-四数之和)
 
 ## 6 栈与队列
@@ -3847,7 +3932,8 @@ public:
 
 [232. 用栈实现队列](https://leetcode.cn/problems/implement-queue-using-stacks/description/)
 
-***python***
+**_python_**
+
 ```python
 class MyQueue:
 
@@ -3876,7 +3962,8 @@ class MyQueue:
         return not self.s1 and not self.s2
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class MyQueue {
 private:
@@ -3917,7 +4004,8 @@ public:
 
 [225. 用队列实现栈](https://leetcode.cn/problems/implement-stack-using-queues/)
 
-***python***
+**_python_**
+
 ```python
 class MyStack:
 
@@ -3939,7 +4027,8 @@ class MyStack:
         return len(self.q) == 0
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class MyStack {
 private:
@@ -3967,12 +4056,12 @@ public:
 };
 ```
 
-
 ### 20. 有效的括号
 
 [20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def isValid(self, s: str) -> bool:
@@ -3996,7 +4085,8 @@ class Solution:
         return not stack
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -4004,7 +4094,7 @@ public:
         if (s.size() % 2)
             return false;
         stack<char> st;
-        for (char c : s) 
+        for (char c : s)
             if (c == '(' || c == '[' || c == '{')
                 st.push(c);
             else {
@@ -4027,7 +4117,8 @@ public:
 
 [1047. 删除字符串中的所有相邻重复项](https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def removeDuplicates(self, s: str) -> str:
@@ -4040,8 +4131,8 @@ class Solution:
         return ''.join(res)
 ```
 
+**_cpp_**
 
-***cpp***
 ```cpp
 class Solution {
 public:
@@ -4062,7 +4153,8 @@ public:
 
 [150. 逆波兰表达式求值](https://leetcode.cn/problems/evaluate-reverse-polish-notation/)
 
-***python***
+**_python_**
+
 ```py
 class Solution:
     def string_to_int(self, s: str) -> int:
@@ -4094,7 +4186,8 @@ class Solution:
         return st.pop()
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 private:
@@ -4140,12 +4233,12 @@ public:
 };
 ```
 
-
 ### 239. 滑动窗口最大值
 
 [239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/)
 
-***python***
+**_python_**
+
 ```py
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
@@ -4177,8 +4270,8 @@ class Solution:
         return res
 ```
 
+**_cpp_**
 
-***cpp***
 ```cpp
 class Solution {
 public:
@@ -4213,7 +4306,8 @@ public:
 
 [347.前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
 
-***python***
+**_python_**
+
 ```py
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
@@ -4237,8 +4331,8 @@ class Solution:
         return res[::-1]
 ```
 
+**_cpp_**
 
-***cpp***
 ```cpp
 class Solution {
 private:
@@ -4272,7 +4366,6 @@ public:
     }
 };
 ```
-
 
 ## 7 二叉树
 
@@ -4386,7 +4479,8 @@ public:
 
 [94. 二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/description/)
 
-***python***
+**_python_**
+
 ```python
 # 递归
 class Solution:
@@ -4419,7 +4513,8 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 递归
 class Solution {
@@ -4463,12 +4558,12 @@ public:
 };
 ```
 
-
 ### 145. 二叉树的后序遍历
 
 [145. 二叉树的后序遍历](https://leetcode.cn/problems/binary-tree-postorder-traversal/description/)
 
-***python***
+**_python_**
+
 ```python
 # 递归
 class Solution:
@@ -4478,7 +4573,7 @@ class Solution:
         self.traversal(cur.left, res)
         self.traversal(cur.right, res)
         res.append(cur.val)
-    
+
     def postorderTraversal(self, root: TreeNode) -> list:
         res = []
         self.traversal(root, res)
@@ -4502,7 +4597,8 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 递归
 class Solution{
@@ -4543,12 +4639,12 @@ public:
 };
 ```
 
-
 ### 102. 二叉树的层序遍历
 
 [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def levelOrder(self, root: TreeNode) -> list:
@@ -4570,7 +4666,8 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -4598,12 +4695,12 @@ public:
 };
 ```
 
-
 ### 107. 二叉树的层序遍历 II
 
 [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
@@ -4626,7 +4723,8 @@ class Solution:
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -4659,13 +4757,14 @@ public:
 
 [199. 二叉树的右视图](https://leetcode-cn.com/problems/binary-tree-right-side-view/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         res = []
         que = deque([root]) if root else deque()
-        
+
         while que:
             size = len(que)
             for i in range(size):
@@ -4676,11 +4775,12 @@ class Solution:
                     que.append(cur.right)
                 if i == size - 1:  # last node in this level
                     res.append(cur.val)
-        
+
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -4704,18 +4804,18 @@ public:
 };
 ```
 
-
 ### 637. 二叉树的层平均值
 
 [637. 二叉树的层平均值](https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
         res = []
         que = deque([root]) if root else deque()
-        
+
         while que:
             size = len(que)
             sum_val = 0
@@ -4727,12 +4827,12 @@ class Solution:
                 if cur.right:
                     que.append(cur.right)
             res.append(sum_val / size)
-        
+
         return res
 ```
 
+**_cpp_**
 
-***cpp***
 ```cpp
 class Solution {
 public:
@@ -4761,17 +4861,18 @@ public:
 };
 ```
 
-### 429. N叉树的层序遍历
+### 429. N 叉树的层序遍历
 
-[429. N叉树的层序遍历](https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/)
+[429. N 叉树的层序遍历](https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def levelOrder(self, root: 'Node') -> List[List[int]]:
         res = []
         que = deque([root]) if root else deque()
-        
+
         while que:
             size = len(que)
             level = []
@@ -4781,11 +4882,12 @@ class Solution:
                 for child in cur.children:
                     que.append(child)
             res.append(level)
-        
-        return res 
+
+        return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -4811,18 +4913,18 @@ public:
 };
 ```
 
-
 ### 515. 在每个树行中找最大值
 
 [515. 在每个树行中找最大值](https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def largestValues(self, root: Optional[TreeNode]) -> List[int]:
         res = []
         que = deque([root]) if root else deque()
-        
+
         while que:
             size = len(que)
             max_val = float('-inf')
@@ -4834,12 +4936,12 @@ class Solution:
                 if cur.right:
                     que.append(cur.right)
             res.append(max_val)
-        
+
         return res
 ```
 
+**_cpp_**
 
-***cpp***
 ```cpp
 class Solution {
 public:
@@ -4870,12 +4972,13 @@ public:
 
 [116. 填充每个节点的下一个右侧节点指针](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
         que = deque([root]) if root else deque()
-        
+
         while que:
             size = len(que)
             for i in range(size):
@@ -4886,11 +4989,12 @@ class Solution:
                     que.append(cur.left)
                 if cur.right:
                     que.append(cur.right)
-        
-        return root 
+
+        return root
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -4913,20 +5017,20 @@ public:
 };
 ```
 
-
 ### 117. 填充每个节点的下一个右侧节点指针 II
 
 [117. 填充每个节点的下一个右侧节点指针 II](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def connect(self, root: 'Node') -> 'Node':
         if not root:
             return root
-        
+
         que = deque([root])
-        
+
         while que:
             size = len(que)
             for i in range(size):
@@ -4937,11 +5041,12 @@ class Solution:
                     que.append(cur.left)
                 if cur.right:
                     que.append(cur.right)
-        
+
         return root
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -4964,22 +5069,22 @@ public:
 };
 ```
 
-
 ### 104. 二叉树的最大深度
 
 [104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
 
-***python***
+**_python_**
+
 ```python
 # 层序
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        
+
         res = 0
         que = deque([root])
-        
+
         while que:
             res += 1
             size = len(que)
@@ -4989,7 +5094,7 @@ class Solution:
                     que.append(cur.left)
                 if cur.right:
                     que.append(cur.right)
-        
+
         return res
 
 # 回溯
@@ -5019,7 +5124,8 @@ class Solution:
         return max(self.maxDepth(root.left), self.maxDepth(root.right)) + 1
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 层序遍历
 class Solution {
@@ -5075,22 +5181,22 @@ public:
 };
 ```
 
-
 ### 111. 二叉树的最小深度
 
 [111. 二叉树的最小深度](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)
 
-***python***
+**_python_**
+
 ```python
 # 层序遍历
 class Solution:
     def minDepth(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        
+
         depth = 0
         que = deque([root])
-        
+
         while que:
             depth += 1
             size = len(que)
@@ -5102,7 +5208,7 @@ class Solution:
                     que.append(cur.left)
                 if cur.right:
                     que.append(cur.right)
-        
+
         return depth
 
 # dfs, 带返回值
@@ -5131,7 +5237,8 @@ class Solution:
         return min(self.minDepth(root.left), self.minDepth(root.right)) + 1
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 层序遍历
 class Solution {
@@ -5190,7 +5297,8 @@ public:
 
 [226. 翻转二叉树](https://leetcode-cn.com/problems/invert-binary-tree/)
 
-***python***
+**_python_**
+
 ```python
 # dfs
 class Solution:
@@ -5207,7 +5315,7 @@ class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         if not root:
             return root
-        
+
         stack = [root]
         while stack:
             cur = stack.pop()
@@ -5216,11 +5324,12 @@ class Solution:
                 stack.append(cur.left)
             if cur.right:
                 stack.append(cur.right)
-        
+
         return root
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // dfs
 class Solution {
@@ -5256,7 +5365,8 @@ public:
 
 [101. 对称二叉树](https://leetcode.cn/problems/symmetric-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 # 递归
 class Solution:
@@ -5282,31 +5392,32 @@ class Solution:
     def isSymmetric(self, root: Optional[TreeNode]) -> bool:
         if not root:
             return True
-        
+
         stack = []
         stack.append(root.right)
         stack.append(root.left)
-        
+
         while stack:
             left = stack.pop()
             right = stack.pop()
-            
+
             if not left and not right:
                 continue
             if not left or not right:
                 return False
             if left.val != right.val:
                 return False
-            
+
             stack.append(left.left)
             stack.append(right.right)
             stack.append(left.right)
             stack.append(right.left)
-        
+
         return True
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 递归
 class Solution {
@@ -5357,7 +5468,8 @@ public:
 
 [100. 相同的树](https://leetcode.cn/problems/same-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 # 递归
 class Solution:
@@ -5379,11 +5491,11 @@ class Solution:
         queue = deque()
         queue.append(p)
         queue.append(q)
-        
+
         while queue:
             left = queue.popleft()
             right = queue.popleft()
-            
+
             if not left and not right:
                 continue
             if left and not right:
@@ -5392,16 +5504,17 @@ class Solution:
                 return False
             if left.val != right.val:
                 return False
-            
+
             queue.append(left.left)
             queue.append(right.left)
             queue.append(left.right)
             queue.append(right.right)
-        
+
         return True
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 递归
 class Solution {
@@ -5446,7 +5559,8 @@ public:
 
 [572. 另一棵树的子树](https://leetcode.cn/problems/subtree-of-another-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 # 层序 + 逐棵子树对比
 class Solution:
@@ -5454,11 +5568,11 @@ class Solution:
         stack = []
         stack.append(p)
         stack.append(q)
-        
+
         while stack:
             qNode = stack.pop()
             pNode = stack.pop()
-            
+
             if not qNode and not pNode:
                 continue
             elif qNode is None and pNode is not None:
@@ -5467,21 +5581,21 @@ class Solution:
                 return False
             elif qNode.val != pNode.val:
                 return False
-            
+
             stack.append(pNode.left)
             stack.append(qNode.left)
             stack.append(pNode.right)
             stack.append(qNode.right)
-        
+
         return True
 
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
         if not root:
             return False
-        
+
         queue = deque()
         queue.append(root)
-        
+
         while queue:
             cur = queue.popleft()
             if self.compare(cur, subRoot):
@@ -5490,7 +5604,7 @@ class Solution:
                 queue.append(cur.left)
             if cur.right:
                 queue.append(cur.right)
-        
+
         return False
 
 
@@ -5537,23 +5651,23 @@ class Solution:
         stack = []
         stack.append(p)
         stack.append(q)
-        
+
         while stack:
             qNode = stack.pop()
             pNode = stack.pop()
-            
+
             if not qNode and not pNode:
                 continue
             elif not qNode or not pNode:
                 return False
             elif qNode.val != pNode.val:
                 return False
-            
+
             stack.append(pNode.left)
             stack.append(qNode.left)
             stack.append(pNode.right)
             stack.append(qNode.right)
-        
+
         return True
 
     def preorder(self, cur: TreeNode, res: list):
@@ -5568,18 +5682,19 @@ class Solution:
         vecsub = []
         self.preorder(root, vec)
         self.preorder(subRoot, vecsub)
-        
+
         kmp = KMP()
         res = kmp.findStart(vec, vecsub)
-        
+
         for cur in res:
             if self.compare(cur, subRoot):
                 return True
-        
-        return False 
+
+        return False
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 层序 + 逐棵子树对比
 class Solution {
@@ -5723,22 +5838,22 @@ public:
 };
 ```
 
+### 559. n 叉树的最大深度
 
-### 559. n叉树的最大深度
+[559. n 叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-n-ary-tree/description/)
 
-[559. n叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-n-ary-tree/description/)
+**_python_**
 
-***python***
 ```python
 # bfs
 class Solution:
     def maxDepth(self, root: 'Node') -> int:
         if not root:
             return 0
-        
+
         queue = deque([root])
         depth = 0
-        
+
         while queue:
             depth += 1
             level_size = len(queue)
@@ -5746,23 +5861,24 @@ class Solution:
                 current = queue.popleft()
                 for child in current.children:
                     queue.append(child)
-        
-        return depth 
+
+        return depth
 
 # dfs
 class Solution:
     def maxDepth(self, root: 'Node') -> int:
         if not root:
             return 0
-        
+
         depth = 0
         for child in root.children:
             depth = max(depth, self.maxDepth(child))
-        
-        return depth + 1 
+
+        return depth + 1
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // bfs
 class Solution {
@@ -5799,22 +5915,22 @@ public:
 };
 ```
 
-
 ### 222. 完全二叉树的节点个数
 
 [222. 完全二叉树的节点个数](https://leetcode.cn/problems/count-complete-tree-nodes/description/)
 
-***python***
+**_python_**
+
 ```python
 # 层序
 class Solution:
     def countNodes(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        
+
         queue = deque([root])
         count = 0
-        
+
         while queue:
             count += 1
             current = queue.popleft()
@@ -5822,7 +5938,7 @@ class Solution:
                 queue.append(current.left)
             if current.right:
                 queue.append(current.right)
-        
+
         return count
 
 # 递归
@@ -5830,7 +5946,7 @@ class Solution:
     def countNodes(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        
+
         return self.countNodes(root.left) + self.countNodes(root.right) + 1
 
 
@@ -5863,7 +5979,8 @@ class Solution:
         return self.countNodes(root.left) + self.countNodes(root.right) + 1
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 层序
 class Solution {
@@ -5925,7 +6042,8 @@ public:
 
 [110. 平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 # bfs 进行逐个判断
 class Solution:
@@ -5945,7 +6063,7 @@ class Solution:
             if left_height == -1 or right_height == -1 or abs(left_height - right_height) > 1:
                 return -1
             return max(left_height, right_height) + 1
-        
+
         return checkBalance(root) != -1
 
 # dfs
@@ -5982,7 +6100,8 @@ class Solution:
         return flag[0]
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // bfs 进行逐个判断
 class Solution {
@@ -6013,13 +6132,13 @@ class Solution {
 private:
     pair<bool, int> dfs(TreeNode* root) {
         if (!root) return {true, 0};
-        
+
         auto left = dfs(root->left);
         auto right = dfs(root->right);
-        
+
         if (!left.first || !right.first || abs(left.second - right.second) > 1)
             return {false, 0};
-        
+
         return {true, max(left.second, right.second) + 1};
     }
 public:
@@ -6054,7 +6173,8 @@ public:
 
 [257. 二叉树的所有路径](https://leetcode-cn.com/problems/binary-tree-paths/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
@@ -6067,12 +6187,13 @@ class Solution:
                 return
             backtracking(node.left, path + str(node.val) + "->")
             backtracking(node.right, path + str(node.val) + "->")
-        
+
         backtracking(root)
         return res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 private:
@@ -6099,17 +6220,18 @@ public:
 
 [404. 左叶子之和](https://leetcode-cn.com/problems/sum-of-left-leaves/description/)
 
-***python***
+**_python_**
+
 ```python
 # bfs 逐个判断
 class Solution:
     def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        
+
         que = deque([root])
         sum = 0
-        
+
         while que:
             cur = que.popleft()
             if cur.left and not cur.left.left and not cur.left.right:
@@ -6118,7 +6240,7 @@ class Solution:
                 que.append(cur.left)
             if cur.right:
                 que.append(cur.right)
-                
+
         return sum
 
 # dfs
@@ -6136,7 +6258,8 @@ class Solution:
         return self.dfs(root, False)
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 层序，逐个判断
 class Solution:
@@ -6174,29 +6297,31 @@ public:
 
 [513. 找树左下角的值](https://leetcode-cn.com/problems/find-bottom-left-tree-value/description/)
 
-***python***
+**_python_**
+
 ```python
 # bfs
 class Solution:
     def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
         que = deque([root])
         ans = root.val
-        
+
         while que:
             size = len(que)
             ans = que[0].val  # 第一个节点是当前层的最左边节点
-            
+
             for _ in range(size):
                 cur = que.popleft()
                 if cur.left:
                     que.append(cur.left)
                 if cur.right:
                     que.append(cur.right)
-        
+
         return ans
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // bfs
 class Solution {
@@ -6224,22 +6349,24 @@ public:
 
 [112. 路径总和](https://leetcode-cn.com/problems/path-sum/description/)
 
-***python***
+**_python_**
+
 ```python
 # dfs, 回溯
 class Solution:
     def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
         if not root:
             return False
-        
+
         if not root.left and not root.right and targetSum == root.val:
             return True
-        
+
         return (self.hasPathSum(root.left, targetSum - root.val) or
                 self.hasPathSum(root.right, targetSum - root.val))
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // dfs, 回溯
 class Solution {
@@ -6255,11 +6382,12 @@ public:
 };
 ```
 
-### 113. 路径总和ii
+### 113. 路径总和 ii
 
-[113. 路径总和ii](https://leetcode-cn.com/problems/path-sum-ii/description/)
+[113. 路径总和 ii](https://leetcode-cn.com/problems/path-sum-ii/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def backtracking(self, root: TreeNode, targetSum: int):
@@ -6282,7 +6410,8 @@ class Solution:
         return self.res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 private:
@@ -6313,12 +6442,13 @@ public:
 
 [106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def __init__(self):
         self.umap = {}
-        
+
     def build(self, inorder, il, ir, postorder, pl, pr):
         if pl > pr:
             return None
@@ -6336,7 +6466,8 @@ class Solution:
         return self.build(inorder, 0, len(inorder) - 1, postorder, 0, len(postorder) - 1)
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 private:
@@ -6370,7 +6501,8 @@ public:
 
 [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def __init__(self):
@@ -6392,8 +6524,8 @@ class Solution:
         return self.build(preorder, 0, len(preorder) - 1, inorder, 0, len(inorder) - 1)
 ```
 
+**_cpp_**
 
-***cpp***
 ```cpp
 class Solution {
 private:
@@ -6427,7 +6559,8 @@ public:
 
 [654. 最大二叉树](https://leetcode-cn.com/problems/maximum-binary-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def build(self, nums, l, r):
@@ -6446,7 +6579,8 @@ class Solution:
         return self.build(nums, 0, len(nums) - 1)
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 private:
@@ -6472,7 +6606,8 @@ public:
 
 [617. 合并二叉树](https://leetcode-cn.com/problems/merge-two-binary-trees/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
@@ -6485,7 +6620,8 @@ class Solution:
         return root1
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -6505,7 +6641,8 @@ public:
 
 [700. 二叉搜索树中的搜索](https://leetcode-cn.com/problems/search-in-a-binary-search-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 # 递归
 class Solution:
@@ -6531,7 +6668,8 @@ class Solution:
         return None
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 // 递归
 class Solution {
@@ -6565,7 +6703,8 @@ public:
 
 [98. 验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def __init__(self):
@@ -6586,14 +6725,15 @@ class Solution:
         return self.isValidBST(root.right)
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
     TreeNode* pre;
     bool isValidBST(TreeNode* root) {
         if (!root) return true;
-        
+
         bool left = isValidBST(root->left);
         // 每一个节点，都问一下它的上一个节点是否比他小
         if (pre && pre->val >= root->val) return false;
@@ -6609,7 +6749,8 @@ public:
 
 [530. 二叉搜索树的最小绝对差](https://leetcode-cn.com/problems/minimum-absolute-difference-in-bst/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def __init__(self):
@@ -6627,10 +6768,11 @@ class Solution:
 
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
         self.dfs(root)
-        return self.res 
+        return self.res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 private:
@@ -6657,7 +6799,8 @@ public:
 
 [501. 二叉搜索树中的众数](https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def __init__(self):
@@ -6729,7 +6872,8 @@ class Solution:
         return self.res
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 private:
@@ -6807,7 +6951,8 @@ public:
 
 [236. 二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
@@ -6822,10 +6967,11 @@ class Solution:
         elif left:
             return left
         else:
-            return right 
+            return right
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -6847,7 +6993,8 @@ public:
 
 [235. 二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
@@ -6861,7 +7008,8 @@ class Solution:
         return None
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -6879,12 +7027,12 @@ public:
 };
 ```
 
-
 ### 701. 二叉搜索树中的插入操作
 
 [701. 二叉搜索树中的插入操作](https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
@@ -6908,7 +7056,8 @@ class Solution:
         return root
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -6931,13 +7080,14 @@ public:
 
 [450. 删除二叉搜索树中的节点](https://leetcode-cn.com/problems/delete-node-in-a-bst/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
         if not root:
             return None
-            
+
         if root.val == key:
             if root.left and root.right:
                 p = root.right
@@ -6957,14 +7107,15 @@ class Solution:
         return root
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
     TreeNode* deleteNode(TreeNode* root, int key) {
         if (!root)
             return nullptr;
-            
+
         if (root->val == key) {
             if (root->left && root->right) {
                 TreeNode* p = root->right;
@@ -6988,7 +7139,8 @@ public:
 
 [669. 修剪二叉搜索树](https://leetcode-cn.com/problems/trim-a-binary-search-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def trimBST(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
@@ -7003,7 +7155,8 @@ class Solution:
         return root
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 public:
@@ -7018,12 +7171,12 @@ public:
 };
 ```
 
-
 ### 108.将有序数组转换为二叉搜索树
 
 [108. 将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def build(self, nums, l, r):
@@ -7039,7 +7192,8 @@ class Solution:
         return self.build(nums, 0, len(nums) - 1)
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 private:
@@ -7063,7 +7217,8 @@ public:
 
 [538. 把二叉搜索树转换为累加树](https://leetcode-cn.com/problems/convert-bst-to-greater-tree/description/)
 
-***python***
+**_python_**
+
 ```python
 class Solution:
     def __init__(self):
@@ -7085,7 +7240,8 @@ class Solution:
         return root
 ```
 
-***cpp***
+**_cpp_**
+
 ```cpp
 class Solution {
 private:
@@ -7303,7 +7459,7 @@ class Solution:
         self.res = []
         self.path = []
         self.backtracking(candidates, target, 0)
-        return self.res 
+        return self.res
 ```
 
 ```cpp
@@ -7332,9 +7488,9 @@ public:
 };
 ```
 
-### 40. 组合总和II
+### 40. 组合总和 II
 
-[40. 组合总和II](https://leetcode-cn.com/problems/combination-sum-ii/description/)
+[40. 组合总和 II](https://leetcode-cn.com/problems/combination-sum-ii/description/)
 
 ```python
 # used 数组去重
@@ -7531,9 +7687,9 @@ public:
 };
 ```
 
-### 93. 复原IP地址
+### 93. 复原 IP 地址
 
-[93. 复原IP地址](https://leetcode-cn.com/problems/restore-ip-addresses/description/)
+[93. 复原 IP 地址](https://leetcode-cn.com/problems/restore-ip-addresses/description/)
 
 ```python
 class Solution:
@@ -7651,9 +7807,9 @@ public:
 };
 ```
 
-### 90. 子集II
+### 90. 子集 II
 
-[90. 子集II](https://leetcode-cn.com/problems/subsets-ii/description/)
+[90. 子集 II](https://leetcode-cn.com/problems/subsets-ii/description/)
 
 ```python
 # used 数组去重
@@ -8019,9 +8175,9 @@ public:
 };
 ```
 
-### 51. N皇后
+### 51. N 皇后
 
-[51. N皇后](https://leetcode-cn.com/problems/n-queens/description/)
+[51. N 皇后](https://leetcode-cn.com/problems/n-queens/description/)
 
 ```python
 class Solution:
@@ -8265,8 +8421,7 @@ public:
 };
 ```
 
-
----------------------------------
+---
 
 ## 9 贪心算法
 
@@ -8275,9 +8430,11 @@ public:
 [455. 分发饼干](https://leetcode-cn.com/problems/assign-cookies/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 376. 摆动序列
@@ -8285,9 +8442,11 @@ public:
 [376. 摆动序列](https://leetcode-cn.com/problems/wiggle-subsequence/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 53. 最大子序和
@@ -8295,9 +8454,11 @@ public:
 [53. 最大子序和](https://leetcode-cn.com/problems/maximum-subarray/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 122. 买卖股票的最佳时机 II
@@ -8305,9 +8466,11 @@ public:
 [122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 55. 跳跃游戏
@@ -8315,9 +8478,11 @@ public:
 [55. 跳跃游戏](https://leetcode-cn.com/problems/jump-game/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 45. 跳跃游戏 II
@@ -8325,19 +8490,23 @@ public:
 [45. 跳跃游戏 II](https://leetcode-cn.com/problems/jump-game-ii/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
-### 1005. K次取反后最大化的数组和
+### 1005. K 次取反后最大化的数组和
 
 [1005. K 次取反后最大化的数组和](https://leetcode-cn.com/problems/maximize-sum-of-array-after-k-negations/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 134. 加油站
@@ -8345,9 +8514,11 @@ public:
 [134. 加油站](https://leetcode-cn.com/problems/gas-station/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 135. 分发糖果
@@ -8355,9 +8526,11 @@ public:
 [135. 分发糖果](https://leetcode-cn.com/problems/candy/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 860. 柠檬水找零
@@ -8365,9 +8538,11 @@ public:
 [860. 柠檬水找零](https://leetcode-cn.com/problems/lemonade-change/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 406. 根据身高重建队列
@@ -8375,9 +8550,11 @@ public:
 [406. 根据身高重建队列](https://leetcode-cn.com/problems/queue-reconstruction-by-height/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 452. 用最少数量的箭引爆气球
@@ -8385,9 +8562,11 @@ public:
 [452. 用最少数量的箭引爆气球](https://leetcode-cn.com/problems/minimum-number-of-arrows-to-burst-balloons/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 435. 无重叠区间
@@ -8395,9 +8574,11 @@ public:
 [435. 无重叠区间](https://leetcode-cn.com/problems/non-overlapping-intervals/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 763. 划分字母区间
@@ -8405,9 +8586,11 @@ public:
 [763. 划分字母区间](https://leetcode-cn.com/problems/partition-labels/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 56. 合并区间
@@ -8415,9 +8598,11 @@ public:
 [56. 合并区间](https://leetcode-cn.com/problems/merge-intervals/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 738. 单调递增的数字
@@ -8425,9 +8610,11 @@ public:
 [738. 单调递增的数字](https://leetcode-cn.com/problems/monotone-increasing-digits/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
 ### 968. 监控二叉树
@@ -8435,26 +8622,20 @@ public:
 [968. 监控二叉树](https://leetcode-cn.com/problems/binary-tree-cameras/description/)
 
 ```python
+
 ```
 
 ```cpp
+
 ```
 
-
----------------------------------
-
-
-
-
-
-
-
+---
 
 ### 1553. 吃掉 N 个橘子的最少天数
 
 [1553. 吃掉 N 个橘子的最少天数](https://leetcode.cn/problems/minimum-number-of-days-to-eat-n-oranges/description/)
 
-***python***
+**_python_**
 
 ```python
 class Solution:
@@ -8468,7 +8649,7 @@ class Solution:
         return self.memo[n]
 ```
 
-***cpp***
+**_cpp_**
 
 ```cpp
 // 动态规划超时

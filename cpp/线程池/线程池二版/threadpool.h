@@ -97,7 +97,7 @@ public:
 
   // 给线程池提交任务
   // 使用可变参模板编程，让submitTask可以接收任意任务函数和任意数量的参数
-  // pool.submitTask(sum1, 10, 20);   csdn  大秦坑王  右值引用+引用折叠原理
+  // pool.submitTask(sum1, 10, 20);
   // 返回值future<>
   template <typename Func, typename... Args>
   auto submitTask(Func &&func,

@@ -3096,35 +3096,34 @@ class Solution {
 public:
     vector<int> findAnagrams(string s, string p) {
         vector<int> res;
-        if (s.size() < p.size())
-            return res;
+        if (s.size() < p.size()) return res;
         unordered_map<char, int> umap;
         for (const char& c : p)
             ++umap[c];
+
         int invalid = umap.size();
-        int left = 0, right = 0; // [)
+        int left = 0, right = 0;
         while (right < s.size()) {
-            char c = s[right++]; // 扩大窗口
-            if (umap.find(c) != umap.end()) {
-                --umap[c];
-                if (umap[c] == 0)
+            auto it = umap.find(s[right++]);    // 扩大窗口
+            if (it != umap.end()) {
+                --it->second;
+                if (it->second == 0)
                     --invalid;
             }
-
             if (right - left == p.size()) {
                 if (invalid == 0)
-                    res.emplace_back(left); // 收结果
-                char d = s[left++];         // 缩小窗口
-                if (umap.find(d) != umap.end()) {
-                    if (umap[d] == 0)
+                    res.emplace_back(left); // 收获结果
+                auto it = umap.find(s[left++]); // 缩小窗口
+                if (it != umap.end()) {
+                    if (it->second == 0)
                         ++invalid;
-                    ++umap[d];
+                    ++it->second;
                 }
             }
         }
         return res;
     }
-};
+}
 ```
 
 ### 349. 两个数组的交集
@@ -3153,15 +3152,15 @@ class Solution:
 class Solution{
 public:
     vector<int> intersection(vector<int> &nums1, vector<int> &nums2){
-        unordered_set<int> mySet;
+        unordered_set<int> uset;
         vector<int> res;
 
-        for (int num1 : nums1)
-            mySet.insert(num1);
-        for (int num2 : nums2)
-            if (mySet.find(num2) != mySet.end()){
+        for (const int &num1 : nums1)
+            uset.insert(num1);
+        for (const int &num2 : nums2)
+            if (uset.find(num2) != uset.end()){
                 res.emplace_back(num2);
-                mySet.erase(num2);
+                uset.erase(num2);
             }
 
         return res;
@@ -3201,10 +3200,10 @@ public:
     vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
         unordered_map<int, int> umap;
         vector<int> res;
-        for (int num : nums1)
+        for (const int &num : nums1)
             ++umap[num];
 
-        for (int num : nums2) {
+        for (const int &num : nums2) {
             auto it = umap.find(num);
             if (it != umap.end() && it->second) {
                 res.push_back(num);
@@ -3243,21 +3242,22 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    bool isHappy(int n) {
-        unordered_set<int> uset;
-        while (n != 1) {
-            uset.insert(n);
-            int sum = 0;
-            while (n) {
-                sum += (n % 10) * (n % 10);
-                n /= 10;
-            }
-            if (uset.count(sum))
-                return false;
-            n = sum;
-        }
-        return true;
+  bool isHappy(int n) {
+    unordered_set<int> uset;
+
+    while (n != 1) {
+      if (uset.find(n) != uset.end()) return false;
+      uset.insert(n);
+
+      int temp = n;
+      n = 0;
+      while (temp) {
+        n += (temp % 10) * (temp % 10);
+        temp /= 10;
+      }
     }
+    return true;
+  }
 };
 ```
 
@@ -3333,12 +3333,12 @@ public:
                      vector<int>& nums4) {
         unordered_map<int, int> umap;
         int res = 0;
-        for (int num1 : nums1)
-            for (int num2 : nums2)
+        for (const int &num1 : nums1)
+            for (const int &num2 : nums2)
                 ++umap[num1 + num2];
 
-        for (int num3 : nums3)
-            for (int num4 : nums4) {
+        for (const int &num3 : nums3)
+            for (const int &num4 : nums4) {
                 auto it = umap.find(-num3 - num4);
                 if (it != umap.end())
                     res += it->second;
@@ -3389,33 +3389,31 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    vector<vector<int>> threeSum(vector<int>& nums) {
-        vector<vector<int>> res;
-        sort(nums.begin(), nums.end());
-        for (int i = 0; i < nums.size(); ++i) {
-            if (nums[i] > 0)
-                break;
-            int left = i + 1, right = nums.size() - 1;
-            while (left < right) {
-                if (nums[i] + nums[left] == -nums[right]) {
-                    res.push_back(
-                        vector<int>{nums[i], nums[left], nums[right]});
-                    while (left < right && nums[left] == nums[left + 1])
-                        ++left;
-                    while (left < right && nums[right] == nums[right - 1])
-                        --right;
-                    ++left;
-                    --right;
-                } else if (nums[i] + nums[left] < -nums[right])
-                    ++left;
-                else
-                    --right;
-            }
-            while (i < nums.size() - 1 && nums[i] == nums[i + 1])
-                ++i;
-        }
-        return res;
+  vector<vector<int>> threeSum(vector<int> &nums) {
+    sort(nums.begin(), nums.end());
+    vector<vector<int>> res;
+    for (int i = 0; i < nums.size(); ++i) {
+      if (nums[i] > 0)
+        return res; // 去重
+      if (i > 0 && nums[i] == nums[i - 1])
+        continue; // 去重
+
+      int left = i + 1, right = nums.size() - 1;
+      while (left < right) {
+        if (nums[i] + nums[left] == -nums[right]) {
+          res.emplace_back(vector<int>{nums[i], nums[left], nums[right]});
+          ++left;
+          --right;
+          while (left < right && nums[left] == nums[left - 1]) // 去重
+            ++left;
+          while (left < right && nums[right] == nums[right + 1]) // 去重
+            --right;
+        } else if (nums[i] + nums[left] < -nums[right]) ++left;
+        else --right;
+      }
     }
+    return res;
+  }
 };
 ```
 
@@ -3468,48 +3466,38 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    vector<vector<int>> fourSum(vector<int>& nums, int target) {
-        vector<vector<int>> res;
-        sort(nums.begin(), nums.end());
+  vector<vector<int>> fourSum(vector<int> &nums, int target) {
+    vector<vector<int>> res;
+    sort(nums.begin(), nums.end());
+    for (int i = 0; i < nums.size(); ++i) {
+      int sum = nums[i];
+      if (sum > 0 && sum > target) break;
+      if (i && nums[i] == nums[i - 1]) continue;
 
-        for (int i = 0; i < (int)nums.size() - 3; i++) {
-            int sum = nums[i];
-            if (sum > 0 && sum > target) // 剪枝
-                return res;
-            if (i > 0 && nums[i] == nums[i - 1])
-                continue;
+      for (int j = i + 1; j < nums.size(); ++j) {
+        sum = nums[i] + nums[j];
+        if (sum > 0 && sum > target) break;
+        if (j != i + 1 && nums[j] == nums[j - 1]) continue;
 
-            for (int j = i + 1; j < (int)nums.size() - 2; ++j) {
-                sum = nums[i] + nums[j];
-                if (sum > 0 && sum > target) // 剪枝
-                    break;
-                if (j > i + 1 && nums[j] == nums[j - 1])
-                    continue;
-
-                int left = j + 1;
-                int right = nums.size() - 1;
-                while (left < right) {
-                    if ((long)nums[i] + nums[j] <
-                        (long)target - nums[left] - nums[right])
-                        ++left;
-                    else if ((long)nums[i] + nums[j] >
-                             (long)target - nums[left] - nums[right])
-                        --right;
-                    else {
-                        res.emplace_back(vector<int>{nums[i], nums[j],
-                                                     nums[left], nums[right]});
-                        ++left;
-                        --right;
-                        while (left < right && nums[left] == nums[left - 1])
-                            ++left;
-                        while (left < right && nums[right] == nums[right + 1])
-                            --right;
-                    }
-                }
-            }
+        int left = j + 1, right = nums.size() - 1;
+        while (left < right) {
+          if ((long)target - sum > nums[left] + nums[right]) ++left;
+          else if ((long)target - sum < nums[left] + nums[right]) --right;
+          else {
+            res.emplace_back(
+                vector<int>{nums[i], nums[j], nums[left], nums[right]});
+            ++left;
+            --right;
+            while (left < right && nums[left] == nums[left - 1])
+              ++left;
+            while (left < right && nums[right] == nums[right + 1])
+              --right;
+          }
         }
-        return res;
+      }
     }
+    return res;
+  }
 };
 ```
 
@@ -3543,8 +3531,7 @@ class Solution {
 public:
     void reverseString(vector<char>& s) {
         int left = 0, right = s.size() - 1;
-        while (left < right)
-            swap(s[left++], s[right--]);
+        while (left < right) swap(s[left++], s[right--]);
     }
 };
 ```
@@ -3623,20 +3610,16 @@ print(res)
 ```cpp
 #include <iostream>
 #include <string>
-
+#include <algorithm>
 using namespace std;
 
 int main() {
-  string s;
+  string s, res;
   cin >> s;
-
-  string res;
-  for (auto ch : s) {
-    if (isdigit(ch))
-      res += "number";
-    else
-      res.push_back(ch);
-  }
+  for_each(s.begin(), s.end(), [&res](const char &c) {
+    if (isdigit(c)) res += "number";
+    else res.push_back(c);
+  });
   cout << res;
   return 0;
 }
@@ -3649,40 +3632,37 @@ int main() {
 **_python_**
 
 ```python
-s = input()
-
-res = ""
-for ch in s:
-    if ch.isdigit():
-        res += "number"
-    else:
-        res += ch
-
-print(res)
 ```
 
 **_cpp_**
 
 ```cpp
-#include <iostream>
-#include <string>
+class Solution {
+public:
+  string reverseWords(string s) {
+    int slow = 0;
+    for (int right = 0; right < s.size(); ++right) {
+      if (s[right] != ' ') {
+        if (slow != 0)
+          s[slow++] = ' ';
+        while (right < s.size() && s[right] != ' ')
+          s[slow++] = s[right++];
+      }
+    }
+    s.resize(slow);
 
-using namespace std;
+    reverse(s.begin(), s.end());
+    auto pleft = s.begin(), pright = s.begin();
+    for (; pright != s.end(); ++pright)
+      if (*pright == ' ') {
+        reverse(pleft, pright);
+        pleft = pright + 1;
+      }
 
-int main() {
-  string s;
-  cin >> s;
-
-  string res;
-  for (auto ch : s) {
-    if (isdigit(ch))
-      res += "number";
-    else
-      res.push_back(ch);
+    reverse(pleft, s.end());
+    return s;
   }
-  cout << res;
-  return 0;
-}
+};
 ```
 
 ### 55. 右旋字符串（第八期模拟笔试）
@@ -3898,9 +3878,9 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    bool repeatedSubstringPattern(string s) {
-        return (s + s).find(s, 1) != s.size();
-    }
+  bool repeatedSubstringPattern(string s) {
+    return (s + s).find(s, 1) != s.size();
+  }
 };
 ```
 
@@ -4091,23 +4071,18 @@ class Solution:
 class Solution {
 public:
     bool isValid(string s) {
-        if (s.size() % 2)
-            return false;
+        if (s.size() % 2) return false;
         stack<char> st;
-        for (char c : s)
-            if (c == '(' || c == '[' || c == '{')
-                st.push(c);
+        for (const char &c : s)
+            if (c == '(' || c == '[' || c == '{') st.push(c);
             else {
-                if (st.empty())
-                    return false;
-
-                char top = st.top();
+                if (st.empty()) return false;
+                char temp = st.top();
                 st.pop();
-                if ((c == ')' && top != '(') || (c == ']' && top != '[') ||
-                    (c == '}' && top != '{'))
+                if ((c == ')' && temp != '(') || (c == ']' && temp != '[') ||
+                    (c == '}' && temp != '{'))
                     return false;
             }
-
         return st.empty();
     }
 };
@@ -4136,16 +4111,12 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    string removeDuplicates(string s) {
-        string res;
-        for (char c : s)
-            if (res.empty() || res.back() != c)
-                res.push_back(c);
-            else
-                res.pop_back();
-
-        return res;
-    }
+  string removeDuplicates(string s) {
+    string res;
+    for (const char &c : s)
+      (res.empty() || res.back() != c) ? res.push_back(c) : res.pop_back();
+    return res;
+  }
 };
 ```
 
@@ -4190,46 +4161,25 @@ class Solution:
 
 ```cpp
 class Solution {
-private:
-    int stringToInt(string& s) {
-        int i = 0, res = 0;
-        bool neg = false;
-        if (s[0] == '-') {
-            neg = true;
-            i = 1;
-        }
-        while (i < s.size())
-            res = res * 10 + s[i++] - '0';
-        return neg ? -res : res;
-    }
-
 public:
-    int evalRPN(vector<string>& tokens) {
-        stack<int> st;
-        for (string& s : tokens)
-            if (s.size() > 1 || (s >= "0" && s <= "9"))
-                st.push(stringToInt(s));
-            else {
-                int y = st.top();
-                st.pop();
-                int x = st.top();
-                st.pop();
-                switch (s[0]) {
-                case '+':
-                    st.push(x + y);
-                    break;
-                case '-':
-                    st.push(x - y);
-                    break;
-                case '*':
-                    st.push(x * y);
-                    break;
-                case '/':
-                    st.push(x / y);
-                }
-            }
-        return st.top();
-    }
+  int evalRPN(vector<string> &tokens) {
+    stack<int> st;
+    for_each(tokens.begin(), tokens.end(), [&st](const string &str) {
+      if (isdigit(str.back())) st.push(stoi(str));
+      else {
+        int y = st.top(); st.pop();
+        int x = st.top(); st.pop();
+
+        switch (str[0]) {
+        case '+': st.push(x + y); break;
+        case '-': st.push(x - y); break;
+        case '*': st.push(x * y); break;
+        case '/': st.push(x / y);
+        }
+      }
+    });
+    return st.top();
+  }
 };
 ```
 
@@ -4336,34 +4286,32 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    struct compare {
-        bool operator()(const pair<int, int>& left,
-                        const pair<int, int>& right) {
-            return left.second > right.second;
-        }
-    };
+  struct compare {
+    bool operator()(const pair<int, int> &lhs, const pair<int, int> &rhs) {
+      return lhs.second > rhs.second;
+    }
+  };
 
 public:
-    vector<int> topKFrequent(vector<int>& nums, int k) {
-        unordered_map<int, int> umap;
-        for (int num : nums)
-            ++umap[num];
-        priority_queue<pair<int, int>, vector<pair<int, int>>, compare> pq;
-        for (unordered_map<int, int>::iterator it = umap.begin();
-             it != umap.end(); ++it) {
-            pq.push(*it);
-            if (pq.size() > k)
-                pq.pop();
-        }
-        // umap.clear();
-        vector<int> res;
-        res.reserve(k);
-        while (!pq.empty()) {
-            res.push_back(pq.top().first);
-            pq.pop();
-        }
-        return res;
+  vector<int> topKFrequent(vector<int> &nums, int k) {
+    unordered_map<int, int> umap;
+    for (const int &num : nums) ++umap[num];
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, compare>
+        pq; // 小顶堆
+    for_each(umap.begin(), umap.end(), [&](const pair<int, int> &elem) {
+      pq.push(elem);
+      if (pq.size() > k) pq.pop();
+    });
+    umap.clear();
+    vector<int> res;
+    res.reserve(k);
+    while (!pq.empty()) {
+      res.emplace_back(pq.top().first);
+      pq.pop();
     }
+    return res;
+  }
 };
 ```
 
@@ -8434,7 +8382,19 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int findContentChildren(vector<int> &g, vector<int> &s) {
+    sort(g.begin(), g.end());
+    sort(s.begin(), s.end());
+    int i = 0, j = 0;
+    while (i < g.size() && j < s.size()) {
+      if (s[j] > g[i]) ++i;
+      ++j;
+    }
+    return i;
+  }
+};
 ```
 
 ### 376. 摆动序列
@@ -8446,7 +8406,17 @@ public:
 ```
 
 ```cpp
+class Solution {
+public:
+  int wiggleMaxLength(vector<int> &nums) {
+    int des = 1, incre = 1;
+    for (int i = 1; i < nums.size(); ++i)
+      if (nums[i] - nums[i - 1] > 0) incre = des + 1;
+      else if (nums[i] - nums[i - 1] < 0) des = incre + 1;
 
+    return max(des, incre);
+  }
+};
 ```
 
 ### 53. 最大子序和
@@ -8458,7 +8428,20 @@ public:
 ```
 
 ```cpp
-
+// 贪心算法
+class Solution {
+public:
+  int maxSubArray(vector<int> &nums) {
+    int res = nums[0];
+    int sum = 0;
+    for (int i = 0; i< nums.size() ; ++i) {
+      sum += nums[i];
+      res = max(res, sum);
+      if (sum < 0) sum = 0;
+    }
+    return res;
+  }
+};
 ```
 
 ### 122. 买卖股票的最佳时机 II
@@ -8470,7 +8453,45 @@ public:
 ```
 
 ```cpp
+// 贪心
+class Solution {
+public:
+  int maxProfit(vector<int> &prices) {
+    int res = 0;
+    for (int i = 1; i < prices.size(); ++i)
+      res += max(prices[i] - prices[i - 1], 0);
+    return res;
+  }
+};
 
+// 动态规划
+class Solution {
+public:
+  int maxProfit(vector<int> &prices) {
+    vector<vector<int>> dp(2, vector<int>(prices.size(), 0));
+    dp[0][0] = -prices[0];
+    for (int i = 1; i < prices.size(); ++i) {
+      dp[0][i] = max(dp[1][i - 1] - prices[i], dp[0][i - 1]);   // 第 i 天持有股票
+      dp[1][i] = max(dp[1][i - 1], dp[0][i - 1] + prices[i]);   // 第 i 天不持有股票
+    }
+    return dp[1].back();
+  }
+};
+
+// 动态规划高级版
+class Solution {
+public:
+  int maxProfit(vector<int> &prices) {
+    vector<int> dp(2, 0);
+    dp[0] = 0 - prices[0];
+    // 逻辑巧妙，利用了可以当天买入当天卖出，所以才不需要利用临时变量保存 dp[0]
+    for (int i = 1; i < prices.size(); i++) {
+      dp[0] = max(dp[0], dp[1] - prices[i]);    // 第 i 天持有股票
+      dp[1] = max(dp[1], dp[0] + prices[i]);    // 第 i 天不持有股票
+    }
+    return dp[1];
+  }
+};
 ```
 
 ### 55. 跳跃游戏
@@ -8482,7 +8503,18 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  bool canJump(vector<int> &nums) {
+    int right = 0;
+    if (nums.size() == 1) return true;
+    for (int i = 0; i <= right; ++i) {
+      right = max(right, i + nums[i]);
+      if (right >= nums.size() - 1) return true;
+    }
+    return false;
+  }
+};
 ```
 
 ### 45. 跳跃游戏 II
@@ -8494,7 +8526,25 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int jump(vector<int> &nums) {
+    if (nums.size() == 1) return 0;
+    int left = 0, right = 0;
+    int res = 0;
+    int nextRight = 0;
+    while (left <= nextRight) {
+      nextRight = max(left + nums[left], nextRight);
+      ++left;
+      if (left > right) {
+        right = nextRight;
+        res++;
+      }
+      if (right >= nums.size() - 1) return res;
+    }
+    return res;
+  }
+};
 ```
 
 ### 1005. K 次取反后最大化的数组和
@@ -8506,7 +8556,22 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int largestSumAfterKNegations(vector<int> &nums, int k) {
+    sort(nums.begin(), nums.end(), [](const int &lhs, const int &rhs) {
+      return abs(lhs) > abs(rhs);
+    }); // 按照绝对值从大到小排序
+    for_each(nums.begin(), nums.end(), [&](int &num) {
+      if (num < 0 && k > 0) {
+        num *= -1;
+        --k;
+      }
+    });
+    if (k % 2) nums.back() *= -1;
+    return accumulate(nums.begin(), nums.end(), 0);
+  }
+};
 ```
 
 ### 134. 加油站
@@ -8518,7 +8583,22 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int canCompleteCircuit(vector<int> &gas, vector<int> &cost) {
+    int curSum = 0, totalSum = 0;
+    int startIndex = 0;
+    for (int i = 0; i < gas.size(); ++i) {
+      curSum += gas[i] - cost[i];
+      totalSum += gas[i] - cost[i];
+      if (curSum < 0) {
+        curSum = 0;
+        startIndex = i + 1;
+      }
+    }
+    return totalSum < 0 ? -1 : startIndex;
+  }
+};
 ```
 
 ### 135. 分发糖果
@@ -8530,7 +8610,19 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int candy(vector<int> &ratings) {
+    vector<int> vec(ratings.size(), 1);
+    for (int i = 1; i < ratings.size(); ++i)    // 从左往右
+      if (ratings[i] > ratings[i - 1])
+        vec[i] = vec[i - 1] + 1;
+    for (int i = ratings.size() - 2; i >= 0; --i)   // 从右往左
+      if (ratings[i] > ratings[i + 1] && vec[i] <= vec[i + 1])
+        vec[i] = vec[i + 1] + 1;
+    return accumulate(vec.begin(), vec.end(), 0);
+  }
+};
 ```
 
 ### 860. 柠檬水找零
@@ -8542,7 +8634,34 @@ public:
 ```
 
 ```cpp
+class Solution {
+public:
+  bool lemonadeChange(vector<int> &bills) {
+    int arr[3] = {0}; // 5, 10, 20
+    for (int i = 0; i < bills.size(); ++i) {
+      switch (bills[i]) {
+      case 5:
+        ++arr[0];
+        break;
+      case 10:
+        --arr[0];
+        ++arr[1];
+        break;
+      case 20:
+        if (arr[1]){
+          --arr[1];
+          --arr[0];
+        }else arr[0] -= 3;
+        break;
+      default:
+        break;
+      }
 
+      if (arr[0] < 0 || arr[1] < 0) return false;
+    }
+    return true;
+  }
+};
 ```
 
 ### 406. 根据身高重建队列
@@ -8554,7 +8673,23 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  vector<vector<int>> reconstructQueue(vector<vector<int>> &people) {
+    sort(people.begin(), people.end(),
+         [](const vector<int> &lhs, const vector<int> &rhs) {
+           return lhs[0] == rhs[0] ? lhs[1] < rhs[1] : lhs[0] > rhs[0];
+         });// 身高从大到小，次之 k 小优先
+    list<vector<int>> que;
+    for (int i = 0; i < people.size(); ++i) {
+      int position = people[i][1];
+      auto it = que.begin();
+      while (position--) it++;
+      que.insert(it, people[i]);
+    }
+    return vector<vector<int>>(que.begin(), que.end());
+  }
+};
 ```
 
 ### 452. 用最少数量的箭引爆气球
@@ -8566,7 +8701,23 @@ public:
 ```
 
 ```cpp
-
+// 本质上还是区间合并
+class Solution {
+public:
+  int findMinArrowShots(vector<vector<int>> &points) {
+    sort(points.begin(), points.end(),
+         [](const vector<int> &lhs, const vector<int> &rhs) {
+           return lhs[0] == rhs[0] ? lhs[1] < rhs[1] : lhs[0] < rhs[0];
+         });
+    int res = 1;
+    for (int i = 1; i < points.size(); ++i)
+      if (points[i][0] > points[i - 1][1])
+        ++res;
+      else if (points[i][1] > points[i - 1][1])
+        points[i][1] = points[i - 1][1];
+    return res;
+  }
+};
 ```
 
 ### 435. 无重叠区间
@@ -8578,7 +8729,26 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int eraseOverlapIntervals(vector<vector<int>> &intervals) {
+    sort(intervals.begin(), intervals.end(),
+         [](const vector<int> &lhs, const vector<int> &rhs) {
+           return lhs[0] == rhs[0] ? lhs[1] < rhs[1] : lhs[0] < rhs[0];
+         });
+    int res = 0;
+    for (int i = 1; i < intervals.size(); ++i)
+      if (intervals[i][0] < intervals[i - 1][1]) {
+        ++res;
+        // intervals[i][1] = min(intervals[i][1], intervals[i - 1][1]);
+        if (intervals[i][1] > intervals[i - 1][1])
+          intervals[i][1] = intervals[i - 1][1];
+      }
+    // else
+    //   intervals[i][1] = max(intervals[i][1], intervals[i-1][1]);
+    return res;
+  }
+};
 ```
 
 ### 763. 划分字母区间
@@ -8590,7 +8760,63 @@ public:
 ```
 
 ```cpp
+// 转换为 合并区间问题(笨)
+class Solution {
+public:
+  vector<int> partitionLabels(string s) {
+    vector<vector<int>> map(26, vector<int>(2, 520));
+    for (int i = 0; i < s.size(); i++)
+      if (map[s[i] - 'a'][0] != 520)
+        map[s[i] - 'a'][1] = i;
+      else
+        map[s[i] - 'a'][0] = i;
 
+    for (int i = 0; i < map.size(); i++)
+      if (map[i][0] != 520 && map[i][1] == 520)
+        map[i][1] = map[i][0];
+
+    sort(map.begin(), map.end(),
+         [](const vector<int> &lhs, const vector<int> &rhs) {
+           return lhs[0] == rhs[0] ? lhs[1] < rhs[1] : lhs[0] < rhs[0];
+         });
+
+    vector<int> res;
+    // 接下来就是重叠区间问题
+    int count = 0;
+    for (int i = 1; i < 26 && map[i][0] != 520; i++)
+      if (map[i][0] < map[i - 1][1]) {
+        map[i][1] = max(map[i - 1][1], map[i][1]);
+        map[i][0] = min(map[i - 1][0], map[i][0]);
+      } else {
+        res.emplace_back(map[i - 1][1] - map[i - 1][0] + 1);
+        count += res.back();
+      }
+    res.emplace_back(s.size() - count);
+    return res;
+  }
+};
+
+
+// 记录每个元素出现的最远位置
+class Solution {
+public:
+  vector<int> partitionLabels(string s) {
+    int map[26] = {0};
+    for (int i = 0; i < s.size(); ++i)
+      map[s[i] - 'a'] = i;
+
+    int left = 0, right = 0;
+    vector<int> res;
+    for (int i = 0; i < s.size(); ++i) {
+      right = max(right, map[s[i] - 'a']);
+      if (i == right) {
+        res.emplace_back(right - left + 1);
+        left = right + 1;
+      }
+    }
+    return res;
+  }
+};
 ```
 
 ### 56. 合并区间
@@ -8602,7 +8828,24 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  vector<vector<int>> merge(vector<vector<int>> &intervals) {
+    sort(intervals.begin(), intervals.end(),
+         [](const vector<int> &lhs, const vector<int> &rhs) {
+           return lhs[0] == rhs[0] ? lhs[1] < rhs[1] : lhs[0] < rhs[0];
+         });
+    vector<vector<int>> res;
+    for (int i = 1; i < intervals.size(); ++i)
+      if (intervals[i][0] <= intervals[i - 1][1]) {
+        intervals[i][0] = intervals[i - 1][0];
+        intervals[i][1] = max(intervals[i][1], intervals[i - 1][1]);
+      } else
+        res.emplace_back(intervals[i - 1]);
+    res.emplace_back(intervals.back());
+    return res;
+  }
+};
 ```
 
 ### 738. 单调递增的数字
@@ -8614,7 +8857,21 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int monotoneIncreasingDigits(int n) {
+    string str = to_string(n);
+    int startIndex = str.size();    // 记录 9 开始的位置
+    for (int i = str.size() - 2; i >= 0; --i)
+      if (str[i] > str[i + 1]) {
+        startIndex = i + 1;
+        --str[i];
+      }
+    for (int i = startIndex; i < str.size(); ++i)
+      str[i] = '9';
+    return stoi(str);
+  }
+};
 ```
 
 ### 968. 监控二叉树
@@ -8626,7 +8883,25 @@ public:
 ```
 
 ```cpp
+class Solution {
+private:
+  // 0 代表 未监控， 1 代表 有监控但无摄像头，2 代表有摄像头
+  int dfs(TreeNode *root, int &res) {
+    if (!root) return 1;
+    int left = dfs(root->left, res);
+    int right = dfs(root->right, res);
 
+    if (left == 1 && right == 1) return 0;
+    else if (left == 0 || right == 0) { ++res; return 2;} 
+    else return 1;
+  }
+
+public:
+  int minCameraCover(TreeNode *root) {
+    int res = 0;
+    return dfs(root, res) ? res : res + 1;
+  }
+};
 ```
 
 ---

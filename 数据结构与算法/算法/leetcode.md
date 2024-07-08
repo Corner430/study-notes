@@ -150,6 +150,54 @@
   - [56. 合并区间](#56-合并区间)
   - [738. 单调递增的数字](#738-单调递增的数字)
   - [968. 监控二叉树](#968-监控二叉树)
+- [10 动态规划](#10-动态规划)
+  - [509. 斐波那契数](#509-斐波那契数)
+  - [70. 爬楼梯](#70-爬楼梯)
+  - [746. 使用最小花费爬楼梯](#746-使用最小花费爬楼梯)
+  - [62. 不同路径](#62-不同路径)
+  - [63. 不同路径 II](#63-不同路径-ii)
+  - [343. 整数拆分](#343-整数拆分)
+  - [96. 不同的二叉搜索树](#96-不同的二叉搜索树)
+  - [0-1 背包理论基础](#0-1-背包理论基础)
+  - [416. 分割等和子集](#416-分割等和子集)
+  - [1049. 最后一块石头的重量 II](#1049-最后一块石头的重量-ii)
+  - [494. 目标和](#494-目标和)
+  - [474. 一和零](#474-一和零)
+  - [完全背包理论基础](#完全背包理论基础)
+  - [518. 零钱兑换 II](#518-零钱兑换-ii)
+  - [377. 组合总和 Ⅳ](#377-组合总和-ⅳ)
+  - [70. 爬楼梯（进阶版）](#70-爬楼梯进阶版)
+  - [322. 零钱兑换](#322-零钱兑换)
+  - [279. 完全平方数](#279-完全平方数)
+  - [139. 单词拆分](#139-单词拆分)
+  - [多重背包](#多重背包)
+  - [198. 打家劫舍](#198-打家劫舍)
+  - [213. 打家劫舍 II](#213-打家劫舍-ii)
+  - [337. 打家劫舍 III](#337-打家劫舍-iii)
+  - [121. 买卖股票的最佳时机](#121-买卖股票的最佳时机)
+  - [122. 买卖股票的最佳时机 II](#122-买卖股票的最佳时机-ii-1)
+  - [123. 买卖股票的最佳时机 III](#123-买卖股票的最佳时机-iii)
+  - [188. 买卖股票的最佳时机 IV](#188-买卖股票的最佳时机-iv)
+  - [309. 最佳买卖股票时机含冷冻期](#309-最佳买卖股票时机含冷冻期)
+  - [714. 买卖股票的最佳时机含手续费](#714-买卖股票的最佳时机含手续费)
+  - [300. 最长递增子序列](#300-最长递增子序列)
+  - [674. 最长连续递增序列](#674-最长连续递增序列)
+  - [718. 最长重复子数组](#718-最长重复子数组)
+  - [1143. 最长公共子序列](#1143-最长公共子序列)
+  - [1035. 不相交的线](#1035-不相交的线)
+  - [53. 最大子序和](#53-最大子序和-1)
+  - [392. 判断子序列](#392-判断子序列)
+  - [115. 不同的子序列](#115-不同的子序列)
+  - [583. 两个字符串的删除操作](#583-两个字符串的删除操作)
+  - [72. 编辑距离](#72-编辑距离)
+  - [647. 回文子串](#647-回文子串)
+  - [516. 最长回文子序列](#516-最长回文子序列)
+- [11 单调栈](#11-单调栈)
+  - [739. 每日温度](#739-每日温度)
+  - [496. 下一个更大元素 I](#496-下一个更大元素-i)
+  - [503. 下一个更大元素 II](#503-下一个更大元素-ii)
+  - [42. 接雨水](#42-接雨水)
+  - [84. 柱状图中最大的矩形](#84-柱状图中最大的矩形)
   - [1553. 吃掉 N 个橘子的最少天数](#1553-吃掉-n-个橘子的最少天数)
 
 ## 1 数组
@@ -3632,6 +3680,7 @@ int main() {
 **_python_**
 
 ```python
+
 ```
 
 **_cpp_**
@@ -4225,30 +4274,25 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
-        vector<int> res;
-        deque<int> dq;
-        for (int i = 0; i < k; ++i) {
-            while (!dq.empty() && nums[i] > dq.back())
-                dq.pop_back();
-            dq.push_back(nums[i]);
-        }
-        int left = 0, right = k; // [)
-        while (right < nums.size()) {
-            res.push_back(dq.front()); // 收获结果
+  vector<int> maxSlidingWindow(vector<int> &nums, int k) {
+    vector<int> res; deque<int> dq;
 
-            // 出队
-            if (nums[left++] == dq.front())
-                dq.pop_front();
+    for_each(nums.begin(), nums.begin() + k, [&dq](const int &num) {
+      while (!dq.empty() && dq.back() < num) dq.pop_back();
+      dq.emplace_back(num);
+    });
 
-            // 入队
-            while (!dq.empty() && nums[right] > dq.back())
-                dq.pop_back();
-            dq.push_back(nums[right++]);
-        }
-        res.push_back(dq.front());
-        return res;
+    int left = 0, right = k; // [)
+    while (right < nums.size()) {
+      res.emplace_back(dq.front()); // 收获结果
+      if (dq.front() == nums[left++]) dq.pop_front(); // 出队
+      // 入队
+      while (!dq.empty() && dq.back() < nums[right]) dq.pop_back();
+      dq.emplace_back(nums[right++]);
     }
+    res.emplace_back(dq.front());
+    return res;
+  }
 };
 ```
 
@@ -7241,25 +7285,25 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    vector<int> path;
-    vector<vector<int>> res;
-    void backtracking(const int& n, const int& k, int start) {
-        if (path.size() == k) {
-            res.push_back(path);
-            return;
-        }
-        for (int i = start; i <= n - (k - path.size()) + 1; ++i) {
-            path.push_back(i);
-            backtracking(n, k, i + 1);
-            path.pop_back();
-        }
+  vector<int> path;
+  vector<vector<int>> res;
+  void bracktracking(const int &n, const int &k, const int startIndex) {
+    if (path.size() == k) {
+      res.emplace_back(path);
+      return;
     }
+    for (int i = startIndex; i <= n - (k - path.size()) + 1; ++i) {
+      path.emplace_back(i);
+      bracktracking(n, k, i + 1);
+      path.pop_back();
+    }
+  }
 
 public:
-    vector<vector<int>> combine(int n, int k) {
-        backtracking(n, k, 1);
-        return res;
-    }
+  vector<vector<int>> combine(int n, int k) {
+    bracktracking(n, k, 1);
+    return res;
+  }
 };
 ```
 
@@ -7292,26 +7336,26 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    vector<int> path;
-    vector<vector<int>> res;
-    void backtracking(int k, int n, int start) {
-        if (!n && path.size() == k) {
-            res.push_back(path);
-            return;
-        }
-        for (int i = start; i <= 9; ++i){
-            if (n - i < 0 || 10 - i < k - path.size()) return;
-            path.push_back(i);
-            backtracking(k, n - i, i + 1);
-            path.pop_back();
-        }
+  vector<int> path;
+  vector<vector<int>> res;
+  void backtracking(const int &k, int n, const int startIndex) {
+    if (path.size() == k) {
+      if (n == 0) res.emplace_back(path);
+      return;
     }
+    for (int i = startIndex; i <= 9; ++i) {
+      if (n < i || 10 - i < k - path.size()) return;
+      path.emplace_back(i);
+      backtracking(k, n - i, i + 1);
+      path.pop_back();
+    }
+  }
 
 public:
-    vector<vector<int>> combinationSum3(int k, int n) {
-        backtracking(k, n, 1);
-        return res;
-    }
+  vector<vector<int>> combinationSum3(int k, int n) {
+    backtracking(k, n, 1);
+    return res;
+  }
 };
 ```
 
@@ -7347,38 +7391,29 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    const string letterMap[10] = {
-        "",
-        "",
-        "abc",
-        "def",
-        "ghi",
-        "jkl",
-        "mno",
-        "pqrs",
-        "tuv",
-        "wxzy"
-    };
-    string path;
-    vector<string> res;
+  const string letterMap[10] = {"",    "",    "abc",  "def", "ghi",
+                                "jkl", "mno", "pqrs", "tuv", "wxyz"};
 
-    void backtracking(const string &digits, int start){
-        if (path.size() == digits.size()){
-            res.push_back(path);
-            return;
-        }
-        for (int i = start; i < digits.size(); ++i)
-            for (const char &c : letterMap[digits[i] - '0']){
-                path.push_back(c);
-                backtracking(digits, i + 1);
-                path.pop_back();
-            }
+  string path;
+  vector<string> res;
+  void backtracking(const string &digits, int startIndex = 0) {
+    if (path.size() == digits.size()) {
+      res.emplace_back(path);
+      return;
     }
+    for (int i = startIndex; i < digits.size(); ++i)
+      for (const char &c : letterMap[digits[i] - '0']) {
+        path.push_back(c);
+        backtracking(digits, i + 1);
+        path.pop_back();
+      }
+  }
+
 public:
-    vector<string> letterCombinations(string digits) {
-        if (digits.size()) backtracking(digits, 0);
-        return res;
-    }
+  vector<string> letterCombinations(string digits) {
+    if(!digits.empty()) backtracking(digits);
+    return res;
+  }
 };
 ```
 
@@ -7413,26 +7448,26 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    vector<int> path;
-    vector<vector<int>> res;
-    void backtracking(vector<int>& candidates, int target, int start) {
-        if (!target) {
-            res.push_back(path);
-            return;
-        }
-        for (int i = start; i < candidates.size(); ++i) {
-            if (target < candidates[i]) continue;
-            path.push_back(candidates[i]);
-            backtracking(candidates, target - candidates[i], i);
-            path.pop_back();
-        }
+  vector<int> path;
+  vector<vector<int>> res;
+  void backtracking(vector<int> &candidates, int target, const int startIndex) {
+    if (!target) {
+      res.emplace_back(path);
+      return;
     }
+    for (int i = startIndex; i < candidates.size(); ++i) {
+      if (target < candidates[i]) continue;
+      path.emplace_back(candidates[i]);
+      backtracking(candidates, target - candidates[i], i);
+      path.pop_back();
+    }
+  }
 
 public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        backtracking(candidates, target, 0);
-        return res;
-    }
+  vector<vector<int>> combinationSum(vector<int> &candidates, int target) {
+    backtracking(candidates, target, 0);
+    return res;
+  }
 };
 ```
 
@@ -7504,33 +7539,32 @@ class Solution:
 ```cpp
 // used 数组去重
 class Solution {
-private:
-    vector<int> path;
-    vector<vector<int>> res;
-    void backtracking(vector<int>& candidates, int target, vector<bool>& used,
-                      int start) {
-        if (!target) {
-            res.push_back(path);
-            return;
-        }
-        for (int i = start; i < candidates.size() && candidates[i] <= target; ++i) {
-            if (i && candidates[i] == candidates[i - 1] && !used[i - 1])
-                continue;
-            path.push_back(candidates[i]);
-            used[i] = true;
-            backtracking(candidates, target - candidates[i], used, i + 1);
-            used[i] = false;
-            path.pop_back();
-        }
+  vector<int> path;
+  vector<vector<int>> res;
+  void backtracking(const vector<int> &candidates, int target,
+                    const int startIndex, vector<bool> &used) {
+    if (target == 0) {
+      res.emplace_back(path);
+      return;
     }
+    for (int i = startIndex; i < candidates.size() && candidates[i] <= target;
+         ++i) {
+      if (i && candidates[i] == candidates[i - 1] && !used[i - 1]) continue;
+      path.emplace_back(candidates[i]);
+      used[i] = true;
+      backtracking(candidates, target - candidates[i], i + 1, used);
+      used[i] = false;
+      path.pop_back();
+    }
+  }
 
 public:
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        vector<bool> used(candidates.size(), false);
-        sort(candidates.begin(), candidates.end());
-        backtracking(candidates, target, used, 0);
-        return res;
-    }
+  vector<vector<int>> combinationSum2(vector<int> &candidates, int target) {
+    sort(candidates.begin(), candidates.end());
+    vector<bool> used(candidates.size(), false);
+    backtracking(candidates, target, 0, used);
+    return res;
+  }
 };
 
 // set 去重
@@ -7604,34 +7638,33 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    vector<string> path;
-    vector<vector<string>> res;
-    bool isPalinrome(const string& s, int left, int right) {
-        while (left < right)
-            if (s[left++] != s[right--])
-                return false;
-        return true;
+  vector<string> path;
+  vector<vector<string>> res;
+  bool isPalinrome(const string &s, int left, int right) {
+    while (left < right)
+      if (s[left++] != s[right--])
+        return false;
+    return true;
+  }
+  void backtracking(const string &s, int startIndex) {
+    if (startIndex == s.size()) {
+      res.emplace_back(path);
+      return;
     }
-
-    void backtracking(const string& s, int startIndex) {
-        if (startIndex == s.size()) {
-            res.push_back(path);
-            return;
-        }
-        for (int i = startIndex; i < s.size(); ++i){
-            if (isPalinrome(s, startIndex, i)){
-                path.push_back(s.substr(startIndex, i - startIndex + 1));
-                backtracking(s, i + 1);
-                path.pop_back();
-            }
-        }
+    for (int i = startIndex; i < s.size(); ++i) {
+      if (isPalinrome(s, startIndex, i)) {
+        path.emplace_back(s.substr(startIndex, i - startIndex + 1));
+        backtracking(s, i + 1);
+        path.pop_back();
+      }
     }
+  }
 
 public:
-    vector<vector<string>> partition(string s) {
-        backtracking(s, 0);
-        return res;
-    }
+  vector<vector<string>> partition(string s) {
+    backtracking(s, 0);
+    return res;
+  }
 };
 ```
 
@@ -7673,39 +7706,36 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    vector<string> res;
-    bool isValid(const string& s, int left, int right) {
-        if (left == right)
-            return true;
-        else if (s[left] == '0')
-            return false;
-        int num = 0;
-        while (left <= right)
-            num = num * 10 + (s[left++] - '0');
-        return num >= 1 && num <= 255;
+  vector<string> res;
+  bool isValid(const string &s, int left, int right) {
+    if (left == right)
+      return true;
+    else if (s[left] == '0')
+      return false;
+    int num = stoi(s.substr(left, right - left + 1));
+    return num >= 1 && num <= 255;
+  }
+
+  void backtracking(const string &s, string path, int startIndex, int layer) {
+    if (4 == layer) {
+      if (startIndex == s.size()) {
+        res.emplace_back(path);
+        res.back().resize(path.size() - 1);
+      }
+      return;
     }
-    void backtracking(const string& s, string path, int startIndex, int layer) {
-        if (4 == layer) {
-            if (startIndex == s.size()) {
-                res.push_back(path);
-                res.back().resize(path.size() - 1);
-            }
-            return;
-        }
-        for (int i = startIndex; i < s.size(); ++i)
-            if (i - startIndex < 3 && s.size() - startIndex <= (4 - layer) * 3 &&
-                isValid(s, startIndex, i))
-                backtracking(
-                    s, path + s.substr(startIndex, i - startIndex + 1) + ".",
-                    i + 1, layer + 1);
-    }
+    for (int i = startIndex; i < s.size(); ++i)
+      if (i - startIndex < 3 && s.size() - i <= (4 - layer) * 3 &&
+          isValid(s, startIndex, i))    // 保证 ip 位数合法，且剩余位数不要太多
+        backtracking(s, path + s.substr(startIndex, i - startIndex + 1) + ".",
+                     i + 1, layer + 1);
+  }
 
 public:
-    vector<string> restoreIpAddresses(string s) {
-        string path;
-        backtracking(s, path, 0, 0);
-        return res;
-    }
+  vector<string> restoreIpAddresses(string s) {
+    backtracking(s, "", 0, 0);
+    return res;
+  }
 };
 ```
 
@@ -7736,22 +7766,22 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    vector<int> path;
-    vector<vector<int>> res;
-    void backtracking(const vector<int>& nums, int startIndex) {
-        res.push_back(path);
-        for (int i = startIndex; i < nums.size(); ++i) {
-            path.push_back(nums[i]);
-            backtracking(nums, i + 1);
-            path.pop_back();
-        }
+  vector<int> path;
+  vector<vector<int>> res;
+  void backtracking(const vector<int> &nums, int startIndex) {
+    res.emplace_back(path);
+    for (int i = startIndex; i < nums.size(); ++i) {
+      path.emplace_back(nums[i]);
+      backtracking(nums, i + 1);
+      path.pop_back();
     }
+  }
 
 public:
-    vector<vector<int>> subsets(vector<int>& nums) {
-        backtracking(nums, 0);
-        return res;
-    }
+  vector<vector<int>> subsets(vector<int> &nums) {
+    backtracking(nums, 0);
+    return res;
+  }
 };
 ```
 
@@ -7814,29 +7844,28 @@ class Solution:
 // used 数组去重
 class Solution {
 private:
-    vector<int> path;
-    vector<vector<int>> res;
-    void backtracking(const vector<int>& nums, vector<bool>& used,
-                      int startIndex) {
-        res.push_back(path);
-        for (int i = startIndex; i < nums.size(); ++i) {
-            if (i && nums[i] == nums[i - 1] && !used[i - 1])
-                continue;
-            path.push_back(nums[i]);
-            used[i] = true;
-            backtracking(nums, used, i + 1);
-            used[i] = false;
-            path.pop_back();
-        }
+  vector<int> path;
+  vector<vector<int>> res;
+  void backtracking(const vector<int> &nums, vector<bool> &used,
+                    int startIndex) {
+    res.emplace_back(path);
+    for (int i = startIndex; i < nums.size(); ++i) {
+      if (i && nums[i] == nums[i - 1] && !used[i - 1]) continue;
+      path.emplace_back(nums[i]);
+      used[i] = true;
+      backtracking(nums, used, i + 1);
+      used[i] = false;
+      path.pop_back();
     }
+  }
 
 public:
-    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
-        sort(nums.begin(), nums.end());
-        vector<bool> uesd(nums.size(), false);
-        backtracking(nums, uesd, 0);
-        return res;
-    }
+  vector<vector<int>> subsetsWithDup(vector<int> &nums) {
+    sort(nums.begin(), nums.end());
+    vector<bool> uesd(nums.size(), false);
+    backtracking(nums, uesd, 0);
+    return res;
+  }
 };
 
 // set 去重
@@ -7901,31 +7930,28 @@ class Solution:
 ```cpp
 // 没有说有序，使用 set 去重
 class Solution {
-private:
-    vector<int> path;
-    vector<vector<int>> res;
-    void backtracking(const vector<int>& nums, int startIndex) {
-        if (path.size() > 1)
-            res.push_back(path);
+  vector<int> path;
+  vector<vector<int>> res;
+  void backtracking(const vector<int> &nums, int startIndex) {
+    if (path.size() > 1) res.emplace_back(path);
 
-        unordered_set<int> uset;
-        for (int i = startIndex; i < nums.size(); ++i) {
-            if (uset.find(nums[i]) != uset.end())
-                continue;
-            if (!path.size() || nums[i] >= path.back()) {
-                path.push_back(nums[i]);
-                uset.insert(nums[i]);
-                backtracking(nums, i + 1);
-                path.pop_back();
-            }
-        }
+    unordered_set<int> uset;
+    for (int i = startIndex; i < nums.size(); ++i) {
+      if (uset.find(nums[i]) != uset.end()) continue;
+      if (path.empty() || nums[i] >= path.back()) {
+        path.emplace_back(nums[i]);
+        uset.insert(nums[i]);
+        backtracking(nums, i + 1);
+        path.pop_back();
+      }
     }
+  }
 
 public:
-    vector<vector<int>> findSubsequences(vector<int>& nums) {
-        backtracking(nums, 0);
-        return res;
-    }
+  vector<vector<int>> findSubsequences(vector<int> &nums) {
+    backtracking(nums, 0);
+    return res;
+  }
 };
 ```
 
@@ -7961,31 +7987,29 @@ class Solution:
 
 ```cpp
 class Solution {
-private:
-    vector<int> path;
-    vector<vector<int>> res;
-    void backtracking(const vector<int>& nums, vector<bool>& used) {
-        if (path.size() == nums.size()) {
-            res.push_back(path);
-            return;
-        }
-        for (int i = 0; i < nums.size(); ++i) {
-            if (!used[i]) {
-                path.push_back(nums[i]);
-                used[i] = true;
-                backtracking(nums, used);
-                path.pop_back();
-                used[i] = false;
-            }
-        }
+  vector<int> path;
+  vector<vector<int>> res;
+  void backtracking(const vector<int> &nums, vector<bool> &used) {
+    if (path.size() == nums.size()) {
+      res.emplace_back(path);
+      return;
     }
+    for (int i = 0; i < nums.size(); ++i) {
+      if (used[i]) continue;
+      path.emplace_back(nums[i]);
+      used[i] = true;
+      backtracking(nums, used);
+      used[i] = false;
+      path.pop_back();
+    }
+  }
 
 public:
-    vector<vector<int>> permute(vector<int>& nums) {
-        vector<bool> used(nums.size(), false);
-        backtracking(nums, used);
-        return res;
-    }
+  vector<vector<int>> permute(vector<int> &nums) {
+    vector<bool> used(nums.size(), false);
+    backtracking(nums, used);
+    return res;
+  }
 };
 ```
 
@@ -8029,32 +8053,32 @@ class Solution:
 
 class Solution {
 private:
-    vector<int> path;
-    vector<vector<int>> res;
-    void backtracking(const vector<int>& nums, vector<bool>& used) {
-        if (path.size() == nums.size()) {
-            res.push_back(path);
-            return;
-        }
-        for (int i = 0; i < nums.size(); ++i) {
-            if (i && nums[i] == nums[i - 1] && !used[i - 1]) continue;
-            if (!used[i]) {
-                used[i] = true;
-                path.push_back(nums[i]);
-                backtracking(nums, used);
-                path.pop_back();
-                used[i] = false;
-            }
-        }
+  vector<int> path;
+  vector<vector<int>> res;
+  void backtracking(const vector<int> &nums, vector<bool> &used) {
+    if (path.size() == nums.size()) {
+      res.emplace_back(path);
+      return;
     }
+    for (int i = 0; i < nums.size(); ++i) {
+      if (i && nums[i] == nums[i - 1] && !used[i - 1]) continue;
+      if (!used[i]) {
+        used[i] = true;
+        path.emplace_back(nums[i]);
+        backtracking(nums, used);
+        path.pop_back();
+        used[i] = false;
+      }
+    }
+  }
 
 public:
-    vector<vector<int>> permuteUnique(vector<int>& nums) {
-        sort(nums.begin(), nums.end());
-        vector<bool> used(nums.size(), false);
-        backtracking(nums, used);
-        return res;
-    }
+  vector<vector<int>> permuteUnique(vector<int> &nums) {
+    sort(nums.begin(), nums.end());
+    vector<bool> used(nums.size(), false);
+    backtracking(nums, used);
+    return res;
+  }
 };
 ```
 
@@ -8090,24 +8114,22 @@ class Solution:
 ```
 
 ```cpp
-// 使用 map 保存 graph，使用 map 保存 graph[to]，并且使用 map 保存 graph[to] 的次数
 class Solution {
-  unordered_map<string, map<string, int>> graph;
+  unordered_map<string, map<string, int>> graph; // [from, [to, 次数]]
   vector<string> res;
 
 private:
   void backtracking(const int &num) {
-    if (res.size() == num)
-      return;
+    if (res.size() == num) return;
     for (auto &[to, count] : graph[res.back()]) {
-      if (count > 0) {
-        res.push_back(to);
+      if (count) {
+        res.emplace_back(to);
         --count;
         backtracking(num);
-        if (res.size() == num) // 防止 res.size() == num 时回溯，导致结果被 pop_back
-          return;
-        res.pop_back();
+        // 防止 res.size() == num 时回溯，导致结果被 pop_back
+        if (res.size() == num) return;
         ++count;
+        res.pop_back();
       }
     }
   }
@@ -8116,7 +8138,7 @@ public:
   vector<string> findItinerary(vector<vector<string>> &tickets) {
     for (auto &ticket : tickets)
       ++graph[ticket[0]][ticket[1]];
-    res.push_back("JFK");
+    res.emplace_back("JFK");
     backtracking(tickets.size() + 1);
     return res;
   }
@@ -8177,33 +8199,30 @@ class Solution:
 class Solution {
 private:
   vector<vector<string>> res;
-  bool isValid(const int &row, const int &col,
-               const vector<string> &chessboard) {
+
+  bool isValid(const vector<string> &chessboard, int row, int col) {
     for (int i = 0; i < row; ++i)
-      if (chessboard[i][col] == 'Q')
-        return false;
+      if (chessboard[i][col] == 'Q') return false;
 
     for (int i = row - 1, j = col + 1; i >= 0 && j < chessboard.size();
          --i, ++j)
-      if (chessboard[i][j] == 'Q')
-        return false;
+      if (chessboard[i][j] == 'Q') return false;
 
     for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; --i, --j)
-      if (chessboard[i][j] == 'Q')
-        return false;
+      if (chessboard[i][j] == 'Q') return false;
 
     return true;
   }
 
-  void backtracking(int row, vector<string> &chessboard) {
+  void backtracking(vector<string> &chessboard, int row) {
     if (row == chessboard.size()) {
-      res.push_back(chessboard);
+      res.emplace_back(chessboard);
       return;
     }
     for (int col = 0; col < chessboard.size(); ++col) {
-      if (isValid(row, col, chessboard)) {
+      if (isValid(chessboard, row, col)) {
         chessboard[row][col] = 'Q';
-        backtracking(row + 1, chessboard);
+        backtracking(chessboard, row + 1);
         chessboard[row][col] = '.';
       }
     }
@@ -8212,7 +8231,7 @@ private:
 public:
   vector<vector<string>> solveNQueens(int n) {
     vector<string> chessboard(n, string(n, '.'));
-    backtracking(0, chessboard);
+    backtracking(chessboard, 0);
     return res;
   }
 };
@@ -8269,103 +8288,40 @@ class Solution:
 
 ```cpp
 class Solution {
-private:
-  bool isValid(int row, int col, char k, vector<vector<char>> &board) {
-    for (int j = 0; j < 9; ++j) // 查看同行
-      if (board[row][j] == k)
-        return false;
+  bool isValid(const vector<vector<char>> &board, const int &row,
+               const int &col, const char &k) {
+    for (int j = 0; j < 9; ++j)
+      if (board[row][j] == k) return false;
 
-    for (int i = 0; i < 9; ++i) // 查看同列
-      if (board[i][col] == k)
-        return false;
+    for (int i = 0; i < 9; ++i)
+      if (board[i][col] == k) return false;
 
-    int startrow = (row / 3) * 3;
-    int startcol = (col / 3) * 3;
-    for (int i = startrow; i < startrow + 3; ++i)
-      for (int j = startcol; j < startcol + 3; ++j)
-        if (board[i][j] == k)
-          return false;
+    int startRow = (row / 3) * 3;
+    int startCol = (col / 3) * 3;
+    for (int i = startRow; i < startRow + 3; ++i)
+      for (int j = startCol; j < startCol + 3; ++j)
+        if (board[i][j] == k) return false;
 
     return true;
   }
 
   bool backtracking(vector<vector<char>> &board) {
-    for (int i = 0; i < 9; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        if (board[i][j] != '.')
-          continue;
-        for (char k = '1'; k <= '9'; ++k) {
-          if (isValid(i, j, k, board)) {
-            board[i][j] = k;
-            if (backtracking(board))
-              return true;
-            board[i][j] = '.';
-          }
+    for (int i = 0; i < 9; ++i)
+      for (int j = 0; j < 9; ++j)
+        if (board[i][j] == '.') {
+          for (char k = '1'; k <= '9'; ++k)
+            if (isValid(board, i, j, k)) {
+              board[i][j] = k;
+              if (backtracking(board)) return true;
+              board[i][j] = '.';
+            }
+          return false; // 1 - 9 都不合适，这条路失败了
         }
-        return false;
-      }
-    }
-    return true;
+    return true;  // 所有位置都有 非 '.' 元素
   }
 
 public:
   void solveSudoku(vector<vector<char>> &board) { backtracking(board); }
-};
-
-// 优化后
-class Solution {
-private:
-  bool isValid(int row, int col, char k, vector<vector<char>> &board) {
-    for (int j = 0; j < 9; ++j)
-      if (board[row][j] == k)
-        return false;
-
-    for (int i = 0; i < 9; ++i)
-      if (board[i][col] == k)
-        return false;
-
-    int startrow = (row / 3) * 3;
-    int startcol = (col / 3) * 3;
-    for (int i = startrow; i < startrow + 3; ++i)
-      for (int j = startcol; j < startcol + 3; ++j)
-        if (board[i][j] == k)
-          return false;
-
-    return true;
-  }
-
-  void backtracking(vector<vector<char>> &board, int row, int col, bool &flag) {
-    if (row == 9) {
-      flag = true;
-      return;
-    }
-
-    if (col == 9) {
-      backtracking(board, row + 1, 0, flag);
-      return;
-    }
-
-    if (board[row][col] != '.') {
-      backtracking(board, row, col + 1, flag);
-      return;
-    }
-
-    for (char k = '1'; k <= '9'; ++k) {
-      if (isValid(row, col, k, board)) {
-        board[row][col] = k;
-        backtracking(board, row, col + 1, flag);
-        if (flag)
-          return;
-        board[row][col] = '.';
-      }
-    }
-  }
-
-public:
-  void solveSudoku(vector<vector<char>> &board) {
-    bool flag = false;
-    backtracking(board, 0, 0, flag);
-  }
 };
 ```
 
@@ -8892,7 +8848,7 @@ private:
     int right = dfs(root->right, res);
 
     if (left == 1 && right == 1) return 0;
-    else if (left == 0 || right == 0) { ++res; return 2;} 
+    else if (left == 0 || right == 0) { ++res; return 2;}
     else return 1;
   }
 
@@ -8902,6 +8858,566 @@ public:
     return dfs(root, res) ? res : res + 1;
   }
 };
+```
+
+---
+
+## 10 动态规划
+
+### 509. 斐波那契数
+
+[509. 斐波那契数](https://leetcode.cn/problems/fibonacci-number/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 70. 爬楼梯
+
+[70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 746. 使用最小花费爬楼梯
+
+[746. 使用最小花费爬楼梯](https://leetcode-cn.com/problems/min-cost-climbing-stairs/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 62. 不同路径
+
+[62.不同路径](https://leetcode-cn.com/problems/unique-paths/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 63. 不同路径 II
+
+[63. 不同路径 II](https://leetcode-cn.com/problems/unique-paths-ii/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 343. 整数拆分
+
+[343. 整数拆分](https://leetcode-cn.com/problems/integer-break/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 96. 不同的二叉搜索树
+
+[96.不同的二叉搜索树](https://leetcode-cn.com/problems/unique-binary-search-trees/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 0-1 背包理论基础
+
+[46. 携带研究材料（第六期模拟笔试）](https://kamacoder.com/problempage.php?pid=1046)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 416. 分割等和子集
+
+[416. 分割等和子集](https://leetcode-cn.com/problems/partition-equal-subset-sum/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 1049. 最后一块石头的重量 II
+
+[1049. 最后一块石头的重量 II](https://leetcode-cn.com/problems/last-stone-weight-ii/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 494. 目标和
+
+[494. 目标和](https://leetcode-cn.com/problems/target-sum/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 474. 一和零
+
+[474. 一和零](https://leetcode-cn.com/problems/ones-and-zeroes/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 完全背包理论基础
+
+[52. 携带研究材料（第七期模拟笔试）](https://kamacoder.com/problempage.php?pid=1052)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 518. 零钱兑换 II
+
+[518. 零钱兑换 II](https://leetcode-cn.com/problems/coin-change-2/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 377. 组合总和 Ⅳ
+
+[377. 组合总和 Ⅳ](https://leetcode-cn.com/problems/combination-sum-iv/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 70. 爬楼梯（进阶版）
+
+[57. 爬楼梯（第八期模拟笔试）](https://kamacoder.com/problempage.php?pid=1067)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 322. 零钱兑换
+
+[322. 零钱兑换](https://leetcode-cn.com/problems/coin-change/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 279. 完全平方数
+
+[279. 完全平方数](https://leetcode-cn.com/problems/perfect-squares/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 139. 单词拆分
+
+[139. 单词拆分](https://leetcode-cn.com/problems/word-break/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 多重背包
+
+[56. 携带矿石资源（第八期模拟笔试）](https://kamacoder.com/problempage.php?pid=1066)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 198. 打家劫舍
+
+[198. 打家劫舍](https://leetcode-cn.com/problems/house-robber/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 213. 打家劫舍 II
+
+[213. 打家劫舍 II](https://leetcode-cn.com/problems/house-robber-ii/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 337. 打家劫舍 III
+
+[337. 打家劫舍 III](https://leetcode-cn.com/problems/house-robber-iii/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 121. 买卖股票的最佳时机
+
+[121. 买卖股票的最佳时机](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 122. 买卖股票的最佳时机 II
+
+[122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 123. 买卖股票的最佳时机 III
+
+[123. 买卖股票的最佳时机 III](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 188. 买卖股票的最佳时机 IV
+
+[188. 买卖股票的最佳时机 IV](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 309. 最佳买卖股票时机含冷冻期
+
+[309. 最佳买卖股票时机含冷冻期](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 714. 买卖股票的最佳时机含手续费
+
+[714. 买卖股票的最佳时机含手续费](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 300. 最长递增子序列
+
+[300.最长递增子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 674. 最长连续递增序列
+
+[674. 最长连续递增序列](https://leetcode-cn.com/problems/longest-continuous-increasing-subsequence/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 718. 最长重复子数组
+
+[718. 最长重复子数组](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 1143. 最长公共子序列
+
+[1143.最长公共子序列](https://leetcode-cn.com/problems/longest-common-subsequence/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 1035. 不相交的线
+
+[1035.不相交的线](https://leetcode-cn.com/problems/uncrossed-lines/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 53. 最大子序和
+
+[53. 最大子序和](https://leetcode-cn.com/problems/maximum-subarray/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 392. 判断子序列
+
+[392. 判断子序列](https://leetcode-cn.com/problems/is-subsequence/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 115. 不同的子序列
+
+[115. 不同的子序列](https://leetcode-cn.com/problems/distinct-subsequences/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 583. 两个字符串的删除操作
+
+[583. 两个字符串的删除操作](https://leetcode-cn.com/problems/delete-operation-for-two-strings/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 72. 编辑距离
+
+[72. 编辑距离](https://leetcode-cn.com/problems/edit-distance/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 647. 回文子串
+
+[647. 回文子串](https://leetcode-cn.com/problems/palindromic-substrings/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 516. 最长回文子序列
+
+[516. 最长回文子序列](https://leetcode-cn.com/problems/longest-palindromic-subsequence/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+---
+
+## 11 单调栈
+
+### 739. 每日温度
+
+[739. 每日温度](https://leetcode-cn.com/problems/daily-temperatures/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 496. 下一个更大元素 I
+
+[496. 下一个更大元素 I](https://leetcode-cn.com/problems/next-greater-element-i/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 503. 下一个更大元素 II
+
+[503. 下一个更大元素 II](https://leetcode-cn.com/problems/next-greater-element-ii/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 42. 接雨水
+
+[42. 接雨水](https://leetcode-cn.com/problems/trapping-rain-water/description/)
+
+```python
+
+```
+
+```cpp
+
+```
+
+### 84. 柱状图中最大的矩形
+
+[84. 柱状图中最大的矩形](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/description/)
+
+```python
+
+```
+
+```cpp
+
 ```
 
 ---

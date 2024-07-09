@@ -4411,49 +4411,46 @@ class Solution:
 
 ```cpp
 // 递归
-class Solution
-{
-public:
-    void traversal(TreeNode *cur, vector<int> &res)
-    {
-        if (cur == nullptr)
-            return;
-        res.push_back(cur->val);
-        traversal(cur->left, res);
-        traversal(cur->right, res);
-    }
+class Solution {
+private:
+  void traversal(vector<int> &res, TreeNode *cur) {
+    if (!cur) return;
+    res.emplace_back(cur->val);
+    traversal(res, cur->left);
+    traversal(res, cur->right);
+  }
 
-    vector<int> preorderTraversal(TreeNode *root)
-    {
-        vector<int> res;
-        traversal(root, res);
-        return res;
-    }
+public:
+  vector<int> preorderTraversal(TreeNode *root) {
+    vector<int> res;
+    traversal(res, root);
+    return res;
+  }
 };
 
 // 迭代
 class Solution {
 public:
-    vector<int> preorderTraversal(TreeNode* root) {
-        vector<int> res;
-        if(root == nullptr) return res;
-        stack<TreeNode*> st;
-        st.push(root);
-        while (!st.empty())
-        {
-            TreeNode *cur = st.top();
-            st.pop();
-            res.push_back(cur->val);
-            if (cur->right) st.push(cur->right);
-            if(cur->left) st.push(cur->left);
-        }
-        return res;
+  vector<int> preorderTraversal(TreeNode *root) {
+    stack<TreeNode *> st;
+    vector<int> res;
+    if (root) st.emplace(root);
+    while (!st.empty()) {
+      TreeNode *cur = st.top();
+      st.pop();
+      res.emplace_back(cur->val);
+      if (cur->right) st.emplace(cur->right);
+      if (cur->left) st.emplace(cur->left);
     }
+    return res;
+  }
 };
 
+
+// 花式递归
 class Solution {
 public:
-    vector<int> preorderTraversal(TreeNode* root) { //前序遍历
+    vector<int> preorderTraversal(TreeNode* root) {
         vector<int> res;
         if(!root) return res;
 
@@ -4511,42 +4508,41 @@ class Solution:
 // 递归
 class Solution {
 private:
-    void traversal(TreeNode* cur, vector<int>& res) {
-        if (!cur)
-            return;
-        traversal(cur->left, res);
-        res.push_back(cur->val);
-        traversal(cur->right, res);
-    }
+  void traversal(TreeNode *cur, vector<int> &res) {
+    if (!cur) return;
+    traversal(cur->left, res);
+    res.emplace_back(cur->val);
+    traversal(cur->right, res);
+  }
 
 public:
-    vector<int> inorderTraversal(TreeNode* root) {
-        vector<int> res;
-        traversal(root, res);
-        return res;
-    }
+  vector<int> inorderTraversal(TreeNode *root) {
+    vector<int> res;
+    traversal(root, res);
+    return res;
+  }
 };
 
 // 迭代
 class Solution {
 public:
-    vector<int> inorderTraversal(TreeNode* root) {
-        vector<int> res;
-        stack<TreeNode*> st;
-        TreeNode* cur = root;
-        while (cur || !st.empty()) {
-            if (cur) {
-                st.push(cur);
-                cur = cur->left;    // 一直向左走
-            } else {
-                cur = st.top();
-                st.pop();
-                res.push_back(cur->val);    // 根
-                cur = cur->right;   // 右
-            }
-        }
-        return res;
+  vector<int> inorderTraversal(TreeNode *root) {
+    vector<int> res;
+    stack<TreeNode *> st;
+    TreeNode *cur = root;
+    while (cur || !st.empty()) {
+      if (cur) {
+        st.emplace(cur);
+        cur = cur->left; // 左
+      } else {
+        cur = st.top();
+        st.pop();
+        res.emplace_back(cur->val); // 收结果（根）
+        cur = cur->right;           // 右
+      }
     }
+    return res;
+  }
 };
 ```
 
@@ -4593,41 +4589,41 @@ class Solution:
 
 ```cpp
 // 递归
-class Solution{
+class Solution {
 public:
-    void traversal(TreeNode *cur, vector<int> &res){
-        if (cur == nullptr)
-            return;
-        traversal(cur->left, res);
-        traversal(cur->right, res);
-        res.push_back(cur->val);
-    }
+  void traversal(TreeNode *cur, vector<int> &res) {
+    if (cur == nullptr) return;
+    traversal(cur->left, res);
+    traversal(cur->right, res);
+    res.push_back(cur->val);
+  }
 
-    vector<int> postorderTraversal(TreeNode *root){
-        vector<int> res;
-        traversal(root, res);
-        return res;
-    }
+  vector<int> postorderTraversal(TreeNode *root) {
+    vector<int> res;
+    traversal(root, res);
+    return res;
+  }
 };
 
 // 迭代
 class Solution {
 public:
-    vector<int> postorderTraversal(TreeNode* root) {
-        vector<int> res;
-        if (root==nullptr) return res;
-        stack<TreeNode*> st;
-        st.push(root);
-        while (!st.empty()){
-            TreeNode *cur = st.top();
-            st.pop();
-            res.push_back(cur->val);
-            if (cur->left) st.push(cur->left);
-            if (cur->right) st.push(cur->right);
-        }
-        reverse(res.begin(),res.end());
-        return res;
+  vector<int> postorderTraversal(TreeNode *root) {
+    stack<TreeNode *> st;
+    vector<int> res;
+    if (!root) return res;
+    st.emplace(root);
+
+    while (!st.empty()) {
+      TreeNode *cur = st.top();
+      st.pop();
+      res.emplace_back(cur->val);
+      if (cur->left) st.emplace(cur->left);
+      if (cur->right) st.emplace(cur->right);
     }
+    reverse(res.begin(), res.end());
+    return res;
+  }
 };
 ```
 
@@ -4663,27 +4659,24 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    vector<vector<int>> levelOrder(TreeNode* root) {
-        vector<vector<int>> res;
-        queue<TreeNode*> que;
-        if (root)
-            que.push(root);
-        while (!que.empty()) {
-            int size = que.size();
-            vector<int> vec;
-            while (size--) {
-                TreeNode* cur = que.front();
-                que.pop();
-                vec.push_back(cur->val);
-                if (cur->left)
-                    que.push(cur->left);
-                if (cur->right)
-                    que.push(cur->right);
-            }
-            res.push_back(vec);
-        }
-        return res;
+  vector<vector<int>> levelOrder(TreeNode *root) {
+    vector<vector<int>> res;
+    queue<TreeNode *> que;
+    if (root) que.emplace(root);
+    while (!que.empty()) {
+      int size = que.size();
+      vector<int> vec;
+      while (size--) {
+        TreeNode *cur = que.front();
+        que.pop();
+        vec.emplace_back(cur->val);
+        if (cur->left) que.emplace(cur->left);
+        if (cur->right) que.emplace(cur->right);
+      }
+      res.emplace_back(vec);
     }
+    return res;
+  }
 };
 ```
 
@@ -4720,28 +4713,25 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    vector<vector<int>> levelOrderBottom(TreeNode* root) {
-        vector<vector<int>> res;
-        queue<TreeNode*> que;
-        if (root)
-            que.push(root);
-        while (!que.empty()) {
-            int size = que.size();
-            vector<int> vec;
-            while (size--) {
-                TreeNode* cur = que.front();
-                que.pop();
-                vec.push_back(cur->val);
-                if (cur->left)
-                    que.push(cur -> left);
-                if (cur->right)
-                    que.push(cur -> right);
-            }
-            res.push_back(vec);
-        }
-        reverse(res.begin(), res.end());
-        return res;
+  vector<vector<int>> levelOrderBottom(TreeNode *root) {
+    vector<vector<int>> res;
+    queue<TreeNode *> que;
+    if (root) que.emplace(root);
+    while (!que.empty()) {
+      int size = que.size();
+      vector<int> vec;
+      while (size--) {
+        TreeNode *cur = que.front();
+        que.pop();
+        vec.emplace_back(cur->val);
+        if (cur->left) que.emplace(cur->left);
+        if (cur->right) que.emplace(cur->right);
+      }
+      res.emplace_back(vec);
     }
+    reverse(res.begin(), res.end());
+    return res;
+  }
 };
 ```
 
@@ -4776,23 +4766,22 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    vector<int> rightSideView(TreeNode* root) {
-        vector<int> res;
-        queue<TreeNode*> que;
-        if (root)
-            que.push(root);
-        while (!que.empty()) {
-            int size = que.size();
-            while (size--) {
-                TreeNode* cur = que.front();
-                que.pop();
-                if (cur->left) que.push(cur->left);
-                if (cur->right) que.push(cur->right);
-                if (!size) res.push_back(cur->val);
-            }
-        }
-        return res;
+  vector<int> rightSideView(TreeNode *root) {
+    vector<int> res;
+    queue<TreeNode *> que;
+    if (root) que.emplace(root);
+    while (!que.empty()) {
+      int size = que.size();
+      while (size--) {
+        TreeNode *cur = que.front();
+        que.pop();
+        if (cur->left) que.emplace(cur->left);
+        if (cur->right) que.emplace(cur->right);
+        if (size == 0) res.emplace_back(cur->val);
+      }
     }
+    return res;
+  }
 };
 ```
 
@@ -4828,28 +4817,25 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    vector<double> averageOfLevels(TreeNode* root) {
-        vector<double> res;
-        queue<TreeNode*> que;
-        if (root)
-            que.push(root);
-        while (!que.empty()) {
-            int size = que.size();
-            int size_backup = size;
-            double sum = 0;
-            while (size--) {
-                TreeNode* cur = que.front();
-                que.pop();
-                sum += cur->val;
-                if (cur->left)
-                    que.push(cur->left);
-                if (cur->right)
-                    que.push(cur->right);
-            }
-            res.push_back(sum / size_backup);
-        }
-        return res;
+  vector<double> averageOfLevels(TreeNode *root) {
+    vector<double> res;
+    queue<TreeNode *> que;
+    if (root) que.emplace(root);
+    while (!que.empty()) {
+      int size = que.size();
+      int back_size = size;
+      double sum = 0;
+      while (size--) {
+        TreeNode *cur = que.front();
+        que.pop();
+        sum += cur->val;
+        if (cur->left) que.emplace(cur->left);
+        if (cur->right) que.emplace(cur->right);
+      }
+      res.emplace_back(sum / back_size);
     }
+    return res;
+  }
 };
 ```
 
@@ -4883,25 +4869,24 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    vector<vector<int>> levelOrder(Node* root) {
-        vector<vector<int>> res;
-        queue<Node*> que;
-        if (root)
-            que.push(root);
-        while (!que.empty()) {
-            int size = que.size();
-            vector<int> vec;
-            while (size--) {
-                Node* cur = que.front();
-                que.pop();
-                vec.push_back(cur->val);
-                for (Node* node : cur->children)
-                    que.push(node);
-            }
-            res.push_back(vec);
-        }
-        return res;
+  vector<vector<int>> levelOrder(Node *root) {
+    vector<vector<int>> res;
+    queue<Node *> que;
+    if (root) que.emplace(root);
+    while (!que.empty()) {
+      int size = que.size();
+      vector<int> vec;
+      while (size--) {
+        Node *cur = que.front();
+        que.pop();
+        vec.emplace_back(cur->val);
+        for (Node *const &node : cur->children)
+          que.emplace(node);
+      }
+      res.emplace_back(vec);
     }
+    return res;
+  }
 };
 ```
 
@@ -4937,26 +4922,23 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    vector<int> largestValues(TreeNode* root) {
-        vector<int> res;
-        queue<TreeNode*> que;
-        if (root)
-            que.push(root);
-        while (!que.empty()) {
-            int size = que.size();
-            res.push_back(que.front()->val);
-            while (size--) {
-                TreeNode* cur = que.front();
-                que.pop();
-                res.back() = max(cur->val, res.back());
-                if (cur->left)
-                    que.push(cur->left);
-                if (cur->right)
-                    que.push(cur->right);
-            }
-        }
-        return res;
+  vector<int> largestValues(TreeNode *root) {
+    vector<int> res;
+    queue<TreeNode *> que;
+    if (root) que.emplace(root);
+    while (!que.empty()) {
+      int size = que.size();
+      res.emplace_back(que.front()->val);
+      while (size--) {
+        TreeNode *cur = que.front();
+        que.pop();
+        res.back() = max(cur->val, res.back());
+        if (cur->left) que.emplace(cur->left);
+        if (cur->right) que.emplace(cur->right);
+      }
     }
+    return res;
+  }
 };
 ```
 
@@ -4990,22 +4972,21 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    Node* connect(Node* root) {
-        queue<Node*> que;
-        if (root)
-            que.push(root);
-        while (!que.empty()) {
-            int size = que.size();
-            while (size--) {
-                Node* cur = que.front();
-                que.pop();
-                if (size) cur->next = que.front();
-                if (cur->left) que.push(cur->left);
-                if (cur->right) que.push(cur->right);
-            }
-        }
-        return root;
+  Node *connect(Node *root) {
+    queue<Node *> que;
+    if (root) que.emplace(root);
+    while (!que.empty()) {
+      int size = que.size();
+      while (size--) {
+        Node *cur = que.front();
+        que.pop();
+        if (size) cur->next = que.front();
+        if (cur->left) que.emplace(cur->left);
+        if (cur->right) que.emplace(cur->right);
+      }
     }
+    return root;
+  }
 };
 ```
 
@@ -5042,22 +5023,21 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    Node* connect(Node* root) {
-        queue<Node*> que;
-        if (root)
-            que.push(root);
-        while (!que.empty()) {
-            int size = que.size();
-            while (size--) {
-                Node* cur = que.front();
-                que.pop();
-                if (size) cur->next = que.front();
-                if (cur->left) que.push(cur->left);
-                if (cur->right) que.push(cur->right);
-            }
-        }
-        return root;
+  Node *connect(Node *root) {
+    queue<Node *> que;
+    if (root) que.push(root);
+    while (!que.empty()) {
+      int size = que.size();
+      while (size--) {
+        Node *cur = que.front();
+        que.pop();
+        if (size) cur->next = que.front();
+        if (cur->left) que.push(cur->left);
+        if (cur->right) que.push(cur->right);
+      }
     }
+    return root;
+  }
 };
 ```
 
@@ -5122,37 +5102,34 @@ class Solution:
 // 层序遍历
 class Solution {
 public:
-    int maxDepth(TreeNode* root) {
-        int res = 0;
-        queue<TreeNode*> que;
-        if (root)
-            que.push(root);
-        while (!que.empty()) {
-            ++res;
-            int size = que.size();
-            while (size--) {
-                TreeNode* cur = que.front();
-                que.pop();
-                if (cur->left) que.push(cur->left);
-                if (cur->right) que.push(cur->right);
-            }
-        }
-        return res;
+  int maxDepth(TreeNode *root) {
+    int res = 0;
+    queue<TreeNode *> que;
+    if (root) que.push(root);
+    while (!que.empty()) {
+      ++res;
+      int size = que.size();
+      while (size--) {
+        TreeNode *cur = que.front();
+        que.pop();
+        if (cur->left) que.push(cur->left);
+        if (cur->right) que.push(cur->right);
+      }
     }
+    return res;
+  }
 };
 
 // 回溯
 class Solution {
 private:
     int res = 0, depth = 0;
-
     void traverse(TreeNode* root) {
-        if (!root)
-            return;
+        if (!root) return;
         ++depth;
+        res = max(res, depth);
         traverse(root->left);
         traverse(root->right);
-        res = max(res, depth);
         --depth;
     }
 
@@ -5274,8 +5251,7 @@ public:
 class Solution {
 public:
     int minDepth(TreeNode *root) {
-        if (root == nullptr)
-            return 0;
+        if (!root) return 0;
         if (root->left && root->right == nullptr)
             return minDepth(root->left) + 1;
         else if (root->left == nullptr && root->right)
@@ -5418,10 +5394,8 @@ public:
         if ((left == nullptr && right != nullptr) || (left != nullptr && right == nullptr))
             return false;
         else if(left == nullptr && right == nullptr) return true;
-        else if (left->val != right->val)
-            return false;
-        else
-            return compare(left->left, right->right) && compare(left->right, right->left);
+        else if (left->val != right->val) return false;
+        else return compare(left->left, right->right) && compare(left->right, right->left);
     }
 
     bool isSymmetric(TreeNode *root) {
@@ -5512,12 +5486,11 @@ class Solution:
 class Solution {
 public:
     bool isSameTree(TreeNode *p, TreeNode *q) {
-        if (p == nullptr && q == nullptr)
-            return true;
-        else if (p == nullptr && q !=nullptr) return false;
-        else if (p != nullptr && q ==nullptr) return false;
+        if (!p && !q ) return true;
+        else if (!p && q) return false;
+        else if (p && !q) return false;
         else if (p->val != q->val) return false;
-        else return (isSameTree(p->left,q->left) && isSameTree(p->right,q->right));
+        else return (isSameTree(p->left, q->left) && isSameTree(p->right, q->right));
     }
 };
 
@@ -5700,14 +5673,10 @@ public:
             st.pop();
             TreeNode *pNode = st.top();
             st.pop();
-            if (!qNode && !pNode)
-                continue;
-            else if (qNode == nullptr && pNode != nullptr)
-                return false;
-            else if (qNode != nullptr && pNode == nullptr)
-                return false;
-            else if (qNode->val != pNode->val)
-                return false;
+            if (!qNode && !pNode) continue;
+            else if (!qNode && pNode) return false;
+            else if (qNode && !pNode) return false;
+            else if (qNode->val != pNode->val) return false;
 
             st.push(pNode->left);
             st.push(qNode->left);
@@ -5722,13 +5691,10 @@ public:
         que.push(root);
         while (!que.empty()) {
             TreeNode *cur = que.front();
-            if (compare(cur, subRoot))
-                return true;
+            if (compare(cur, subRoot)) return true;
             que.pop();
-            if (cur->left)
-                que.push(cur->left);
-            if (cur->right)
-                que.push(cur->right);
+            if (cur->left) que.push(cur->left);
+            if (cur->right) que.push(cur->right);
         }
         return false;
     }
@@ -5747,10 +5713,8 @@ public:
                 if (vec[i]->val == vec[len]->val) {
                     ++len;
                     res[i++] = len;
-                } else if (len)
-                    len = res[len - 1];
-                else
-                    res[i++] = 0;
+                } else if (len) len = res[len - 1];
+                else res[i++] = 0;
             }
             return res;
         }
@@ -5770,10 +5734,8 @@ public:
                     res.push_back(vec[i - j]);
                     j = next[j - 1];
                 } else if (i < vec.size() && vec[i]->val != vecsub[j]->val) {
-                    if (j != 0)
-                        j = next[j - 1];
-                    else
-                        i++;
+                    if (j != 0) j = next[j - 1];
+                    else i++;
                 }
             }
             return res;
@@ -5785,18 +5747,12 @@ public:
         st.push(p);
         st.push(q);
         while (!st.empty()) {
-            TreeNode* qNode = st.top();
-            st.pop();
-            TreeNode* pNode = st.top();
-            st.pop();
-            if (!qNode && !pNode)
-                continue;
-            else if (qNode == nullptr && pNode != nullptr)
-                return false;
-            else if (qNode != nullptr && pNode == nullptr)
-                return false;
-            else if (qNode->val != pNode->val)
-                return false;
+            TreeNode* qNode = st.top(); st.pop();
+            TreeNode* pNode = st.top(); st.pop();
+            if (!qNode && !pNode) continue;
+            else if (!qNode && pNode) return false;
+            else if (qNode && !pNode) return false;
+            else if (qNode->val != pNode->val) return false;
 
             st.push(pNode->left);
             st.push(qNode->left);
@@ -5807,8 +5763,7 @@ public:
     }
 
     void preorder(TreeNode* cur, vector<TreeNode*>& res) {
-        if (cur == nullptr)
-            return;
+        if (cur == nullptr) return;
         res.push_back(cur);
         preorder(cur->left, res);
         preorder(cur->right, res);
@@ -5821,10 +5776,8 @@ public:
         preorder(subRoot, vecsub); // vecsub 为 subRoot 的先序遍历结果
         KMP kmp;
         vector<TreeNode*> res = kmp.findStart(vec, vecsub);
-        for (TreeNode* cur : res) {
-            if (compare(cur, subRoot))
-                return true;
-        }
+        for (TreeNode* cur : res)
+            if (compare(cur, subRoot)) return true;
         return false;
     }
 };
@@ -5873,20 +5826,20 @@ class Solution:
 
 ```cpp
 // bfs
+
 class Solution {
 public:
     int maxDepth(Node *root) {
         queue<Node *> que;
         int res = 0;
-        if (root)
-            que.push(root);
+        if (root) que.push(root);
         while (!que.empty()) {
             res++;
             int size = que.size();
             while (size--) {
                 Node *cur = que.front();
                 que.pop();
-                for (Node *node : cur->children)
+                for (Node *const &node : cur->children)
                     que.push(node);
             }
         }
@@ -5900,7 +5853,7 @@ public:
     int maxDepth(Node* root) {
         if (!root) return 0;
         int depth = 0;
-        for (Node* cur : root->children)
+        for (Node *const &cur : root->children)
             depth = max(depth, maxDepth(cur));
         return depth + 1;
     }
@@ -5992,41 +5945,34 @@ public:
     }
 };
 
-
 // 递归
 class Solution {
 public:
-    int countNodes(TreeNode* root) {
-        if (!root) return 0;
-        return countNodes(root->left) + countNodes(root->right) + 1;
-    }
+  int countNodes(TreeNode *root) {
+    if (!root) return 0;
+    return countNodes(root->left) + countNodes(root->right) + 1;
+  }
 };
 
 // 利用完全二叉树性质
 class Solution {
 private:
-    int isCompleteBinaryTree(TreeNode* root) {
-        int left = 0, right = 0;
-        TreeNode* cur = root;
-        while(cur) {
-            ++left;
-            cur = cur->left;
-        }
-        cur = root;
-        while (cur) {
-            ++right;
-            cur = cur->right;
-        }
-        return left == right ? pow(2, left) - 1 : -1;
-    }
+  int isCompleteBinaryTree(TreeNode *root) {
+    int left = 1, right = 1;
+    TreeNode *cur = root;
+    while (cur = cur->left) ++left;
+    cur = root;
+    while (cur = cur->right) ++right;
+    return left == right ? pow(2, left) - 1 : -1;
+  }
 
 public:
-    int countNodes(TreeNode* root) {
-        if (!root) return 0;
-        int temp = isCompleteBinaryTree(root);
-        if (-1 != temp) return temp;
-        return countNodes(root->left) + countNodes(root->right) + 1;
-    }
+  int countNodes(TreeNode *root) {
+    if (!root) return 0;
+    int temp = isCompleteBinaryTree(root);
+    if (-1 != temp) return temp;
+    return countNodes(root->left) + countNodes(root->right) + 1;
+  }
 };
 ```
 
@@ -6098,66 +6044,63 @@ class Solution:
 // bfs 进行逐个判断
 class Solution {
 private:
-    int getHeight(TreeNode* root) {
-        if (!root) return 0;
-        return max(getHeight(root->left), getHeight(root->right)) + 1;
-    }
+  int getHeight(TreeNode *root) {
+    if (!root) return 0;
+    return max(getHeight(root->left), getHeight(root->right)) + 1;
+  }
 
 public:
-    bool isBalanced(TreeNode* root) {
-        queue<TreeNode*> que;
-        if (root) que.push(root);
-        while (!que.empty()) {
-            TreeNode* cur = que.front();
-            que.pop();
-            if (abs(getHeight(cur->left) - getHeight(cur->right)) > 1)
-                return false;
-            if (cur->left) que.push(cur->left);
-            if (cur->right) que.push(cur->right);
-        }
-        return true;
+  bool isBalanced(TreeNode *root) {
+    queue<TreeNode *> que;
+    if (root) que.push(root);
+    while (!que.empty()) {
+      TreeNode *cur = que.front();
+      que.pop();
+      if (abs(getHeight(cur->left) - getHeight(cur->right)) > 1) return false;
+      if (cur->left) que.push(cur->left);
+      if (cur->right) que.push(cur->right);
     }
+    return true;
+  }
+};
+
+
+// dfs
+class Solution {
+private:
+  pair<bool, int> dfs(TreeNode *root) {
+    if (!root) return {true, 0};
+
+    auto left = dfs(root->left);
+    auto right = dfs(root->right);
+
+    if (!left.first || !right.first || abs(left.second - right.second) > 1)
+      return {false, 0};
+
+    return {true, max(left.second, right.second) + 1};
+  }
+
+public:
+  bool isBalanced(TreeNode *root) { return dfs(root).first; }
 };
 
 // dfs
 class Solution {
 private:
-    pair<bool, int> dfs(TreeNode* root) {
-        if (!root) return {true, 0};
-
-        auto left = dfs(root->left);
-        auto right = dfs(root->right);
-
-        if (!left.first || !right.first || abs(left.second - right.second) > 1)
-            return {false, 0};
-
-        return {true, max(left.second, right.second) + 1};
-    }
-public:
-    bool isBalanced(TreeNode* root) {
-        return dfs(root).first;
-    }
-};
-
-// dfs
-class Solution {
-private:
-    int dfs(TreeNode* root, bool& flag) {
-        if (!root || !flag)
-            return 0;
-        int left = dfs(root->left, flag);
-        int right = dfs(root->right, flag);
-        if (abs(left - right) > 1)
-            flag = false;
-        return max(left, right) + 1;
-    }
+  int dfs(TreeNode *root, bool &flag) {
+    if (!root || !flag) return 0;
+    int left = dfs(root->left, flag);
+    int right = dfs(root->right, flag);
+    if (abs(left - right) > 1) flag = false;
+    return max(left, right) + 1;
+  }
 
 public:
-    bool isBalanced(TreeNode* root) {
-        bool flag = true;
-        dfs(root, flag);
-        return flag;
-    }
+  bool isBalanced(TreeNode *root) {
+    bool flag = true;
+    dfs(root, flag);
+    return flag;
+  }
 };
 ```
 
@@ -6189,22 +6132,22 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    vector<string> res;
-    void backtracking(TreeNode* root, string path = "") {
-        if (!root) return;
-        if (!root->left && !root->right) {
-            res.push_back(path + to_string(root->val));
-            return;
-        }
-        backtracking(root->left, path + to_string(root->val) + "->");
-        backtracking(root->right, path + to_string(root->val) + "->");
+  vector<string> res;
+  void backtracking(TreeNode *root, string path) {
+    if (!root) return;
+    if (!root->left && !root->right) {
+      res.emplace_back(path + to_string(root->val));
+      return;
     }
+    backtracking(root->left, path + to_string(root->val) + "->");
+    backtracking(root->right, path + to_string(root->val) + "->");
+  }
 
 public:
-    vector<string> binaryTreePaths(TreeNode* root) {
-        backtracking(root);
-        return res;
-    }
+  vector<string> binaryTreePaths(TreeNode *root) {
+    backtracking(root, "");
+    return res;
+  }
 };
 ```
 
@@ -6253,36 +6196,38 @@ class Solution:
 **_cpp_**
 
 ```cpp
-// 层序，逐个判断
-class Solution:
-    def dfs(self, root: TreeNode, isLeft: bool) -> int:
-        if not root:
-            return 0
-        if not root.left and not root.right:
-            return root.val if isLeft else 0  # 只有左叶子节点才累加其值
-        return self.dfs(root.left, True) + self.dfs(root.right, False)
+// bfs 逐个判断
+class Solution {
+public:
+  int sumOfLeftLeaves(TreeNode *root) {
+    queue<TreeNode *> que;
+    int sum = 0;
+    if (root) que.emplace(root);
+    while (!que.empty()) {
+      TreeNode *cur = que.front();
+      que.pop();
+      if (cur->left && !cur->left->left && !cur->left->right) sum += cur->left->val;
+      if (cur->left) que.push(cur->left);
+      if (cur->right) que.push(cur->right);
+    }
+    return sum;
+  }
+};
 
-    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
-        if not root:
-            return 0
-        return self.dfs(root, False)
 
 // dfs
 class Solution {
 private:
-    int dfs(TreeNode* root, bool isLeft) {
-        if (!root) return 0;
-        if (!root->left && !root->right)  // 只有左叶子节点才累加其值
-            return isLeft ? root->val : 0;
-        return dfs(root->left, true) + dfs(root->right, false);
-    }
+  int dfs(TreeNode *root, bool isLeft) {
+    if (!root) return 0;
+    if (!root->left && !root->right)
+      return isLeft ? root->val : 0;
+    return dfs(root->left, true) + dfs(root->right, false);
+  }
 
 public:
-    int sumOfLeftLeaves(TreeNode* root) {
-        if (!root) return 0;
-        return dfs(root, false);
-    }
-}
+  int sumOfLeftLeaves(TreeNode *root) { return dfs(root, false); }
+};
 ```
 
 ### 513. 找树左下角的值
@@ -6318,22 +6263,22 @@ class Solution:
 // bfs
 class Solution {
 public:
-    int findBottomLeftValue(TreeNode* root) {
-        queue<TreeNode*> que;
-        int ans = root->val;
-        que.push(root);
-        while (!que.empty()) {
-            int size = que.size();
-            ans = que.front()->val;
-            while (size--) {
-                TreeNode* cur = que.front();
-                que.pop();
-                if (cur->left) que.push(cur->left);
-                if (cur->right) que.push(cur->right);
-            }
-        }
-        return ans;
+  int findBottomLeftValue(TreeNode *root) {
+    queue<TreeNode *> que;
+    int ans = root->val;
+    if (root) que.push(root);
+    while (!que.empty()) {
+      int size = que.size();
+      ans = que.front()->val;
+      while (size--) {
+        TreeNode *cur = que.front();
+        que.pop();
+        if (cur->left) que.push(cur->left);
+        if (cur->right) que.push(cur->right);
+      }
     }
+    return ans;
+  }
 };
 ```
 
@@ -6407,26 +6352,26 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    vector<vector<int>> res;
-    vector<int> path;
-    void backtracking(TreeNode* root, int targetSum) {
-        if (!root) return;
-        targetSum -= root->val;
-        path.push_back(root->val);
+  vector<vector<int>> res;
+  vector<int> path;
+  void backtracking(TreeNode *root, int targetSum) {
+    if (!root) return;
+    targetSum -= root->val;
+    path.emplace_back(root->val);
 
-        if (!root->left && !root->right && !targetSum)
-            res.push_back(path);
+    if (!root->left && !root->right && !targetSum)
+      res.emplace_back(path);
 
-        backtracking(root->left, targetSum);
-        backtracking(root->right, targetSum);
-        path.pop_back();
-    }
+    backtracking(root->left, targetSum);
+    backtracking(root->right, targetSum);
+    path.pop_back();
+  }
 
 public:
-    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
-        backtracking(root, targetSum);
-        return res;
-    }
+  vector<vector<int>> pathSum(TreeNode *root, int targetSum) {
+    backtracking(root, targetSum);
+    return res;
+  }
 };
 ```
 
@@ -6463,29 +6408,26 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    unordered_map<int, int> umap;
-    TreeNode* build(const vector<int>& inorder, int il, int ir,
-                    const vector<int>& postorder, int pl, int pr) {
-        if (pl > pr)
-            return nullptr;
-        TreeNode* root = new TreeNode(postorder[pr]);
-        if (pl == pr)
-            return root;
-        int index = umap[postorder[pr]];
-        root->left =
-            build(inorder, il, index - 1, postorder, pl, pr - ir + index - 1);
-        root->right =
-            build(inorder, index + 1, ir, postorder, pr - ir + index, pr - 1);
-        return root;
-    }
+  unordered_map<int, int> umap;
+  TreeNode *build(const vector<int> &inorder, int il, int ir,
+                  const vector<int> &postorder, int pl, int pr) {
+    if (pl > pr) return nullptr;
+    TreeNode *root = new TreeNode(postorder[pr]);
+    if (pl == pr) return root;
+    int index = umap[postorder[pr]];
+    root->left =
+        build(inorder, il, index - 1, postorder, pl, pr - ir + index - 1);
+    root->right =
+        build(inorder, index + 1, ir, postorder, pr - ir + index, pr - 1);
+    return root;
+  }
 
 public:
-    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        for (int i = 0; i < inorder.size(); ++i)
-            umap[inorder[i]] = i;
-        return build(inorder, 0, inorder.size() - 1, postorder, 0,
-                     postorder.size() - 1);
-    }
+  TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
+    for (int i = 0; i < inorder.size(); ++i) umap[inorder[i]] = i;
+    return build(inorder, 0, inorder.size() - 1, postorder, 0,
+                 postorder.size() - 1);
+  }
 };
 ```
 
@@ -6521,29 +6463,26 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    unordered_map<int, int> umap;
-    TreeNode* build(const vector<int>& preorder, int pl, int pr,
-                    const vector<int>& inorder, int il, int ir) {
-        if (pl > pr)
-            return nullptr;
-        TreeNode* root = new TreeNode(preorder[pl]);
-        if (pl == pr)
-            return root;
-        int index = umap[preorder[pl]];
-        root->left =
-            build(preorder, pl + 1, pl + index - il, inorder, il, index - 1);
-        root->right =
-            build(preorder, pl + index - il + 1, pr, inorder, index + 1, ir);
-        return root;
-    }
+  unordered_map<int, int> umap;
+  TreeNode *build(const vector<int> &preorder, int pl, int pr,
+                  const vector<int> &inorder, int il, int ir) {
+    if (pl > pr) return nullptr;
+    TreeNode *root = new TreeNode(preorder[pl]);
+    if (pl == pr) return root;
+    int index = umap[preorder[pl]];
+    root->left =
+        build(preorder, pl + 1, pl + index - il, inorder, il, index - 1);
+    root->right =
+        build(preorder, pl + index - il + 1, pr, inorder, index + 1, ir);
+    return root;
+  }
 
 public:
-    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        for (int i = 0; i < inorder.size(); ++i)
-            umap[inorder[i]] = i;
-        return build(preorder, 0, preorder.size() - 1, inorder, 0,
-                     inorder.size() - 1);
-    }
+  TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder) {
+    for (int i = 0; i < inorder.size(); ++i) umap[inorder[i]] = i;
+    return build(preorder, 0, preorder.size() - 1, inorder, 0,
+                 inorder.size() - 1);
+  }
 };
 ```
 
@@ -6576,21 +6515,21 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    TreeNode* build(const vector<int>& nums, int l, int r) {
-        if (l > r) return nullptr;
-        int index = l;
-        for (int i = l; i <= r; ++i)
-            index = nums[index] == max(nums[index], nums[i]) ? index : i;
-        TreeNode* root = new TreeNode(nums[index]);
-        root->left = build(nums, l, index - 1);
-        root->right = build(nums, index + 1, r);
-        return root;
-    }
+  TreeNode *build(const vector<int> &nums, int left, int right) {
+    if (left > right) return nullptr;
+    int index = left;
+    for (int i = left; i <= right; ++i)
+      if (nums[index] < nums[i]) index = i;
+    TreeNode *root = new TreeNode(nums[index]);
+    root->left = build(nums, left, index - 1);
+    root->right = build(nums, index + 1, right);
+    return root;
+  }
 
 public:
-    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
-        return build(nums, 0, nums.size() - 1);
-    }
+  TreeNode *constructMaximumBinaryTree(vector<int> &nums) {
+    return build(nums, 0, nums.size() - 1);
+  }
 };
 ```
 
@@ -6617,15 +6556,15 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
-        if (!root1) return root2;
-        if (root1 && root2) {
-            root1->val += root2->val;
-            root1->left = mergeTrees(root1->left, root2->left);
-            root1->right = mergeTrees(root1->right, root2->right);
-        }
-        return root1;
+  TreeNode *mergeTrees(TreeNode *root1, TreeNode *root2) {
+    if (!root1) return root2;
+    if (root1 && root2) {
+      root1->val += root2->val;
+      root1->left = mergeTrees(root1->left, root2->left);
+      root1->right = mergeTrees(root1->right, root2->right);
     }
+    return root1;
+  }
 };
 ```
 
@@ -6666,28 +6605,26 @@ class Solution:
 // 递归
 class Solution {
 public:
-    TreeNode *searchBST(TreeNode *root, int val) {
-        if (!root || val == root->val)
-            return root;
-        else if (val > root->val)
-            return searchBST(root->right, val);
-        else
-            return searchBST(root->left, val);
-    }
+  TreeNode *searchBST(TreeNode *root, int val) {
+    if (!root || val == root->val) return root;
+    else if (val > root->val) return searchBST(root->right, val);
+    else return searchBST(root->left, val);
+  }
 };
+
 
 // 迭代
 class Solution {
 public:
-    TreeNode* searchBST(TreeNode* root, int val) {
-        TreeNode *p = root;
-        while (p){
-            if (p->val == val) return p;
-            else if (p->val < val) p = p->right;
-            else p = p->left;
-        }
-        return nullptr;
+  TreeNode *searchBST(TreeNode *root, int val) {
+    TreeNode *p = root;
+    while (p) {
+      if (p->val == val) return p;
+      else if (p->val < val) p = p->right;
+      else p = p->left;
     }
+    return nullptr;
+  }
 };
 ```
 
@@ -6722,18 +6659,19 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    TreeNode* pre;
-    bool isValidBST(TreeNode* root) {
-        if (!root) return true;
+  TreeNode *pre = nullptr;
+  bool isValidBST(TreeNode *root) {
+    if (!root) return true;
 
-        bool left = isValidBST(root->left);
-        // 每一个节点，都问一下它的上一个节点是否比他小
-        if (pre && pre->val >= root->val) return false;
-        pre = root;
+    bool left = isValidBST(root->left);
+    // 每一个节点，都问一下它的上一个节点是否比它小
+    if (pre && pre->val >= root->val) return false;
+    pre = root;
+    // cout << pre->val << " "; 调试代码
 
-        bool right = isValidBST(root->right);
-        return left && right;
-    }
+    bool right = isValidBST(root->right);
+    return left && right;
+  }
 };
 ```
 
@@ -6810,39 +6748,6 @@ class Solution:
         if not self.pre or self.pre.val == root.val:
             self.fre += 1
         else:
-            self.fre = 1
-        self.pre = root
-
-        if self.fre == self.max_fre:
-            self.res.append(root.val)
-        if self.fre > self.max_fre:
-            self.res.clear()
-            self.res.append(root.val)
-            self.max_fre = self.fre
-
-        self.dfs(root.right)  # 右
-
-    def findMode(self, root: Optional[TreeNode]) -> List[int]:
-        self.dfs(root)
-        return self.res
-
-# 优化后
-class Solution:
-    def __init__(self):
-        self.res = []
-        self.fre = 0
-        self.max_fre = 0
-        self.pre = None
-
-    def dfs(self, root):
-        if not root:
-            return
-
-        self.dfs(root.left)  # 左
-
-        if not self.pre or self.pre.val == root.val:
-            self.fre += 1
-        else:
             if self.fre == self.max_fre:
                 self.res.append(self.pre.val)
             elif self.fre > self.max_fre:
@@ -6869,73 +6774,32 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    vector<int> res;
-    int fre = 0, max_fre = 0;
-    TreeNode *pre = nullptr;
-    void dfs(TreeNode *root) {
-        if (!root) return;
+  vector<int> res;
+  int cur_fre = 0, max_fre = 0;
+  TreeNode *pre = nullptr;
+  void dfs(TreeNode *root) {
+    if (!root) return;
+    dfs(root->left);
 
-        dfs(root->left);    // 左
-
-        if (!pre || pre->val == root->val) ++fre;
-        else fre = 1;
-        pre = root;
-
-        if (fre == max_fre) res.push_back(root->val);
-        if (fre > max_fre) {
-            res.clear();
-            res.push_back(root->val);
-            max_fre = fre;
-        }
-
-        dfs(root->right);   // 右
+    if (pre && pre->val == root->val) ++cur_fre;
+    else cur_fre = 1;
+    if (cur_fre >= max_fre) {
+      if (cur_fre > max_fre) {
+        res.clear();
+        max_fre = cur_fre;
+      }
+      res.emplace_back(root->val);
     }
-public:
-    vector<int> findMode(TreeNode* root) {
-        dfs(root);
-        return res;
-    }
-};
 
-// 优化后
-class Solution {
-private:
-    vector<int> res;
-    int fre = 0, max_fre = 0;
-    TreeNode* pre = nullptr;
-    void dfs(TreeNode* root) {
-        if (!root)
-            return;
-
-        dfs(root->left); // 左
-
-        if (!pre || pre->val == root->val)
-            ++fre;
-        else {
-            if (fre == max_fre)
-                res.push_back(pre->val);
-            else if (fre > max_fre) {
-                res.clear();
-                res.push_back(pre->val);
-                max_fre = fre;
-            }
-            fre = 1;
-        }
-        pre = root;
-        dfs(root->right); // 右
-    }
+    pre = root;
+    dfs(root->right);
+  }
 
 public:
-    vector<int> findMode(TreeNode* root) {
-        dfs(root);
-        if (fre == max_fre)
-            res.push_back(pre->val);
-        else if (fre > max_fre) {
-            res.clear();
-            res.push_back(pre->val);
-        }
-        return res;
-    }
+  vector<int> findMode(TreeNode *root) {
+    dfs(root);
+    return res;
+  }
 };
 ```
 
@@ -6967,17 +6831,14 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if (!root || root == p || root == q)
-            return root;
-
-        TreeNode* left = lowestCommonAncestor(root->left, p, q);
-        TreeNode* right = lowestCommonAncestor(root->right, p, q);
-
-        if (left && right) return root;
-        else if (left) return left;
-        else return right;
-    }
+  TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
+    if (!root || root == p || root == q) return root;
+    TreeNode *left = lowestCommonAncestor(root->left, p, q);
+    TreeNode *right = lowestCommonAncestor(root->right, p, q);
+    if (left && right) return root;
+    else if (left) return left;
+    else return right;
+  }
 };
 ```
 
@@ -7005,17 +6866,14 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        while (root) {
-            if (p->val < root->val && q->val < root->val) // 在左侧
-                root = root->left;
-            else if (p->val > root->val && q->val > root->val) // 在右侧
-                root = root->right;
-            else
-                return root;
-        }
-        return nullptr;
+  TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
+    while (root) {
+      if (p->val < root->val && q->val < root->val) root = root->left;
+      else if (p->val > root->val && q->val > root->val) root = root->right;
+      else return root;
     }
+    return nullptr;
+  }
 };
 ```
 
@@ -7053,18 +6911,18 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    TreeNode* insertIntoBST(TreeNode* root, int val) {
-        if (!root) return new TreeNode(val);
+  TreeNode *insertIntoBST(TreeNode *root, int val) {
+    if (!root) return new TreeNode(val);
 
-        TreeNode *cur = root, *pre = nullptr;
-        while (cur) {
-            pre = cur;
-            cur = val < cur->val ? cur->left : cur->right;
-        }
-        val < pre->val ? pre->left = new TreeNode(val)
-                       : pre->right = new TreeNode(val);
-        return root;
+    TreeNode *cur = root, *pre = nullptr;
+    while (cur) {
+      pre = cur;
+      cur = val < cur->val ? cur->left : cur->right;
     }
+    val < pre->val ? pre->left = new TreeNode(val)
+                   : pre->right = new TreeNode(val);
+    return root;
+  }
 };
 ```
 
@@ -7104,26 +6962,21 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    TreeNode* deleteNode(TreeNode* root, int key) {
-        if (!root)
-            return nullptr;
-
-        if (root->val == key) {
-            if (root->left && root->right) {
-                TreeNode* p = root->right;
-                while (p->left)
-                    p = p->left;
-                p->left = root->left;
-                return root->right;
-            }
-            else if (root->left) return root->left;
-            else return root->right;
-        }
-
-        if (root->val > key) root->left = deleteNode(root->left, key);
-        if (root->val < key) root->right = deleteNode(root->right, key);
-        return root;
+  TreeNode *deleteNode(TreeNode *root, int key) {
+    if (!root) return nullptr;
+    if (root->val == key) {
+      if (root->right) {
+        TreeNode *p = root->right;
+        while (p->left) p = p->left;
+        p->left = root->left;
+        return root->right;
+      }
+      else return root->left;
     }
+    if (root->val > key) root->left = deleteNode(root->left, key);
+    if (root->val < key) root->right = deleteNode(root->right, key);
+    return root;
+  }
 };
 ```
 
@@ -7152,14 +7005,14 @@ class Solution:
 ```cpp
 class Solution {
 public:
-    TreeNode* trimBST(TreeNode* root, int low, int high) {
-        if (!root) return nullptr;
-        root->left = trimBST(root->left, low, high);
-        root->right = trimBST(root->right, low, high);
-        if (root->val < low) return root->right;
-        if (root->val > high) return root->left;
-        return root;
-    }
+  TreeNode *trimBST(TreeNode *root, int low, int high) {
+    if (!root) return nullptr;
+    root->left = trimBST(root->left, low, high);
+    root->right = trimBST(root->right, low, high);
+    if (root->val < low) return root->right;
+    if (root->val > high) return root->left;
+    return root;
+  }
 };
 ```
 
@@ -7189,19 +7042,19 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    TreeNode* build(const vector<int>& nums, int l, int r) {
-        if (l > r) return nullptr;
-        int mid = l + (r - l) / 2;
-        TreeNode* root = new TreeNode(nums[mid]);
-        root->left = build(nums, l, mid - 1);
-        root->right = build(nums, mid + 1, r);
-        return root;
-    }
+  TreeNode *build(const vector<int> &nums, int l, int r) {
+    if (l > r) return nullptr;
+    int mid = l + (r - l) / 2;
+    TreeNode *root = new TreeNode(nums[mid]);
+    root->left = build(nums, l, mid - 1);
+    root->right = build(nums, mid + 1, r);
+    return root;
+  }
 
 public:
-    TreeNode* sortedArrayToBST(vector<int>& nums) {
-        return build(nums, 0, nums.size() - 1);
-    }
+  TreeNode *sortedArrayToBST(vector<int> &nums) {
+    return build(nums, 0, nums.size() - 1);
+  }
 };
 ```
 
@@ -7237,22 +7090,22 @@ class Solution:
 ```cpp
 class Solution {
 private:
-    TreeNode *pre = nullptr;
-    void dfs(TreeNode *root) {
-        if (!root) return;
-        dfs(root->right);
+  TreeNode *pre = nullptr;
+  void dfs(TreeNode *root) {
+    if (!root) return;
+    dfs(root->right);
 
-        if (pre) root->val += pre->val;
-        pre = root;
+    if (pre) root->val += pre->val;
+    pre = root;
 
-        dfs(root->left);
-    }
+    dfs(root->left);
+  }
 
 public:
-    TreeNode* convertBST(TreeNode* root) {
-        dfs(root);
-        return root;
-    }
+  TreeNode *convertBST(TreeNode *root) {
+    dfs(root);
+    return root;
+  }
 };
 ```
 
@@ -9369,7 +9222,21 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  vector<int> dailyTemperatures(vector<int> &temperatures) {
+    stack<int> st;
+    vector<int> res(temperatures.size(), 0);
+    for (int i = 0; i < temperatures.size(); ++i) {
+      while (!st.empty() && temperatures[st.top()] < temperatures[i]) {
+        res[st.top()] = i - st.top();
+        st.pop();
+      }
+      st.push(i);
+    }
+    return res;
+  }
+};
 ```
 
 ### 496. 下一个更大元素 I
@@ -9381,7 +9248,26 @@ public:
 ```
 
 ```cpp
+class Solution {
+public:
+  vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2) {
+    vector<int> res(nums1.size(), -1);
+    unordered_map<int, int> umap;
+    stack<int> st;
 
+    for (int i = 0; i < nums1.size(); ++i) 
+      umap[nums1[i]] = i;
+    
+    for_each(nums2.begin(), nums2.end(), [&](const int &num){
+      while (!st.empty() && st.top() < num) {
+        res[umap[st.top()]] = num;
+        st.pop();
+      }
+      if (umap.find(num) != umap.end()) st.push(num);
+    });
+    return res;
+  }
+};
 ```
 
 ### 503. 下一个更大元素 II
@@ -9393,7 +9279,28 @@ public:
 ```
 
 ```cpp
+class Solution {
+public:
+  vector<int> nextGreaterElements(vector<int> &nums) {
+    vector<int> res(nums.size(), -1);
+    stack<int> st;
 
+    int startIndex =
+        (distance(nums.begin(), max_element(nums.begin(), nums.end())) + 1) %
+        nums.size();    // 起点：最大值的下一个位置
+
+    int count = 0; // 转一圈
+    for (int i = startIndex; count < nums.size();
+         count++, i = (i + 1) % nums.size()) {
+      while (!st.empty() && nums[i] > nums[st.top()]) {
+        res[st.top()] = nums[i];
+        st.pop();
+      }
+      st.push(i);
+    }
+    return res;
+  }
+};
 ```
 
 ### 42. 接雨水
@@ -9405,7 +9312,68 @@ public:
 ```
 
 ```cpp
+// 暴力解，超时
+class Solution {
+public:
+  int trap(vector<int> &height) {
+    int sum = 0;
+    for (int i = 1; i < height.size() - 1; ++i) {
+      int left = height[i], right = height[i];
 
+      for (int j = i - 1; j >= 0; --j) 
+        left = max(left, height[j]);
+
+      for (int j = i + 1; j < height.size(); ++j) 
+        right = max(right, height[j]);
+      sum += min(left, right) - height[i];
+    }
+    return sum;
+  }
+};
+
+// 动规求出每个位置左侧和右侧的最高高度的较小值
+// dp 数组复用
+class Solution {
+public:
+  int trap(vector<int> &height) {
+    vector<int> dp(height.size());
+    int res = 0;
+    dp[0] = height[0];
+    dp.back() = height.back();
+    for (int i = 1; i < height.size() - 1; ++i) // 找左侧最大
+      dp[i] = max(dp[i - 1], height[i]);
+    for (int i = height.size() - 2; i > 0; --i) // 1. 找右侧最大 2. 两个最大值中取一个最小值
+      dp[i] = min(max(dp[i + 1], height[i]), dp[i]);
+    for (int i = 1; i < height.size() - 1; ++i)
+      res += dp[i] - height[i];
+    return res;
+  }
+};
+
+
+// 单调栈
+// 利用 次栈顶元素 < 栈顶元素 < 当前元素（将要入栈元素） 的这一性质
+class Solution {
+public:
+  int trap(vector<int> &height) {
+    int sum = 0;
+    stack<int> st;
+    st.push(0);
+    for (int i = 1; i < height.size(); ++i) {
+      while (!st.empty() && height[i] > height[st.top()]) {
+        int cur = st.top();
+        st.pop();
+        if (!st.empty()) {
+          int w = i - st.top() - 1;
+          int h = min(height[st.top()], height[i]) - height[cur];
+          sum += h * w;
+        }
+      }
+      st.push(i);
+    }
+    return sum;
+  }
+};
 ```
 
 ### 84. 柱状图中最大的矩形
@@ -9417,7 +9385,72 @@ public:
 ```
 
 ```cpp
+// 暴力解法，找出以每个位置为高的矩形面积做比较，超时
+class Solution {
+public:
+  int largestRectangleArea(vector<int> &heights) {
+    int res = heights[0];
+    for (int i = 0; i < heights.size(); ++i) {
+      int left = i, right = i;
+      while (left >= 0) {
+        if (heights[left] < heights[i]) break;
+        --left;
+      }
+      while (right < heights.size()) {
+        if (heights[right] < heights[i]) break;
+        ++right;
+      }
+      res = max((right - left - 1) * heights[i], res);
+    }
+    return res;
+  }
+};
 
+// 双指针，很巧妙的动态规划
+class Solution {
+public:
+  int largestRectangleArea(vector<int> &heights) {
+    int res = heights[0];
+    for (int i = 0; i < heights.size(); ++i) {
+      int left = i, right = i;
+      while (left >= 0) {
+        if (heights[left] < heights[i]) break;
+        --left;
+      }
+      while (right < heights.size()) {
+        if (heights[right] < heights[i]) break;
+        ++right;
+      }
+      res = max((right - left - 1) * heights[i], res);
+    }
+    return res;
+  }
+};
+
+
+// 单调栈，前后加 0 技巧
+class Solution {
+public:
+  int largestRectangleArea(vector<int> &heights) {
+    stack<int> st; // 单调栈
+    heights.insert(heights.begin(), 0);
+    heights.push_back(0);
+    int ans = 0;
+    st.push(0); // 索引
+    for (int i = 1; i < heights.size(); i++) {
+      while (!st.empty() && heights[i] < heights[st.top()]) {
+        int mid = st.top();
+        st.pop();
+        // if (!st.empty()) // st 肯定不为空
+          ans = max(ans, (i - st.top() - 1) * heights[mid]);
+      }
+      // if (heights[i] > heights[st.top()])    // 会导致 [0, 1, 0, 1]
+      // 这种用例出错
+      st.push(i);
+    }
+    return ans;
+  }
+};
 ```
 
 ---

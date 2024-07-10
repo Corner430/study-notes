@@ -199,6 +199,10 @@
   - [42. 接雨水](#42-接雨水)
   - [84. 柱状图中最大的矩形](#84-柱状图中最大的矩形)
   - [1553. 吃掉 N 个橘子的最少天数](#1553-吃掉-n-个橘子的最少天数)
+- [笔试真题](#笔试真题)
+  - [小红书](#小红书)
+    - [小苯的文章浏览](#小苯的文章浏览)
+    - [小苯的粉丝关注](#小苯的粉丝关注)
 
 ## 1 数组
 
@@ -9113,19 +9117,46 @@ public:
 ```
 
 ```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 
+int main() {
+  int N, V;
+  cin >> N >> V;
+  vector<int> weights(N);
+  vector<int> values(N);
+  for (int i = 0; i < N; ++i)
+    cin >> weights[i] >> values[i];
+  vector<int> dp(V + 1, 0);
+  for (int i = 0; i < N; ++i)
+    for (int j = weights[i]; j <= V; ++j)
+      dp[j] = max(dp[j], dp[j - weights[i]] + values[i]);
+  cout << dp[V];
+  return 0;
+}
 ```
 
 ### 518. 零钱兑换 II
 
-[518. 零钱兑换 II](https://leetcode-cn.com/problems/coin-change-2/description/)
+[518. 零钱兑换 II](https://leetcode.cn/problems/coin-change-ii/description/)
 
 ```python
 
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int change(int amount, vector<int> &coins) {
+    vector<int> dp(amount + 1, 0);
+    dp[0] = 1;
+    for (int i = 0; i <= coins.size(); ++i)
+      for (int j = coins[i]; j <= amount; ++j)
+        dp[j] += dp[j - coins[i]];
+    return dp[amount];
+  }
+};
 ```
 
 ### 377. 组合总和 Ⅳ
@@ -9137,7 +9168,22 @@ public:
 ```
 
 ```cpp
-
+// dp[i] 表示和为 i 的组合数
+// 先遍历容量，再遍历物品：可以保证本次单独使用每一个物品的时候，加上之前的组合数，都可以遍历到
+class Solution {
+public:
+  int combinationSum4(vector<int> &nums, int target) {
+    vector<int> dp(target + 1, 0);
+    dp[0] = 1;
+    for (int i = 1; i <= target; i++) {       // 遍历容量
+      for (int j = 0; j < nums.size(); j++) { // 遍历物品
+        if (i >= nums[j] && dp[i] < INT32_MAX - dp[i - nums[j]])  // 有一些测试用例超出了 INT32_MAX
+          dp[i] += dp[i - nums[j]];
+      }
+    }
+    return dp[target];
+  }
+};
 ```
 
 ### 70. 爬楼梯（进阶版）
@@ -9149,7 +9195,21 @@ public:
 ```
 
 ```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 
+int main() {
+  int n, m;
+  cin >> n >> m; // n 表示台阶数
+  vector<int> dp(n + 1, 0);
+  dp[0] = 1;
+  for (int i = 1; i <= n; i++)   // 遍历背包（台阶数）
+    for (int j = 1; j <= m; j++) // 遍历物品，每次爬几个台阶
+      if (i >= j) dp[i] += dp[i - j];
+  cout << dp[n];
+  return 0;
+}
 ```
 
 ### 322. 零钱兑换
@@ -9161,7 +9221,33 @@ public:
 ```
 
 ```cpp
+// 先遍历容量，再遍历物品
+class Solution {
+public:
+  int coinChange(vector<int> &coins, int amount) {
+    vector<int> dp(amount + 1, INT32_MAX);
+    dp[0] = 0;
+    for (int i = 1; i <= amount; ++i)
+      for (int j = 0; j < coins.size(); ++j)
+        if (i >= coins[j] && dp[i - coins[j]] != INT32_MAX)
+          dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+    return dp[amount] == INT32_MAX ? -1 : dp[amount];
+  }
+};
 
+// 先遍历物品，再遍历容量
+class Solution {
+public:
+  int coinChange(vector<int> &coins, int amount) {
+    vector<int> dp(amount + 1, INT32_MAX);
+    dp[0] = 0;
+    for (int i = 0; i < coins.size(); i++)     // 遍历硬币
+      for (int j = coins[i]; j <= amount; j++) // 遍历容量
+        if (dp[j - coins[i]] != INT32_MAX)     // 原始值说明没有方案
+          dp[j] = min(dp[j], dp[j - coins[i]] + 1);
+    return dp[amount] == INT32_MAX ? -1 : dp[amount]; // 涵盖了 dp[0] = 0;
+  }
+};
 ```
 
 ### 279. 完全平方数
@@ -9173,7 +9259,17 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int numSquares(int n) {
+    vector<int> dp(n + 1, INT32_MAX);
+    dp[0] = 0;
+    for (int i = 1; i * i <= n; ++i)
+      for (int j = i * i; j <= n; ++j)
+        dp[j] = min(dp[j], dp[j - i * i] + 1);
+    return dp[n];
+  }
+};
 ```
 
 ### 139. 单词拆分
@@ -9780,4 +9876,159 @@ public:
         return umap[n] = min(d2 + minDays(n / 2), d3 + minDays(n / 3)) + 1;
     }
 };
+```
+
+## 笔试真题
+
+### 小红书
+
+#### 小苯的文章浏览
+
+小苯是小红书的忠实用户之一。
+
+这天，在 “小红书 app” 发了一篇文章后，收获了若干浏览量。但其中有人浏览了多次，小苯现在想知道所有人第一次浏览的先后顺序，请你帮帮他吧。
+
+**输入描述**：
+
+输入包含 `n + 1` 行。
+
+第一行一个正整数 `n` ($1 <= n<= 10^5 $)，表示小苯拿到的浏览记录的记录条数。
+
+接下来每行一个字符串 `s` (长度在 `20`) 以内，表示 `id` 为 `s` 的用户此时浏览了一次小苯的文章。
+
+**输出描述**：
+
+输出包含若干行，每行一个字符串 `s`，表示用户的 `id`。按照每个浏览的用户第一次浏览的顺序输出。
+
+**样例输入**：
+```shell
+8
+qcjj
+benh
+qsmcgogo
+qcjj
+ducksajin
+benh
+ducksajin
+acidlemon
+```
+
+**样例输出**：
+```shell
+qcjj
+benh
+qsmcgogo
+ducksajin
+acidlemon
+```
+
+
+```cpp
+#include <iostream>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int main() {
+  unordered_set<string> uset;
+  int n;
+  cin >> n;
+  string str;
+  while (n--) {
+    cin >> str;
+    if (uset.find(str) == uset.end()) {
+      uset.insert(str);
+      cout << str << endl;
+    }
+  }
+  return 0;
+}
+```
+
+#### 小苯的粉丝关注
+
+小苯是 “小红书 app” 的忠实用户，他有 `n` 个账号，每个账号粉丝数为 $a_i$。
+
+这天他又创建了一个新账号，他希望新账号的粉丝数恰好等于 `x`。为此他可以向自己已有账号的粉丝们推荐自己的新账号，这样以来新账号就得到了之前粉丝的关注。
+
+他想知道，他最少需要在几个旧账号发 “推荐新账号” 的文章，可以使得他的新账号粉丝数恰好为 `x`，除此以外，他可以最多从中选择一个账号多次发 “推荐新账号” 的文章。
+
+(我们假设所有旧账号的粉丝们没有重叠，并且如果在第 `i` 个旧账号的粉丝们推荐了新账号，则新账号会直接涨粉 $a_i/2$ 向下取整个，而如果小苯选择在第 `i` 个旧账号中多次推荐新账号，那么新账号就可以直接涨粉 $a_i$。)
+
+**输入描述**:
+
+输入包含 `2` 行。 第一行两个正整数 `n`, `x` ($1 ≤ n, k ≤ 100$)，分别表示小苯的旧账号个数，和新账号想要的粉丝数。 第二行 `n` 个正整数 ($1 ≤ a_i ≤ 100$)，表示小苯每个旧账号的粉丝数。
+
+**输出描述**:
+
+输出包含一行一个整数，表示小苯最少需要向多少个旧帐号推荐新账号，如果无法做到，输出 `-1`。
+
+**样例输入**:
+
+```shell
+5 8
+1 2 3 4 10
+```
+
+**样例输出**:
+
+```shell
+2
+```
+
+**提示:** 选择第 3 个和第 5 个旧账号，并在第 3 个账号多次发文。
+
+```cpp
+#include <climits>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+  int n, x; // n 个账号，希望新账号粉丝为 x
+  cin >> n >> x;
+  /*
+   * 第一个纬度是两个二维数组，这是为了滚动数组，确保旧的状态不会被新的状态覆盖
+   * 第二个纬度是两个一纬数组，分别代表 无账号发两次 和 有账号发两次
+   * 第三个纬度代表凑够 x 个粉丝的最小账号数
+   */
+  vector<vector<vector<int>>> dp(
+      2, vector<vector<int>>(2, vector<int>(x + 1, INT32_MAX)));
+  dp[1][0][0] = 0;
+  vector<int> lastdp(x + 1); // 处理最后一个账号的情况
+  vector<int> weights(n);
+  for (int i = 0; i < n; ++i)
+    cin >> weights[i];
+
+  for (int i = 0; i < n; ++i) { // 遍历物品（账号），最后一个单独处理
+    dp[0] = dp[1];              // 滚动数组
+    int half = weights[i] / 2;
+    if (i == n - 1) { // 处理最后一个账号
+      lastdp = dp[0][1];
+      for (int j = x; j > 0 && j >= half; --j) { // 遍历背包
+        // 有账号发两次，但本账号肯定不发两次
+        if (lastdp[j - half] != INT32_MAX)
+          lastdp[j] = min(lastdp[j], lastdp[j - half] + 1);
+      }
+    }
+
+    for (int j = x; j > 0 && j >= half; --j) { // 遍历背包
+      // 无账号发两次
+      if (dp[0][0][j - half] != INT32_MAX)
+        dp[1][0][j] = min(dp[0][0][j], dp[0][0][j - half] + 1);
+    }
+
+    for (int j = x; j > 0 && j >= weights[i]; --j) { // 遍历背包
+      // 有账号发两次
+      if (dp[0][0][j - weights[i]] != INT32_MAX)
+        dp[1][1][j] = min(dp[0][1][j], dp[0][0][j - weights[i]] + 1);
+    }
+  }
+  int res = min(min(dp[1][0][x], dp[1][1][x]), lastdp[x]);
+  if (res == INT32_MAX)
+    cout << -1 << endl;
+  else
+    cout << res << endl;
+  return 0;
+}
 ```

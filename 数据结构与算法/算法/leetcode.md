@@ -8726,7 +8726,41 @@ public:
 ```
 
 ```cpp
+// 动态规划，复用 dp
+class Solution {
+public:
+  int fib(int n) {
+    if (!n) return 0;
 
+    vector<int> dp(2);
+    dp[0] = 0;
+    dp[1] = 1;
+    int res;
+    for (int i = 2; i <= n; i++) {
+      res = dp[0] + dp[1];
+      dp[0] = dp[1];
+      dp[1] = res;
+    }
+    return dp[1];
+  }
+};
+
+// 递归 + memo
+class Solution {
+private:
+  int fibHelper(const int &n, vector<int> &memo) {
+    if (memo[n] == -1)
+      memo[n] = fibHelper(n - 1, memo) + fibHelper(n - 2, memo);
+    return memo[n];
+  }
+
+public:
+  int fib(int n) {
+    vector<int> memo(31, -1);
+    memo[0] = 0; memo[1] = 1;
+    return fibHelper(n, memo);
+  }
+};
 ```
 
 ### 70. 爬楼梯
@@ -8738,7 +8772,38 @@ public:
 ```
 
 ```cpp
+// 原地 dp
+class Solution {
+public:
+  int climbStairs(int n) {
+    if (n <= 2) return n;
+    vector<int> dp(2);
+    dp[0] = 1; dp[1] = 2;
 
+    for (int i = 3; i <= n; ++i) {
+      int res = dp[0] + dp[1];
+      dp[0] = dp[1];
+      dp[1] = res;
+    }
+    return dp[1];
+  }
+};
+
+// 递归 + memo
+class Solution {
+  int climbStairsHelper(const int &n, vector<int> &memo) {
+    if (memo[n] == -1)
+      memo[n] = climbStairsHelper(n - 1, memo) + climbStairsHelper(n - 2, memo);
+    return memo[n];
+  }
+
+public:
+  int climbStairs(int n) {
+    vector<int> memo(46, -1);
+    memo[1] = 1; memo[2] = 2;
+    return n <= 2 ? n : climbStairsHelper(n, memo);
+  }
+};
 ```
 
 ### 746. 使用最小花费爬楼梯
@@ -8750,7 +8815,18 @@ public:
 ```
 
 ```cpp
-
+// 原地 dp
+class Solution {
+public:
+  int minCostClimbingStairs(vector<int> &cost) {
+    vector<int> dp(2, 0);
+    for (int i = 2; i <= cost.size(); ++i) {
+      int res = min(dp[0] + cost[i - 2], dp[1] + cost[i - 1]);
+      dp[0] = dp[1]; dp[1] = res;
+    }
+    return dp[1];
+  }
+};
 ```
 
 ### 62. 不同路径
@@ -8762,7 +8838,31 @@ public:
 ```
 
 ```cpp
+// 组合数学
+class Solution {
+public:
+  int uniquePaths(int m, int n) {
+    if (m > n) swap(m, n);
+    int count = m - 1;
+    int t1 = n, t2 = 1;
+    long long res = 1;
+    while (count--)
+      res = res * (t1++) / (t2++);
+    return (int)res;
+  }
+};
 
+// 动态规划（滚动数组）
+class Solution {
+public:
+  int uniquePaths(int m, int n) {
+    vector<int> dp(n, 1);
+    for (int i = 1; i < m; ++i)
+      for (int j = 1; j < n; ++j)
+        dp[j] += dp[j - 1];
+    return dp[n - 1];
+  }
+};
 ```
 
 ### 63. 不同路径 II
@@ -8774,7 +8874,27 @@ public:
 ```
 
 ```cpp
+class Solution {
+public:
+  int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid) {
+    int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+    if (obstacleGrid[0][0] || obstacleGrid[m - 1][n - 1]) return 0;
 
+    vector<vector<int>> dp(m, vector<int>(n, 0));
+    for (int i = 0; i < m && obstacleGrid[i][0] != 1; ++i)
+      dp[i][0] = 1;
+    for (int j = 0; j < n && obstacleGrid[0][j] != 1; ++j)
+      dp[0][j] = 1;
+
+    for (int i = 1; i < m; ++i)
+      for (int j = 1; j < n; ++j)
+        if (obstacleGrid[i][j] != 1)
+          dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+    return dp[m - 1][n - 1];
+  }
+};
+
+// 滚动数组版本需要增添 if 来进行判断是否为障碍物
 ```
 
 ### 343. 整数拆分
@@ -8786,7 +8906,16 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int integerBreak(int n) {
+    vector<int> dp(n + 1, 1);
+    for (int i = 2; i <= n; ++i)
+      for (int j = 1; j <= i / 2; ++j)
+        dp[i] = max(max(j * dp[i - j], j * (i - j)), dp[i]);
+    return dp[n];
+  }
+};
 ```
 
 ### 96. 不同的二叉搜索树
@@ -8798,7 +8927,17 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int numTrees(int n) {
+    vector<int> dp(n + 1, 0);
+    dp[0] = 1;
+    for (int i = 1; i <= n; ++i)
+      for (int j = 0; j < i; ++j)
+        dp[i] += dp[j] * dp[i - j - 1];
+    return dp[n];
+  }
+};
 ```
 
 ### 0-1 背包理论基础
@@ -8810,7 +8949,39 @@ public:
 ```
 
 ```cpp
+// 滚动数组
+#include <iostream>
+#include <vector>
+using namespace std;
 
+class Solution {
+public:
+  int KnapSack(const vector<int> &weights, const vector<int> &values,
+               const int &W) {
+    vector<int> dp(W + 1, 0);
+    for (int i = 0; i < weights.size(); ++i)
+      for (int j = W; j >= weights[i]; --j) // 从后往前
+        dp[j] = max(dp[j], dp[j - weights[i]] + values[i]);
+
+    return dp[W];
+  }
+};
+
+int main() {
+  int M, N;
+  cin >> M >> N;
+  vector<int> weights(M);
+  vector<int> values(M);
+
+  for (int i = 0; i < M; ++i)
+    cin >> weights[i];
+
+  for (int i = 0; i < M; ++i)
+    cin >> values[i];
+  Solution sol;
+  cout << sol.KnapSack(weights, values, N);
+  return 0;
+}
 ```
 
 ### 416. 分割等和子集
@@ -8822,7 +8993,20 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  bool canPartition(vector<int> &nums) {
+    int sum = accumulate(nums.begin(), nums.end(), 0);
+    if (sum % 2) return false;
+    vector<int> dp(sum / 2 + 1, 0);
+    for (int i = 0; i < nums.size(); ++i) {
+      for (int j = sum / 2; j >= nums[i]; --j)
+        dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]);
+      if (dp.back() == sum / 2) return true;
+    }
+    return false;
+  }
+};
 ```
 
 ### 1049. 最后一块石头的重量 II
@@ -8834,7 +9018,17 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int lastStoneWeightII(vector<int> &stones) {
+    int sum = accumulate(stones.begin(), stones.end(), 0);
+    vector<int> dp(sum / 2 + 1, 0);
+    for (int i = 0; i < stones.size(); ++i)
+      for (int j = dp.size() - 1; j >= stones[i]; --j)
+        dp[j] = max(dp[j], dp[j - stones[i]] + stones[i]);
+    return sum - 2 * dp.back();
+  }
+};
 ```
 
 ### 494. 目标和
@@ -8846,7 +9040,42 @@ public:
 ```
 
 ```cpp
+// 回溯
+class Solution {
+private:
+  int res = 0;
+  void backtracking(const vector<int> &nums, int target, int startIndex) {
+    if (target == 0) ++res;
+    for (int i = startIndex; i < nums.size(); ++i)
+      backtracking(nums, target - nums[i], i + 1);
+  }
 
+public:
+  int findTargetSumWays(vector<int> &nums, int target) {
+    int sum = accumulate(nums.begin(), nums.end(), 0);
+    if ((sum - target) % 2) return 0;
+    if (sum < target) return 0;
+    backtracking(nums, (sum - target) / 2, 0);
+    return res;
+  }
+};
+
+// 动态规划
+class Solution {
+public:
+  int findTargetSumWays(vector<int> &nums, int target) {
+    int sum = accumulate(nums.begin(), nums.end(), 0);
+    if ((sum - target) % 2) return 0;
+    if (sum < target) return 0;
+
+    vector<int> dp((sum - target) / 2 + 1, 0);
+    dp[0] = 1;
+    for (int i = 0; i < nums.size(); ++i)
+      for (int j = dp.size() - 1; j >= nums[i]; --j)
+        dp[j] += dp[j - nums[i]];   // 新物品 放或者不放 都算上
+    return dp.back();
+  }
+};
 ```
 
 ### 474. 一和零
@@ -8858,7 +9087,21 @@ public:
 ```
 
 ```cpp
-
+// 矩阵(背包)复用 ：滚动矩阵
+class Solution {
+public:
+  int findMaxForm(vector<string> &strs, int m, int n) {
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+    for_each(strs.begin(), strs.end(), [&](const string &str) {
+      int zeronum = 0, onenum = 0;
+      for (const char &c : str) c == '0' ? ++zeronum : ++onenum;
+      for (int i = m; i >= zeronum; --i)
+        for (int j = n; j >= onenum; --j)
+          dp[i][j] = max(dp[i][j], dp[i - zeronum][j - onenum] + 1);
+    });
+    return dp[m][n];
+  }
+};
 ```
 
 ### 完全背包理论基础
@@ -9410,25 +9653,29 @@ public:
 class Solution {
 public:
   int largestRectangleArea(vector<int> &heights) {
+    vector<int> minLeftIndex(
+        heights.size()); // 记录左边第一个比当前元素小的元素的下标
+    vector<int> minRightIndex(
+        heights.size()); // 记录右边第一个比当前元素小的元素的下标
     int res = heights[0];
     for (int i = 0; i < heights.size(); ++i) {
-      int left = i, right = i;
-      while (left >= 0) {
-        if (heights[left] < heights[i]) break;
-        --left;
-      }
-      while (right < heights.size()) {
-        if (heights[right] < heights[i]) break;
-        ++right;
-      }
-      res = max((right - left - 1) * heights[i], res);
+      int t = i - 1;
+      while (t >= 0 && heights[t] >= heights[i]) t = minLeftIndex[t];
+      minLeftIndex[i] = t;
+
+      int j = heights.size() - i - 1; t = j + 1;
+      while (t < heights.size() && heights[t] >= heights[j]) t = minRightIndex[t];
+      minRightIndex[j] = t;
     }
+
+    for (int i = 0; i < heights.size(); ++i)
+      res = max(res, (minRightIndex[i] - minLeftIndex[i] - 1) * heights[i]);
     return res;
   }
 };
 
-
 // 单调栈，前后加 0 技巧
+// 前加 0 是为了保证栈不为空，后加 0 是为了保证栈中所有元素都出栈
 class Solution {
 public:
   int largestRectangleArea(vector<int> &heights) {
@@ -9450,6 +9697,31 @@ public:
     }
     return ans;
   }
+};
+
+// 优化后
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> st;
+        st.push(-1);
+        int ans = heights[0];
+        for (int i = 0; i < heights.size(); ++i) {
+            while (st.size() != 1 && heights[i] < heights[st.top()]) {
+                int cur = st.top();
+                st.pop();
+                ans = max(ans, (i - st.top() - 1) * heights[cur]);
+            }
+            st.push(i);
+        }
+        while (st.size() != 1) {
+            int cur = st.top();
+            st.pop();
+            int temp = (heights.size() - st.top() - 1) * heights[cur];
+            ans = max(ans, temp);
+        }
+        return ans;
+    }
 };
 ```
 

@@ -9281,7 +9281,21 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  bool wordBreak(string s, vector<string> &wordDict) {
+    vector<bool> dp(s.size() + 1, false);
+    dp[0] = true;
+    // 注意这个次序很重要，因为要保证不但能出现 apple pen，还要能出现 pen apple
+    for (int j = 1; j < dp.size(); j++)         // 遍历背包
+      for (int i = 0; i < wordDict.size(); i++) // 遍历物品
+        if (wordDict[i].size() <= j)
+          dp[j] = dp[j] || (dp[j - wordDict[i].size()] &&
+                            wordDict[i] == s.substr(j - wordDict[i].size(),
+                                                    wordDict[i].size()));
+    return dp[s.size()];
+  }
+};
 ```
 
 ### 多重背包
@@ -9293,7 +9307,68 @@ public:
 ```
 
 ```cpp
+// 处理为 0-1 背包问题
+#include <iostream>
+#include <vector>
+using namespace std;
 
+int main() {
+  int w, n; // w 表示背包容量，n 表示物品种类数量
+  cin >> w >> n;
+  vector<int> weights(n, 0); // n 种物品的重量
+  vector<int> values(n, 0);  // n 种物品的价值
+  vector<int> nums(n, 0);    // n 种物品各自的数量
+  vector<int> dp(w + 1, 0);
+  for (int i = 0; i < n; i++)
+    cin >> weights[i];
+  for (int i = 0; i < n; i++)
+    cin >> values[i];
+  for (int i = 0; i < n; i++)
+    cin >> nums[i];
+
+  for (int i = 0; i < n; i++) // 展开操作
+    while (nums[i]-- > 1) {
+      weights.push_back(weights[i]);
+      values.push_back(values[i]);
+    }
+
+  // 0-1 背包问题，滚动数组优化
+  for (int i = 0; i < weights.size(); i++) // 遍历物品
+    for (int j = w; j >= weights[i]; j--)  // 遍历背包
+      dp[j] = max(dp[j], dp[j - weights[i]] + values[i]);
+
+  cout << dp[w];
+  return 0;
+}
+
+// 多重背包
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+  int w, n;
+  cin >> w >> n;
+  vector<int> weights(n, 0);
+  vector<int> values(n, 0);
+  vector<int> nums(n, 0);
+  vector<int> dp(w + 1, 0);
+  for (int i = 0; i < n; i++)
+    cin >> weights[i];
+  for (int i = 0; i < n; i++)
+    cin >> values[i];
+  for (int i = 0; i < n; i++)
+    cin >> nums[i];
+
+  // 多重背包问题，滚动数组优化
+  for (int i = 0; i < weights.size(); i++) // 遍历物品
+    for (int j = w; j >= weights[i]; j--)  // 遍历背包
+      for (int k = 1; k <= nums[i] && (k * weights[i] <= j); k++)
+        dp[j] = max(dp[j], dp[j - k * weights[i]] + k * values[i]);
+
+  cout << dp[w];
+  return 0;
+}
 ```
 
 ### 198. 打家劫舍
@@ -9305,7 +9380,18 @@ public:
 ```
 
 ```cpp
-
+// 每个房间只有两种选择，偷或者不偷
+class Solution {
+public:
+  int rob(vector<int> &nums) {
+    if (nums.size() == 1) return nums[0];
+    vector<int> dp(nums.size());
+    dp[0] = nums[0]; dp[1] = max(nums[0], nums[1]);
+    for (int i = 2; i < dp.size(); ++i)
+      dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]);
+    return dp.back();
+  }
+};
 ```
 
 ### 213. 打家劫舍 II
@@ -9317,7 +9403,27 @@ public:
 ```
 
 ```cpp
+// 绝不偷第一个房间，或者绝不偷最后一个房间
+class Solution {
+private:
+  int robHelper(vector<int> &nums, int startIndex, int endIndex) {
+    // static vector<int> dp(endIndex - startIndex + 1); // static 并不知道应该初始化多大的空间（leetcode）
+    vector<int> dp(endIndex - startIndex + 1);
+    dp[0] = nums[startIndex];
+    dp[1] = max(nums[startIndex], nums[startIndex + 1]);
+    for (int i = 2; i < dp.size(); ++i)
+      dp[i] = max(dp[i - 1], dp[i - 2] + nums[startIndex + i]);
+    return dp.back();
+  }
 
+public:
+  int rob(vector<int> &nums) {
+    if (nums.size() == 1 || nums.size() == 2)
+      return *max_element(nums.begin(), nums.end());
+    return max(robHelper(nums, 0, nums.size() - 2),
+               robHelper(nums, 1, nums.size() - 1));
+  }
+};
 ```
 
 ### 337. 打家劫舍 III
@@ -9329,7 +9435,22 @@ public:
 ```
 
 ```cpp
+class Solution {
+private:
+  pair<int, int> dfs(TreeNode *root) { // first: rob, second: not rob
+    if (!root) return {0, 0};
+    auto left = dfs(root->left);
+    auto right = dfs(root->right);
+    return {root->val + left.second + right.second,
+            max(left.first, left.second) + max(right.first, right.second)};
+  }
 
+public:
+  int rob(TreeNode *root) {
+    auto res = dfs(root);
+    return max(res.first, res.second);
+  }
+};
 ```
 
 ### 121. 买卖股票的最佳时机

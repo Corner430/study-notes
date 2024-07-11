@@ -9988,23 +9988,20 @@ int main() {
   int n, x; // n 个账号，希望新账号粉丝为 x
   cin >> n >> x;
   /*
-   * 第一个纬度是两个二维数组，这是为了滚动数组，确保旧的状态不会被新的状态覆盖
-   * 第二个纬度是两个一纬数组，分别代表 无账号发两次 和 有账号发两次
-   * 第三个纬度代表凑够 x 个粉丝的最小账号数
+   * 第一个纬度是两个一纬数组，分别代表 无账号发两次 和 有账号发两次
+   * 第二个纬度代表凑够 x 个粉丝的最小账号数
    */
-  vector<vector<vector<int>>> dp(
-      2, vector<vector<int>>(2, vector<int>(x + 1, INT32_MAX)));
-  dp[1][0][0] = 0;
+  vector<vector<int>> dp(2, vector<int>(x + 1, INT32_MAX));
+  dp[0][0] = 0;
   vector<int> lastdp(x + 1); // 处理最后一个账号的情况
   vector<int> weights(n);
   for (int i = 0; i < n; ++i)
     cin >> weights[i];
 
   for (int i = 0; i < n; ++i) { // 遍历物品（账号），最后一个单独处理
-    dp[0] = dp[1];              // 滚动数组
     int half = weights[i] / 2;
     if (i == n - 1) { // 处理最后一个账号
-      lastdp = dp[0][1];
+      lastdp = dp[1];
       for (int j = x; j > 0 && j >= half; --j) { // 遍历背包
         // 有账号发两次，但本账号肯定不发两次
         if (lastdp[j - half] != INT32_MAX)
@@ -10012,19 +10009,19 @@ int main() {
       }
     }
 
-    for (int j = x; j > 0 && j >= half; --j) { // 遍历背包
-      // 无账号发两次
-      if (dp[0][0][j - half] != INT32_MAX)
-        dp[1][0][j] = min(dp[0][0][j], dp[0][0][j - half] + 1);
-    }
-
     for (int j = x; j > 0 && j >= weights[i]; --j) { // 遍历背包
       // 有账号发两次
-      if (dp[0][0][j - weights[i]] != INT32_MAX)
-        dp[1][1][j] = min(dp[0][1][j], dp[0][0][j - weights[i]] + 1);
+      if (dp[0][j - weights[i]] != INT32_MAX)
+        dp[1][j] = min(dp[1][j], dp[0][j - weights[i]] + 1);
+    }
+
+    for (int j = x; j > 0 && j >= half; --j) { // 遍历背包
+      // 无账号发两次
+      if (dp[0][j - half] != INT32_MAX)
+        dp[0][j] = min(dp[0][j], dp[0][j - half] + 1);
     }
   }
-  int res = min(min(dp[1][0][x], dp[1][1][x]), lastdp[x]);
+  int res = min(min(dp[0][x], dp[1][x]), lastdp[x]);
   if (res == INT32_MAX)
     cout << -1 << endl;
   else

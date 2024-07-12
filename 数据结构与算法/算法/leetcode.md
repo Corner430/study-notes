@@ -8277,32 +8277,36 @@ public:
   }
 };
 
-// 动态规划
+// 动态规划（非滑动数组）
 class Solution {
 public:
   int maxProfit(vector<int> &prices) {
-    vector<vector<int>> dp(2, vector<int>(prices.size(), 0));
-    dp[0][0] = -prices[0];
+    vector<pair<int, int>> dp(prices.size());
+    dp[0] = {-prices[0], 0}; // 初始化第 0 天持股和不持股的最大收益
     for (int i = 1; i < prices.size(); ++i) {
-      dp[0][i] = max(dp[1][i - 1] - prices[i], dp[0][i - 1]);   // 第 i 天持有股票
-      dp[1][i] = max(dp[1][i - 1], dp[0][i - 1] + prices[i]);   // 第 i 天不持有股票
+      dp[i].first = max(dp[i - 1].first,
+                        dp[i - 1].second - prices[i]); // 第 i 天持股的最大收益
+      dp[i].second =
+          max(dp[i - 1].second,
+              dp[i - 1].first + prices[i]); // 第 i 天不持股的最大收益
     }
-    return dp[1].back();
+    return dp.back().second;
   }
 };
 
-// 动态规划高级版
+// 动态规划（滑动数组）
 class Solution {
 public:
   int maxProfit(vector<int> &prices) {
-    vector<int> dp(2, 0);
-    dp[0] = 0 - prices[0];
-    // 逻辑巧妙，利用了可以当天买入当天卖出，所以才不需要利用临时变量保存 dp[0]
-    for (int i = 1; i < prices.size(); i++) {
-      dp[0] = max(dp[0], dp[1] - prices[i]);    // 第 i 天持有股票
-      dp[1] = max(dp[1], dp[0] + prices[i]);    // 第 i 天不持有股票
+    pair<int, int> dp = {-prices[0], 0}; // 初始化第 0 天持股和不持股的最大收益
+    // 逻辑巧妙，利用了可以当天买入当天卖出，所以才不需要利用临时变量保存 dp.first
+    for (int i = 1; i < prices.size(); ++i) {
+      dp.first = max(dp.first,
+                     dp.second - prices[i]); // 第 i 天持股的最大收益
+      dp.second = max(dp.second,
+                      dp.first + prices[i]); // 第 i 天不持股的最大收益
     }
-    return dp[1];
+    return dp.second;
   }
 };
 ```
@@ -9455,6 +9459,8 @@ public:
 
 ### 121. 买卖股票的最佳时机
 
+> 买卖股票只要不限制不能当天买卖，那么就可以滚动数组而不保存之前的状态
+
 [121. 买卖股票的最佳时机](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/description/)
 
 ```python
@@ -9462,20 +9468,63 @@ public:
 ```
 
 ```cpp
+// 贪心（正向）
+class Solution {
+public:
+  int maxProfit(vector<int> &prices) {
+    int res = 0, low = prices[0];
+    for (int i = 1; i < prices.size(); ++i) {
+      low = min(low, prices[i]);
+      res = max(res, prices[i] - low);
+    }
+    return res;
+  }
+};
 
+// 贪心（反向）
+class Solution {
+public:
+  int maxProfit(vector<int> &prices) {
+    int res = 0, high = prices.back();  // 指向当前遍历过的最大元素
+    for (int i = prices.size() - 2; i >= 0; --i) {
+      high = max(high, prices[i]);
+      res = max(res, high - prices[i]);
+    }
+    return res;
+  }
+};
+
+// 动态规划（非滑动数组）
+class Solution {
+public:
+  int maxProfit(vector<int> &prices) {
+    vector<pair<int, int>> dp(prices.size());
+    dp[0] = {-prices[0], 0}; // 初始化第 0 天持股和不持股的最大收益
+    for (int i = 1; i < dp.size(); ++i) {
+      dp[i].second = max(dp[i - 1].second,
+                         dp[i - 1].first + prices[i]); // 不持股的最大收益
+      dp[i].first = max(dp[i - 1].first, -prices[i]); // 持股的最大收益
+    }
+    return dp.back().second;
+  }
+};
+
+// 动态规划（滑动数组）
+class Solution {
+public:
+  int maxProfit(vector<int> &prices) {
+    pair<int, int> dp = {-prices[0], 0}; // 初始化第 0 天持股和不持股的最大收益
+    for (int i = 1; i < prices.size(); ++i) {
+      dp.second = max(dp.second,
+                      dp.first + prices[i]); // 不持股的最大收益
+      dp.first = max(dp.first, -prices[i]);  // 持股的最大收益
+    }
+    return dp.second;
+  }
+};
 ```
 
-### 122. 买卖股票的最佳时机 II
-
-[122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/description/)
-
-```python
-
-```
-
-```cpp
-
-```
+### [122. 买卖股票的最佳时机 II](#122-买卖股票的最佳时机-ii)
 
 ### 123. 买卖股票的最佳时机 III
 
@@ -9486,7 +9535,19 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int maxProfit(vector<int> &prices) {
+    vector<int> dp(4, 0);
+    dp[0] = dp[2] = -prices[0]; // 考虑当天买入卖出再买入的情况
+    for (int i = 1; i < prices.size(); ++i) {
+      dp[0] = max(dp[0], -prices[i]);        // 第一次持股
+      dp[1] = max(dp[1], dp[0] + prices[i]); // 第一次不持股
+      dp[2] = max(dp[2], dp[1] - prices[i]); // 第二次持股
+      dp[3] = max(dp[3], dp[2] + prices[i]); // 第二次不持股
+    }
+  }
+};
 ```
 
 ### 188. 买卖股票的最佳时机 IV
@@ -9498,7 +9559,18 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int maxProfit(int k, vector<int> &prices) {
+    vector<int> dp(2 * k + 1, 0); // 多初始化一位是为了下面 for 循环的统一操作
+    for (int i = 1; i < dp.size(); i += 2)
+      dp[i] = -prices[0];
+    for (int i = 0; i < prices.size(); ++i)
+      for (int j = 1; j < dp.size(); ++j)
+        dp[j] = max(dp[j], dp[j - 1] + (j % 2 ? -1 : 1) * prices[i]);
+    return dp.back();
+  }
+};
 ```
 
 ### 309. 最佳买卖股票时机含冷冻期
@@ -9510,7 +9582,19 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int maxProfit(vector<int> &prices) {
+    vector<int> dp(3, 0);
+    dp[0] = -prices[0];
+    for (int i = 1; i < prices.size(); ++i) {
+      dp[0] = max(dp[0], dp[1] - prices[i]); // 持有
+      dp[1] = max(dp[1], dp[2]);             // 不持有
+      dp[2] = dp[0] + prices[i];             // 不持有（冷冻期）
+    }
+    return max(dp[1], dp[2]);
+  }
+};
 ```
 
 ### 714. 买卖股票的最佳时机含手续费
@@ -9522,7 +9606,18 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int maxProfit(vector<int> &prices, int fee) {
+    pair<int, int> dp = {-prices[0] - fee,
+                         0}; // 初始化第 0 天持股和不持股的收益
+    for (int i = 1; i < prices.size(); ++i) {
+      dp.first = max(dp.first, dp.second - prices[i] - fee);
+      dp.second = max(dp.second, dp.first + prices[i]);
+    }
+    return dp.second;
+  }
+};
 ```
 
 ### 300. 最长递增子序列
@@ -9715,9 +9810,9 @@ public:
     unordered_map<int, int> umap;
     stack<int> st;
 
-    for (int i = 0; i < nums1.size(); ++i) 
+    for (int i = 0; i < nums1.size(); ++i)
       umap[nums1[i]] = i;
-    
+
     for_each(nums2.begin(), nums2.end(), [&](const int &num){
       while (!st.empty() && st.top() < num) {
         res[umap[st.top()]] = num;
@@ -9780,10 +9875,10 @@ public:
     for (int i = 1; i < height.size() - 1; ++i) {
       int left = height[i], right = height[i];
 
-      for (int j = i - 1; j >= 0; --j) 
+      for (int j = i - 1; j >= 0; --j)
         left = max(left, height[j]);
 
-      for (int j = i + 1; j < height.size(); ++j) 
+      for (int j = i + 1; j < height.size(); ++j)
         right = max(right, height[j]);
       sum += min(left, right) - height[i];
     }
@@ -10022,6 +10117,7 @@ public:
 输出包含若干行，每行一个字符串 `s`，表示用户的 `id`。按照每个浏览的用户第一次浏览的顺序输出。
 
 **样例输入**：
+
 ```shell
 8
 qcjj
@@ -10035,6 +10131,7 @@ acidlemon
 ```
 
 **样例输出**：
+
 ```shell
 qcjj
 benh
@@ -10042,7 +10139,6 @@ qsmcgogo
 ducksajin
 acidlemon
 ```
-
 
 ```cpp
 #include <iostream>

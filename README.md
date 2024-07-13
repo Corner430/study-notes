@@ -58,9 +58,8 @@
 - [SGI STL 源码](https://github.com/Corner430/study-notes/tree/main/cpp/SGI-STL)
 - [数据库连接池](https://github.com/Corner430/study-notes/blob/main/cpp/数据库连接池.md)
 - [线程池](https://github.com/Corner430/study-notes/blob/main/cpp/线程池.md)
-- [基于 muduo 的集群聊天服务器](https://github.com/Corner430/study-notes/blob/main/cpp/基于muduo的集群聊天服务器.md)
+- [基于 muduo 的集群聊天服务器](https://github.com/Corner430/chatserver)
 - [重构 muduo 网络库](https://github.com/Corner430/mymuduo)
-- [c++ 面试题](https://github.com/Corner430/study-notes/blob/main/cpp/interview.md)
 
 ## 5 工具
 
@@ -78,7 +77,12 @@
 
 - [《算法图解》](https://github.com/Corner430/study-notes/blob/main/book.md#算法图解)
 - [经典八大排序算法](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/经典八大排序算法.md)
-- [leetcode](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/leetcode.md)
+- [代码随想录](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/代码随想录.md)
+- [labuladong](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/labuladong.md)
+- [LeetCode Hot 100](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/LeetCode-Hot-100.md)
+- [LeetCode 面试经典 150 题](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/面试经典150题.md)
+- [每日一题](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/每日一题.md)
+- [笔试题](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/笔试题.md)
 
 ## 7 计算机网络
 

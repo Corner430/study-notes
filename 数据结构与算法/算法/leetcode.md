@@ -198,6 +198,31 @@
   - [503. 下一个更大元素 II](#503-下一个更大元素-ii)
   - [42. 接雨水](#42-接雨水)
   - [84. 柱状图中最大的矩形](#84-柱状图中最大的矩形)
+- [12 图论](#12-图论)
+  - [98. 所有可达路径](#98-所有可达路径)
+  - [797. 所有可能的路径](#797-所有可能的路径)
+  - [99. 岛屿数量](#99-岛屿数量)
+  - [100. 岛屿的最大面积](#100-岛屿的最大面积)
+  - [101. 孤岛的总面积](#101-孤岛的总面积)
+  - [102. 沉没孤岛](#102-沉没孤岛)
+  - [103. 水流问题](#103-水流问题)
+  - [104.建造最大岛屿](#104建造最大岛屿)
+  - [110. 字符串接龙](#110-字符串接龙)
+  - [105.有向图的完全可达性](#105有向图的完全可达性)
+  - [106. 岛屿的周长](#106-岛屿的周长)
+  - [107. 寻找存在的路径](#107-寻找存在的路径)
+  - [108. 冗余连接](#108-冗余连接)
+  - [109. 冗余连接 II](#109-冗余连接-ii)
+  - [prim 算法](#prim-算法)
+  - [kruskal 算法](#kruskal-算法)
+  - [拓扑排序](#拓扑排序)
+  - [dijkstra](#dijkstra)
+  - [Bellman\_ford 算法](#bellman_ford-算法)
+  - [Bellman\_ford 队列优化算法（又名 SPFA）](#bellman_ford-队列优化算法又名-spfa)
+  - [bellman\_ford 之判断负权回路](#bellman_ford-之判断负权回路)
+  - [bellman\_ford 之单源有限最短路](#bellman_ford-之单源有限最短路)
+  - [Floyd 算法](#floyd-算法)
+  - [A \* 算法 （A star 算法）](#a--算法-a-star-算法)
   - [1553. 吃掉 N 个橘子的最少天数](#1553-吃掉-n-个橘子的最少天数)
 - [笔试真题](#笔试真题)
   - [小红书](#小红书)
@@ -8245,12 +8270,26 @@ public:
 class Solution {
 public:
   int maxSubArray(vector<int> &nums) {
-    int res = nums[0];
-    int sum = 0;
+    int res = nums[0], sum = 0;
     for (int i = 0; i< nums.size() ; ++i) {
       sum += nums[i];
       res = max(res, sum);
       if (sum < 0) sum = 0;
+    }
+    return res;
+  }
+};
+
+// 动态规划
+class Solution {
+public:
+  int maxSubArray(vector<int> &nums) {
+    vector<int> dp(nums.size(), 0); // 以 nums[i] 结尾的最大子序和
+    dp[0] = nums[0];
+    int res = nums[0];
+    for (int i = 1; i < nums.size(); i++) {
+      dp[i] = dp[i - 1] > 0 ? dp[i - 1] + nums[i] : nums[i];
+      res = max(dp[i], res);
     }
     return res;
   }
@@ -9629,7 +9668,21 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int lengthOfLIS(vector<int> &nums) {
+    vector<int> dp(nums.size(),
+                   1); // dp[i] 表示以 nums[i] 为结尾的最长子序列的长度
+    int res = 1;
+    for (int i = 1; i < dp.size(); ++i) {
+      for (int j = 0; j < i; ++j)
+        if (nums[i] > nums[j])
+          dp[i] = max(dp[i], dp[j] + 1);
+      res = max(dp[i], res);
+    }
+    return res;
+  }
+};
 ```
 
 ### 674. 最长连续递增序列
@@ -9641,7 +9694,36 @@ public:
 ```
 
 ```cpp
+// 一遍 for 循环，记录出现过的最大长度
+class Solution {
+public:
+  int findLengthOfLCIS(vector<int> &nums) {
+    int res = 1, count = 1;
+    for (int i = 1; i < nums.size(); ++i) {
+      if (nums[i] > nums[i - 1]) {
+        count++;
+        res = max(res, count);
+      } else
+        count = 1;
+    }
+    return res;
+  }
+};
 
+// 动态规划
+class Solution {
+public:
+    int findLengthOfLCIS(vector<int>& nums) {
+        vector<int> dp(nums.size(), 1);
+        int res = 1;
+        for (int i = 1; i < nums.size(); ++i) {
+            if (nums[i] > nums[i - 1])
+                dp[i] = dp[i - 1] + 1;
+            res = max(res, dp[i]);
+        }
+        return res;
+    }
+};
 ```
 
 ### 718. 最长重复子数组
@@ -9653,7 +9735,40 @@ public:
 ```
 
 ```cpp
+// 动态规划
+class Solution {
+public:
+  int findLength(vector<int> &nums1, vector<int> &nums2) {
+    vector<vector<int>> dp(
+        nums1.size() + 1,
+        vector<int>(nums2.size() + 1, 0)); // + 1 是为了对于边界统一操作
+    int res = 0;
+    for (int i = 1; i <= nums1.size(); i++)
+      for (int j = 1; j <= nums2.size(); j++)
+        if (nums1[i - 1] == nums2[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+          res = max(res, dp[i][j]);
+        }
+    return res;
+  }
+};
 
+// 动态规划（滚动数组）
+class Solution {
+public:
+  int findLength(vector<int> &nums1, vector<int> &nums2) {
+    vector<int> dp(nums2.size() + 1, 0);
+    int res = 0;
+    for (int i = 0; i < nums1.size(); ++i)
+      for (int j = nums2.size() - 1; j >= 0; --j)
+        if (nums1[i] == nums2[j]) {
+          dp[j + 1] = dp[j] + 1;
+          res = max(res, dp[j + 1]);
+        } else
+          dp[j + 1] = 0;  // 重置
+    return res;
+  }
+};
 ```
 
 ### 1143. 最长公共子序列
@@ -9665,7 +9780,36 @@ public:
 ```
 
 ```cpp
+// 动态规划
+class Solution {
+public:
+  int longestCommonSubsequence(string text1, string text2) {
+    // + 1 是为了对于边界统一操作
+    vector<vector<int>> dp(text1.size() + 1, vector<int>(text2.size() + 1, 0));
+    for (int i = 0; i < text1.size(); ++i)
+      for (int j = 0; j < text2.size(); ++j)
+        dp[i + 1][j + 1] = text1[i] == text2[j]
+                               ? dp[i][j] + 1
+                               : max(dp[i + 1][j], dp[i][j + 1]);
+    return dp.back().back();
+  }
+};
 
+// 动态规划（滚动数组）
+// 无法压到一维，因为要用当前轮次左侧的信息和上一轮次上侧的信息。
+class Solution {
+public:
+  int longestCommonSubsequence(string text1, string text2) {
+    vector<vector<int>> dp(2, vector<int>(text2.size() + 1, 0));
+    for (int i = 0; i < text1.size(); ++i) {
+      for (int j = 0; j < text2.size(); ++j)
+        dp[1][j + 1] =
+            text1[i] == text2[j] ? dp[0][j] + 1 : max(dp[1][j], dp[0][j + 1]);
+      dp[0] = dp[1];
+    }
+    return dp[1].back();
+  }
+};
 ```
 
 ### 1035. 不相交的线
@@ -9677,20 +9821,23 @@ public:
 ```
 
 ```cpp
-
+// 最长公共子序列
+class Solution {
+public:
+  int maxUncrossedLines(vector<int> &nums1, vector<int> &nums2) {
+    vector<vector<int>> dp(2, vector<int>(nums2.size() + 1, 0));
+    for (int i = 0; i < nums1.size(); ++i) {
+      for (int j = 0; j < nums2.size(); ++j)
+        dp[1][j + 1] =
+            nums1[i] == nums2[j] ? dp[0][j] + 1 : max(dp[0][j + 1], dp[1][j]);
+      dp[0] = dp[1];
+    }
+    return dp[1].back();
+  }
+};
 ```
 
-### 53. 最大子序和
-
-[53. 最大子序和](https://leetcode-cn.com/problems/maximum-subarray/description/)
-
-```python
-
-```
-
-```cpp
-
-```
+### 53. [最大子序和](#53-最大子序和)
 
 ### 392. 判断子序列
 
@@ -9701,7 +9848,32 @@ public:
 ```
 
 ```cpp
+// 双指针
+class Solution {
+public:
+  bool isSubsequence(string s, string t) {
+    int i = 0, j = 0;
+    while (i < s.size() && j < t.size())
+      if (s[i] == t[j++]) ++i;
+    return i == s.size();
+  }
+};
 
+// 动态规划
+class Solution {
+public:
+  bool isSubsequence(string s, string t) {
+    vector<vector<int>> dp(2, vector<int>(t.size() + 1, 0));
+    for (int i = 0; i < s.size(); ++i) {
+      for (int j = 0; j < t.size(); ++j)
+        dp[1][j + 1] =
+            s[i] == t[j] ? dp[0][j] + 1 : max(dp[1][j], dp[0][j + 1]);
+      if (dp[1].back() == s.size()) return true;  // 判断是否可以提前结束
+      dp[0] = dp[1];
+    }
+    return dp[1].back() == s.size();
+  }
+};
 ```
 
 ### 115. 不同的子序列
@@ -9713,7 +9885,25 @@ public:
 ```
 
 ```cpp
-
+/*
+1. 解决思路，是否使用当前s[i-1]进行匹配
+2. 初始化，要保证不输出 0 ，所以如果第一次匹配成功，要想办法让它为 1
+3. 注意使用 unsigned int
+*/
+class Solution {
+public:
+  int numDistinct(string s, string t) {
+    vector<vector<unsigned int>> dp(2, vector<unsigned int>(s.size() + 1, 1));
+    dp[1][0] = 0;
+    for (int i = 0; i < t.size(); ++i) {
+      for (int j = 0; j < s.size(); ++j)
+        // 是否使用s[i-1]进行匹配
+        dp[1][j + 1] = t[i] == s[j] ? dp[0][j] + dp[1][j] : dp[1][j];
+      dp[0] = dp[1];
+    }
+    return dp[1].back();
+  }
+};
 ```
 
 ### 583. 两个字符串的删除操作
@@ -9725,7 +9915,39 @@ public:
 ```
 
 ```cpp
+// 删的只剩下最长公共子序列就好了
+class Solution {
+public:
+  int minDistance(string word1, string word2) {
+    vector<vector<int>> dp(2, vector<int>(word2.size() + 1, 0));
+    for (int i = 0; i < word1.size(); ++i) {
+      for (int j = 0; j < word2.size(); ++j)
+        dp[1][j + 1] =
+            word1[i] == word2[j] ? dp[0][j] + 1 : max(dp[1][j], dp[0][j + 1]);
+      dp[0] = dp[1];
+    }
+    return word1.size() + word2.size() - 2 * dp[1].back();
+  }
+};
 
+// 编辑距离（只能删除）
+class Solution {
+public:
+  int minDistance(string word1, string word2) {
+    vector<vector<int>> dp(2, vector<int>(word2.size() + 1));
+    for (int i = 0; i < dp[0].size(); ++i)  // 初始化第一行
+      dp[0][i] = i;
+
+    for (int i = 0; i < word1.size(); ++i) {
+      dp[1][0] = i + 1; // 滚动数组的第一列初始化
+      for (int j = 0; j < word2.size(); ++j)
+        dp[1][j + 1] =
+            word1[i] == word2[j] ? dp[0][j] : min(dp[0][j + 1], dp[1][j]) + 1;
+      dp[0] = dp[1];
+    }
+    return dp[1].back();
+  }
+};
 ```
 
 ### 72. 编辑距离
@@ -9737,7 +9959,24 @@ public:
 ```
 
 ```cpp
-
+class Solution {
+public:
+  int minDistance(string word1, string word2) {
+    if (word2.empty()) return word1.size();  // 可以删除，下面的循环已经兼顾了这种情况
+    vector<vector<int>> dp(2, vector<int>(word2.size() + 1));
+    for (int i = 0; i < dp[0].size(); ++i)
+      dp[0][i] = i;
+    for (int i = 0; i < word1.size(); ++i) {
+      dp[1][0] = i + 1;
+      for (int j = 0; j < word2.size(); ++j)
+        dp[1][j + 1] = word1[i] == word2[j]
+                           ? dp[0][j]
+                           : min({dp[0][j], dp[0][j + 1], dp[1][j]}) + 1;
+      dp[0] = dp[1];
+    }
+    return dp[0].back();  // 兼顾 word1 为空的情况
+  }
+};
 ```
 
 ### 647. 回文子串
@@ -9749,7 +9988,86 @@ public:
 ```
 
 ```cpp
+// 动态规划 + 双指针
+class Solution {
+private:
+  bool isPalindrome(const string &s, int left, int right) { // []
+    while (left < right)
+      if (s[left++] != s[right--])
+        return false;
+    return true;
+  }
 
+public:
+  int countSubstrings(string s) {
+    vector<int> dp(s.size() + 1, 0); // dp[i]表示以 s[i] 结尾的回文子串个数
+    for (int i = 0; i < s.size(); ++i) {
+      dp[i + 1] += dp[i];
+      for (int j = 0; j <= i; ++j)
+        if (isPalindrome(s, j, i))
+          ++dp[i + 1];
+    }
+    return dp.back();
+  }
+};
+
+// 巧妙动态规划
+class Solution {
+public:
+  int countSubstrings(string s) {
+    vector<vector<bool>> dp(s.size(), vector<bool>(s.size(), false));
+    int res = 0;
+    for (int i = s.size() - 1; i >= 0; --i) {
+      for (int j = i; j < s.size(); j++)
+        if (s[i] == s[j] && (j - i <= 1 || dp[i + 1][j - 1])) {
+          dp[i][j] = true;
+          res++;
+        }
+    }
+    return res;
+  }
+};
+
+// 巧妙动态规划（滚动数组）
+class Solution {
+public:
+  int countSubstrings(string s) {
+    vector<vector<bool>> dp(2, vector<bool>(s.size(), false));
+    int res = 0;
+    for (int i = s.size(); i >= 0; --i) {
+      for (int j = i; j < s.size(); ++j)
+        if (s[i] == s[j] && (j - i < 2 || dp[0][j - 1])) {
+          dp[1][j] = true;
+          ++res;
+        } else
+          dp[1][j] = false;
+      swap(dp[0], dp[1]);
+    }
+    return res;
+  }
+};
+
+// 双指针
+// 计算以 i 为中心的回文子串个数
+class Solution {
+private:
+  int extend(string &s, int i, int j) {
+    int res = 0;
+    while (i >= 0 && j < s.size() && s[i--] == s[j++])
+      ++res;
+    return res;
+  }
+
+public:
+  int countSubstrings(string s) {
+    int ans = 0;
+    for (int i = 0; i < s.size(); ++i) {
+      ans += extend(s, i, i);
+      ans += extend(s, i, i + 1);
+    }
+    return ans;
+  }
+};
 ```
 
 ### 516. 最长回文子序列
@@ -9761,7 +10079,39 @@ public:
 ```
 
 ```cpp
+// 动态规划，很好的初始化
+class Solution {
+public:
+  int longestPalindromeSubseq(string s) {
+    // dp[i][j]代表从 i 到 j 范围内最长的回文子序列长度
+    vector<vector<int>> dp(s.size(), vector<int>(s.size(), 0));
+    // 通过更好的初始化进行统一操作
+    for (int i = 0; i < s.size(); i++)
+      dp[i][i] = 1;
+    for (int i = s.size(); i >= 0; i--)
+      for (int j = i + 1; j < s.size(); j++)
+        dp[i][j] = s[i] == s[j] ? dp[i + 1][j - 1] + 2
+                                : max(dp[i + 1][j], dp[i][j - 1]); // 不会越界的
+    return dp[0].back();
+  }
+};
 
+// 动态规划（滚动数组）
+class Solution {
+public:
+  int longestPalindromeSubseq(string s) {
+    // dp[i][j]代表从 i 到 j 范围内最长的回文子序列长度
+    vector<vector<int>> dp(2, vector<int>(s.size(), 0));
+    for (int i = s.size() - 1; i >= 0; --i) {
+      dp[1][i] = 1;
+      for (int j = i + 1; j < s.size(); ++j)
+        dp[1][j] = s[i] == s[j] ? dp[0][j - 1] + 2
+                                : max(dp[0][j], dp[1][j - 1]);
+      dp[0] = dp[1];
+    }
+    return dp[1].back();
+  }
+};
 ```
 
 ---
@@ -10036,6 +10386,104 @@ public:
     }
 };
 ```
+
+---
+
+## 12 图论
+
+### 98. 所有可达路径
+
+[98. 所有可达路径](https://kamacoder.com/problempage.php?pid=1170)
+
+### 797. 所有可能的路径
+
+[797. 所有可能的路径](https://leetcode.cn/problems/all-paths-from-source-to-target/description/)
+
+### 99. 岛屿数量
+
+[99. 岛屿数量](https://kamacoder.com/problempage.php?pid=1171)
+
+### 100. 岛屿的最大面积
+
+[100. 岛屿的最大面积](https://kamacoder.com/problempage.php?pid=1172)
+
+### 101. 孤岛的总面积
+
+[101. 孤岛的总面积](https://kamacoder.com/problempage.php?pid=1173)
+
+### 102. 沉没孤岛
+
+[102. 沉没孤岛](https://kamacoder.com/problempage.php?pid=1174)
+
+### 103. 水流问题
+
+[103. 水流问题](https://kamacoder.com/problempage.php?pid=1175)
+
+### 104.建造最大岛屿
+
+[104.建造最大岛屿](https://kamacoder.com/problempage.php?pid=1176)
+
+### 110. 字符串接龙
+
+[110. 字符串接龙](https://kamacoder.com/problempage.php?pid=1183)
+
+### 105.有向图的完全可达性
+
+[105.有向图的完全可达性](https://kamacoder.com/problempage.php?pid=1177)
+
+### 106. 岛屿的周长
+
+[106. 岛屿的周长](https://kamacoder.com/problempage.php?pid=1178)
+
+### 107. 寻找存在的路径
+
+[107. 寻找存在的路径](https://kamacoder.com/problempage.php?pid=1179)
+
+### 108. 冗余连接
+
+[108. 冗余连接](https://kamacoder.com/problempage.php?pid=1181)
+
+### 109. 冗余连接 II
+
+[109. 冗余连接 II](https://kamacoder.com/problempage.php?pid=1182)
+
+### prim 算法
+
+[53. 寻宝（第七期模拟笔试）](https://kamacoder.com/problempage.php?pid=1053)
+
+### kruskal 算法
+
+[53. 寻宝（第七期模拟笔试）](https://kamacoder.com/problempage.php?pid=1053)
+
+### 拓扑排序
+
+[117. 软件构建](https://kamacoder.com/problempage.php?pid=1191)
+
+### dijkstra
+
+[47. 参加科学大会（第六期模拟笔试）](https://kamacoder.com/problempage.php?pid=1047)
+
+### Bellman_ford 算法
+
+### Bellman_ford 队列优化算法（又名 SPFA）
+
+[94. 城市间货物运输 I](https://kamacoder.com/problempage.php?pid=1152)
+
+### bellman_ford 之判断负权回路
+
+[95. 城市间货物运输 II](https://kamacoder.com/problempage.php?pid=1153)
+
+### bellman_ford 之单源有限最短路
+
+[96. 城市间货物运输 III](https://kamacoder.com/problempage.php?pid=1154)
+
+### Floyd 算法
+
+[97. 小明逛公园](https://kamacoder.com/problempage.php?pid=1155)
+
+### A \* 算法 （A star 算法）
+
+[127. 骑士的攻击](https://kamacoder.com/problempage.php?pid=1203)
 
 ---
 

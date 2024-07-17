@@ -56,7 +56,7 @@
 - [cpp 高级笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp高级笔记.md)
 - [SGI 内存池 和 nginx 内存池](https://github.com/Corner430/study-notes/blob/main/cpp/SGI和nginx内存池.md)
 - [SGI STL 源码](https://github.com/Corner430/study-notes/tree/main/cpp/SGI-STL)
-- [数据库连接池](https://github.com/Corner430/study-notes/blob/main/cpp/数据库连接池.md)
+- [数据库连接池](https://github.com/Corner430/MySQL-Connection-Pool)
 - [线程池](https://github.com/Corner430/study-notes/blob/main/cpp/线程池.md)
 - [基于 muduo 的集群聊天服务器](https://github.com/Corner430/chatserver)
 - [重构 muduo 网络库](https://github.com/Corner430/mymuduo)

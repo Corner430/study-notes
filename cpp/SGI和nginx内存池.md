@@ -1,7 +1,5 @@
 - [source insight](https://www.sourceinsight.com/) 是一个优秀的源代码阅读工具
 
-
-
 - [1 C++ STL 空间配置器](#1-c-stl-空间配置器)
 - [2 SGI STL 空间配置器](#2-sgi-stl-空间配置器)
   - [2.1 定义](#21-定义)
@@ -25,8 +23,6 @@
     - [3.3.1 `ngx_mem_pool.h`](#331-ngx_mem_poolh)
     - [3.3.2 `ngx_mem_pool.cpp`](#332-ngx_mem_poolcpp)
     - [3.3.3 `main.cpp`](#333-maincpp)
-
-
 
 # 1 C++ STL 空间配置器
 
@@ -132,7 +128,6 @@ public:
 >   2. 对于备用内存池中的 chunk 块划分完之后，如果还有剩余的很小的内存块，再次分配的时候，会把这些小的内存块再次分配出去，而不会浪费掉。
 >   3. 当指定字节数内存分配失败之后，有一个异常处理的过程，会去 `bytes - 128` 字节所有的 chunk 块进行查看，如果哪个字节数有空闲的 chunk 块，就会把这个 chunk 块分配出去。
 >   4. 如果都失败，会调用 `oom_malloc` 函数，这个函数是一个回调函数，用户可以自己定义，用于处理内存分配失败的情况。
-
 
 ### 2.3.1 重要类型和变量定义
 
@@ -525,7 +520,8 @@ __default_alloc_template<threads, inst>::reallocate(void* __p,
 
 ## 2.4 移植 SGI STL 空间配置器 内存池
 
-***myallocator.h***
+**_myallocator.h_**
+
 ```cpp
 /*
  * 移植 SGI STL 二级空间配置器内存池源码
@@ -847,7 +843,6 @@ int main(){
 }
 ```
 
-
 # 3 nginx 内存池
 
 [nginx github](https://github.com/nginx/nginx)
@@ -872,7 +867,7 @@ int main(){
 
 **分配大块内存后的内存池结构**
 
-> **紫色💜部分应该是是小块内存区分配出来的!!!**
+> **紫色 💜 部分应该是是小块内存区分配出来的!!!**
 
 ![20240605122029](https://cdn.jsdelivr.net/gh/Corner430/Picture/images/20240605122029.png)
 
@@ -992,9 +987,7 @@ ngx_pool_cleanup_t *ngx_pool_cleanup_add(ngx_pool_t *p, size_t size);
 #endif /* _NGX_PALLOC_H_INCLUDED_ */
 ```
 
-
 ## 3.2 `/src/core/ngx_palloc.c` 文件剖析
-
 
 ```cpp
 // 分配小块内存
@@ -1547,11 +1540,11 @@ ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)
 > - 小块内存看似没有提供任何的内存释放函数，这是因为直接通过 `last` 指针偏移来分配内存，无法进行小块内存的回收。**但是，`ngx_reset_pool` 函数可以重置内存池，等待下一次请求。**
 >
 > **nginx 的本质是一个 http 的短链接服务器**
->   - 客户端（浏览器）发起一个 `request` 请求，到达 `nginx` 服务器，处理完成后 `nginx` 给客户端返回一个 `response` 响应，`http(nginx)` 服务器主动断开 `tcp` 连接。
->   - 对于 `http 1.1` 的 `keep-avlie: 60s`
->       - http(nginx) 服务器返回响应以后，需要等待 60s，60s 之内客户端又发来请求，时间重置。
->       - 否则 60s 之后，nginx 就主动断开连接，此时 nginx 可以调用 `ngx_reset_pool` 函数，重置内存池，等待下一次请求。
-
+>
+> - 客户端（浏览器）发起一个 `request` 请求，到达 `nginx` 服务器，处理完成后 `nginx` 给客户端返回一个 `response` 响应，`http(nginx)` 服务器主动断开 `tcp` 连接。
+> - 对于 `http 1.1` 的 `keep-avlie: 60s`
+>   - http(nginx) 服务器返回响应以后，需要等待 60s，60s 之内客户端又发来请求，时间重置。
+>   - 否则 60s 之后，nginx 就主动断开连接，此时 nginx 可以调用 `ngx_reset_pool` 函数，重置内存池，等待下一次请求。
 
 ## 3.3 移植 nginx 内存池
 

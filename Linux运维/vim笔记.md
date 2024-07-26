@@ -59,6 +59,7 @@
 - [lazyvim](https://github.com/LazyVim/LazyVim)
 - [Vimium](https://github.com/philc/vimium)
 - [Vimium-c](https://github.com/gdh1995/vimium-c)
+- [Vim 中文帮助](https://yianwillis.github.io/vimcdoc/doc/help.html)
 
 下载最新中文版本的vimtutor：`vim --clean -c 'e $VIMRUNTIME/tutor/tutor.zh_cn.utf-8' -c 'w! TUTORCOPY' -c 'q'`
 

@@ -12,6 +12,7 @@
 - [7 计算机网络](#7-计算机网络)
 - [8 数据库](#8-数据库)
   - [MySQL](#mysql)
+  - [MongoDB](#mongodb)
 - [9 设计模式](#9-设计模式)
 - [10 前端](#10-前端)
   - [HTML 和 CSS](#html-和-css)
@@ -102,6 +103,10 @@
 - [《数据库系统概念》](https://github.com/Corner430/study-notes/blob/main/book.md#数据库系统概念)
 - [MySQL 学习笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql学习笔记.md)
 
+### MongoDB
+
+- [MongoDB 学习笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/MongoDB学习笔记.md)
+
 ## 9 设计模式
 
 - [kama-DesignPattern](https://github.com/youngyangyang04/kama-DesignPattern?tab=readme-ov-file)
@@ -126,3 +131,5 @@
 - [CHLOROBLOG](https://chlorie.github.io/ChloroBlog/)
 - [progschj/ThreadPool](https://github.com/progschj/ThreadPool)
 - [kama-DesignPattern](https://github.com/youngyangyang04/kama-DesignPattern?tab=readme-ov-file)
+- [krislinzhao/StudyNotes](https://github.com/krislinzhao/StudyNotes)
+- [heibaiying/Full-Stack-Notes](https://github.com/heibaiying/Full-Stack-Notes)

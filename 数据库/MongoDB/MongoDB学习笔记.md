@@ -10,3 +10,5 @@
 2. [MongoDB 简介](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/02.MongoDB简介.md)
    1. [特点](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/02.MongoDB简介.md#21-特点)
 3. [MongoDB 概念解析](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/03.MongoDB概念解析.md)
+   1. [完整术语列表](<(https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/03.MongoDB概念解析.md#31-完整术语列表)>)
+4. [MongoDB 的安装](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md)

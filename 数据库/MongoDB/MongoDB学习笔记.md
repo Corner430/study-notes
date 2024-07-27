@@ -18,7 +18,10 @@
       3. [连接 mongodb](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#413-连接-mongodb)
       4. [允许外网访问 mongodb](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#414-允许外网访问-mongodb)
       5. [查看 mongodb 连接数](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#415-查看-mongodb-连接数)
-   2. [在 docker 安装 mongodb](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#42-在-docker-安装-mongodb) 1. [默认配置启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#421-默认配置启动) 2. [自定义配置文件启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#422-自定义配置文件启动) 3. [docker-compose 命令启动，同时启动 mongodb 管理界面服务](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#423-docker-compose-命令启动同时启动-mongodb-管理界面服务)
+   2. [在 docker 安装 mongodb](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#42-在-docker-安装-mongodb) 
+      1. [默认配置启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#421-默认配置启动) 
+      2. [自定义配置文件启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#422-自定义配置文件启动)
+      3. [docker-compose 命令启动，同时启动 mongodb 管理界面服务](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#423-docker-compose-命令启动同时启动-mongodb-管理界面服务)
 5. MongoDB 账号管理
    1. 创建管理员
    2. 创建自定义用户

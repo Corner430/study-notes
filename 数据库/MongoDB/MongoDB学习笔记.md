@@ -22,32 +22,32 @@
       1. [默认配置启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#421-默认配置启动) 
       2. [自定义配置文件启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#422-自定义配置文件启动)
       3. [docker-compose 命令启动，同时启动 mongodb 管理界面服务](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#423-docker-compose-命令启动同时启动-mongodb-管理界面服务)
-5. MongoDB 账号管理
-   1. 创建管理员
-   2. 创建自定义用户
-   3. 查看已经创建的用户
-   4. 删除用户
-6. MongoDB 增删查改
-   1. 数据类型
-      1. BSON
-      2. ObjectId
-   2. 新增数据
-   3. 查询数据
-      1. 基本 API
-      2. 等值查询
-      3. 范围查询
-      4. 逻辑查询
-      5. 集合查询
-      6. 额外操作
-   4. 修改数据
-      1. 基本 API
-      2. 常规修改器
-      3. 数组修改器
-   5. 删除数据
-7. MongoDB 索引
-   1. 索引简介
-      1. 创建索引
-      2. 查看索引
+5. [MongoDB 账号管理](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/05.MongoDB账号管理.md)
+   1. [创建管理员](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/05.MongoDB账号管理.md#51-创建管理员)
+   2. [创建自定义用户](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/05.MongoDB账号管理.md#52-创建自定义用户)
+   3. [查看已经创建的用户](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/05.MongoDB账号管理.md#53-查看已经创建的用户)
+   4. [删除用户](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/05.MongoDB账号管理.md#54-删除用户)
+6. [MongoDB 增删查改](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md)
+   1. [数据类型](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#61-数据类型)
+      1. [BSON](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#611-bson)
+      2. [ObjectId](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#612-objectid)
+   2. [新增数据](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#62-新增数据)
+   3. [查询数据](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#63-查询数据)
+      1. [基本 API](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#631-基本-api)
+      2. [等值查询](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#632-等值查询)
+      3. [范围查询](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#633-范围查询)
+      4. [逻辑查询](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#634-逻辑查询)
+      5. [集合查询](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#635-集合查询)
+      6. [额外操作](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#636-额外操作)
+   4. [修改数据](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#64-修改数据)
+      1. [基本 API](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#641-基本-api)
+      2. [常规修改器](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#642-常规修改器)
+      3. [数组修改器](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#643-数组修改器)
+   5. [删除数据](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/06.MongoDB增删查改.md#65-删除数据)
+7. [MongoDB 索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md)
+   1. [索引简介](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#71-索引简介)
+      1. [创建索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#711-创建索引)
+      2. [查看索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#712-查看索引)
    2. 索引的类型
       1. 单字段索引
       2. 复合索引

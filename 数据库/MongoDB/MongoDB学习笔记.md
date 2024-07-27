@@ -22,3 +22,8 @@
       1. [默认配置启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#421-默认配置启动)
       2. [自定义配置文件启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#422-自定义配置文件启动)
       3. [docker-compose 命令启动，同时启动 mongodb 管理界面服务](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#423-docker-compose-命令启动同时启动-mongodb-管理界面服务)
+
+# 参考资料
+
+- [官方文档](https://www.mongodb.com/zh-cn/docs/)
+- [官方配置说明](https://docs.mongodb.com/manual/reference/configuration-options/)

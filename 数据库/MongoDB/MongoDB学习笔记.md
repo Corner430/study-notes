@@ -92,38 +92,38 @@
       1. [故障发现](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#921-故障发现)
       2. [优先选举](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#922-优先选举)
       3. [投票成员](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#923-投票成员)
-   3. 搭建副本集
-      1. 下载并解压
-      2. 配置环境变量
-      3. 修改配置
-      4. 启动服务
-      5. 配置副本集
-      6. 查看副本集情况
-10. MongoDB 分片
-    1. 分片机制
-       1. 核心组件
-       2. 分片键
-       3. 分片策略
-       4. 块拆分
-       5. 数据查询
-       6. 非分片集合
-    2. 集群搭建
-       1. 分片副本集配置
-       2. 配置副本集配置
-       3. 路由服务配置
-       4. 配置分发
-       5. 启动分片和配置服务
-       6. 初始化所有副本集
-       7. 启动路由服务
-       8. 测试分片
-11. 数据备份与恢复
-    1. mongoexport 导出 json/csv 结构化数据
-    2. mongoimport 导入 json/csv 结构化数据
-    3. mongodump 导出二进制数据
-    4. mongorestore 导入二进制数据
-12. MongoDB 的其它
-    1. 获取 mongodb 状态信息
-    2. 非正常关闭 mongodb 导致无法启动的解决方法
+   3. [搭建副本集](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#93-搭建副本集)
+      1. [下载并解压](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#931-下载并解压)
+      2. [配置环境变量](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#932-配置环境变量)
+      3. [修改配置](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#933-修改配置)
+      4. [启动服务](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#934-启动服务)
+      5. [配置副本集](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#935-配置副本集)
+      6. [查看副本集情况](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#936-查看副本集情况)
+10. [MongoDB 分片](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md)
+    1. [分片机制](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#101-分片机制)
+       1. [核心组件](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1011-核心组件)
+       2. [分片键](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1012-分片键)
+       3. [分片策略](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1013-分片策略)
+       4. [块拆分](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1014-块拆分)
+       5. [数据查询](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1015-数据查询)
+       6. [非分片集合](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1016-非分片集合)
+    2. [集群搭建](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#102-集群搭建)
+       1. [分片副本集配置](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1021-分片副本集配置)
+       2. [配置副本集配置](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1022-配置副本集配置)
+       3. [路由服务配置](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1023-路由服务配置)
+       4. [配置分发](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1024-配置分发)
+       5. [启动分片和配置服务](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1025-启动分片和配置服务)
+       6. [初始化所有副本集](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1026-初始化所有副本集)
+       7. [启动路由服务](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1027-启动路由服务)
+       8. [测试分片](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/10.MongoDB分片.md#1028-测试分片)
+11. [数据备份与恢复](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/11.数据备份与恢复.md)
+    1. [mongoexport 导出 json/csv 结构化数据](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/11.数据备份与恢复.md#111-mongoexport-导出-jsoncsv-结构化数据)
+    2. [mongoimport 导入 json/csv 结构化数据](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/11.数据备份与恢复.md#112-mongoimport-导入-jsoncsv-结构化数据)
+    3. [mongodump 导出二进制数据](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/11.数据备份与恢复.md#113-mongodump-导出二进制数据)
+    4. [mongorestore 导入二进制数据](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/11.数据备份与恢复.md#114-mongorestore-导入二进制数据)
+12. [MongoDB 的其它](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/12.MongoDB的其它.md)
+    1. [获取 mongodb 状态信息](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/12.MongoDB的其它.md#121-获取-mongodb-状态信息)
+    2. [非正常关闭 mongodb 导致无法启动的解决方法](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/12.MongoDB的其它.md#122-非正常关闭-mongodb-导致无法启动的解决方法)
 
 # 参考资料
 

@@ -18,8 +18,8 @@
       3. [连接 mongodb](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#413-连接-mongodb)
       4. [允许外网访问 mongodb](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#414-允许外网访问-mongodb)
       5. [查看 mongodb 连接数](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#415-查看-mongodb-连接数)
-   2. [在 docker 安装 mongodb](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#42-在-docker-安装-mongodb) 
-      1. [默认配置启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#421-默认配置启动) 
+   2. [在 docker 安装 mongodb](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#42-在-docker-安装-mongodb)
+      1. [默认配置启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#421-默认配置启动)
       2. [自定义配置文件启动](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#422-自定义配置文件启动)
       3. [docker-compose 命令启动，同时启动 mongodb 管理界面服务](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/04.MongoDB的安装.md#423-docker-compose-命令启动同时启动-mongodb-管理界面服务)
 5. [MongoDB 账号管理](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/05.MongoDB账号管理.md)
@@ -48,50 +48,50 @@
    1. [索引简介](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#71-索引简介)
       1. [创建索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#711-创建索引)
       2. [查看索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#712-查看索引)
-   2. 索引的类型
-      1. 单字段索引
-      2. 复合索引
-      3. 多键索引
-      4. 哈希索引
-      5. 地理空间索引
-      6. 文本索引
-   3. 索引的性质
-      1. 唯一索引
-      2. 稀疏性
-      3. 部分索引
-      4. TTL 索引
-   4. 删除索引
-   5. EXPLAIN
-      1. 输出参数
-      2. 覆盖索引
-8. MongoDB 聚合
-   1. 聚合简述
-   2. 聚合管道
-      1. `$match`
-      2. `$project`
-      3. `$group`
-      4. `$unwind`
-      5. `$sort`
-      6. `$limit`
-      7. `$skip`
-      8. `$lookup`
-         1. 关联查询
-         2. 非相关查询
-      9. `$out`
-      10. 自动优化
-   3. MapReduce
-   4. 单用途聚合方法
-      1. `count`
-      2. `estimatedDocumentCount`
-      3. `distinct`
-9. MongoDB 复制
-   1. 副本集
-      1. 复制功能
-      2. 仲裁者
-   2. 故障发现与恢复
-      1. 故障发现
-      2. 优先选举
-      3. 投票成员
+   2. [索引的类型](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#72-索引的类型)
+      1. [单字段索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#721-单字段索引)
+      2. [复合索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#722-复合索引)
+      3. [多键索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#723-多键索引)
+      4. [哈希索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#724-哈希索引)
+      5. [地理空间索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#725-地理空间索引)
+      6. [文本索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#726-文本索引)
+   3. [索引的性质](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#73-索引的性质)
+      1. [唯一索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#731-唯一索引)
+      2. [稀疏性](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#732-稀疏性)
+      3. [部分索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#733-部分索引)
+      4. [TTL 索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#734-ttl-索引)
+   4. [删除索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#74-删除索引)
+   5. [EXPLAIN](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#75-explain)
+      1. [输出参数](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#751-输出参数)
+      2. [覆盖索引](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/07.MongoDB索引.md#752-覆盖索引)
+8. [MongoDB 聚合](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md)
+   1. [聚合简述](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#81-聚合简述)
+   2. [聚合管道](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#82-聚合管道)
+      1. [`$match`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#821-match)
+      2. [`$project`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#822-project)
+      3. [`$group`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#823-group)
+      4. [`$unwind`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#824-unwind)
+      5. [`$sort`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#825-sort)
+      6. [`$limit`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#826-limit)
+      7. [`$skip`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#827-skip)
+      8. [`$lookup`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#828-lookup)
+         1. [关联查询](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#8281-关联查询)
+         2. [非相关查询](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#8282-非相关查询)
+      9. [`$out`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#829-out)
+      10. [自动优化](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#8210-自动优化)
+   3. [MapReduce](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#83-mapreduce)
+   4. [单用途聚合方法](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#84-单用途聚合方法)
+      1. [`count`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#841-count)
+      2. [`estimatedDocumentCount`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#842-estimateddocumentcount)
+      3. [`distinct`](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/08.MongoDB聚合.md#843-distinct)
+9. [MongoDB 复制](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md)
+   1. [副本集](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#91-副本集)
+      1. [复制功能](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#911-复制功能)
+      2. [仲裁者](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#912-仲裁者)
+   2. [故障发现与恢复](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#92-故障发现与恢复)
+      1. [故障发现](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#921-故障发现)
+      2. [优先选举](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#922-优先选举)
+      3. [投票成员](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/09.MongoDB复制.md#923-投票成员)
    3. 搭建副本集
       1. 下载并解压
       2. 配置环境变量

@@ -410,6 +410,8 @@ int main(){
 
 ## 2.3 `const`
 
+[c++ 那些事之 `const` 那些事](https://light-city.github.io/stories_things/basic_content/const/)
+
 - **修饰变量**，说明该变量不可以被改变；
 
 - **修饰指针**，指针常量和常量指针

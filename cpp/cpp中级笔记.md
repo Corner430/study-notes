@@ -1760,6 +1760,8 @@ public:
 
 **[`this` 指针](https://github.com/Corner430/study-notes/blob/main/cpp/cpp%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.md#2532-this%E6%8C%87%E9%92%88%E6%A6%82%E5%BF%B5)**
 
+[c++ 那些事之 `this` 那些事](https://light-city.github.io/stories_things/basic_content/this/)
+
 1. 类的成员方法一经编译，所有的方法参数，都会加一个 `this` 指针，接收调用该方法的对象的地址
 2. `this` 指针是一个隐含于每一个非静态成员函数中的特殊指针。它指向调用该成员函数的那个对象。
 3. 当对一个对象调用成员函数时，编译程序先将对象的地址赋给 `this` 指针，然后调用成员函数，每次成员函数存取数据成员时，都隐式使用 `this` 指针。
@@ -1805,6 +1807,8 @@ int main() {
 ```
 
 ## 6.6 `static` 关键字
+
+[c++ 那些事之 `static` 那些事](https://light-city.github.io/stories_things/basic_content/static/)
 
 - **修饰普通变量**，修改变量的存储区域和生命周期，使变量存储在静态区，在 `main` 函数运行前就分配了空间，如果有初始值就用初始值初始化它，如果没有初始值系统用默认值初始化它。
 

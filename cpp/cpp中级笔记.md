@@ -826,6 +826,8 @@ int sum(int a, int b) { return a + b; }
 
 ## 2.8 `inline` 函数
 
+[c++ 那些事之 `inline` 那些事](https://light-city.github.io/stories_things/basic_content/inline/)
+
 - **特征**
 
   - 相当于把内联函数里面的内容写在调用内联函数处；

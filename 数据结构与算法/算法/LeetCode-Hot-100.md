@@ -14,6 +14,9 @@
   - [560. 和为 K 的子数组](#560-和为-k-的子数组)
   - [239. 滑动窗口最大值](#239-滑动窗口最大值)
   - [76. 最小覆盖子串](#76-最小覆盖子串)
+- [链表](#链表)
+- [回溯](#回溯)
+  - [22. 括号生成](#22-括号生成)
 
 ## 哈希
 
@@ -151,3 +154,73 @@ public:
 ### [239. 滑动窗口最大值](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/代码随想录.md#239-滑动窗口最大值)
 
 ### [76. 最小覆盖子串](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/代码随想录.md#76-最小覆盖子串)
+
+## 链表
+
+[23. 合并 K 个升序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists/)
+
+```cpp
+class Solution {
+public:
+  struct compare { // min heap
+    bool operator()(const ListNode *l, const ListNode *r) const {
+      return l->val > r->val;
+    }
+  };
+
+  ListNode *mergeKLists(vector<ListNode *> &lists) {
+    priority_queue<ListNode *, vector<ListNode *>, compare> pq;
+    ListNode *dummyHead = new ListNode();
+    ListNode *p = dummyHead;
+
+    for (const auto &head : lists)
+      if (head) pq.push(head);
+
+    while (!pq.empty()) {
+      ListNode *cur = pq.top();
+      pq.pop();
+      if (cur->next) pq.push(cur->next);
+      p->next = cur;
+      p = p->next;
+    }
+    return dummyHead->next;
+  }
+};
+```
+
+## 回溯
+
+### 22. 括号生成
+
+[22. 括号生成](https://leetcode.cn/problems/generate-parentheses/description/?envType=study-plan-v2&envId=top-100-liked)
+
+**_cpp_**
+
+```cpp
+class Solution {
+private:
+  string path;
+  vector<string> res;
+  void backtracking(int vec[2], int startIndex, int &length) {
+    if (path.size() == length) {
+      res.emplace_back(path);
+      return;
+    }
+    for (int i = 0; i < 2; ++i) {
+      if (i == 0 && vec[i] <= 0) continue;
+      if (i == 1 && vec[i] <= vec[0]) continue;
+      path += i == 0 ? "(" : ")"; --vec[i];
+      backtracking(vec, startIndex + 1, length);
+      path.pop_back(); ++vec[i];
+    }
+  }
+
+public:
+  vector<string> generateParenthesis(int n) {
+    int length = n * 2;
+    int vec[2] = {n, n};
+    backtracking(vec, 0, length);
+    return res;
+  }
+};
+```

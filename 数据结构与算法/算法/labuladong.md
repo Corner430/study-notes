@@ -2,6 +2,7 @@
   - [167. 两数之和 II - 输入有序数组](#167-两数之和-ii---输入有序数组)
   - [344. 反转字符串](#344-反转字符串)
   - [5. 最长回文子串](#5-最长回文子串)
+  - [240. 搜索二维矩阵 II](#240-搜索二维矩阵-ii)
 - [2 链表](#2-链表)
   - [83. 删除排序链表中的重复元素](#83-删除排序链表中的重复元素)
   - [92. 反转链表 II](#92-反转链表-ii)
@@ -12,6 +13,7 @@
   - [86. 分隔链表](#86-分隔链表)
   - [876. 链表的中间结点](#876-链表的中间结点)
   - [234. 回文链表](#234-回文链表)
+  - [138. 随机链表的复制](#138-随机链表的复制)
 
 ## 1 数组
 
@@ -263,6 +265,27 @@ var longestPalindrome = function (s) {
     length = lengthTemp;
   }
   return s.substring(startIndex, startIndex + length);
+};
+```
+
+### 240. 搜索二维矩阵 II
+
+[240. 搜索二维矩阵 II](https://leetcode-cn.com/problems/search-a-2d-matrix-ii/description/)
+
+```cpp
+/* 从右上角开始搜索，如果当前元素大于 target，那么向左移动一列；
+ * 如果当前元素小于 target，那么向下移动一行。
+ */
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int i = 0, j = matrix[0].size() - 1;
+        while (i < matrix.size() && j >= 0)
+            if (matrix[i][j] == target) return true;
+            else if (matrix[i][j] > target) --j;
+            else ++i;
+        return false;
+    }
 };
 ```
 
@@ -894,3 +917,46 @@ public:
   }
 };
 ```
+
+### 138. 随机链表的复制
+
+[138. 随机链表的复制](https://leetcode-cn.com/problems/copy-list-with-random-pointer/description/)
+
+```cpp
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+/*
+ * 一个哈希表 + 两次遍历。
+ * 第一次遍历专门克隆节点，借助哈希表把原始节点和克隆节点的映射存储起来；
+ * 第二次专门组装节点，照着原数据结构的样子，把克隆节点的指针组装起来。
+ */
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        unordered_map<Node *, Node *> umap;
+        for (Node *p = head; p; p = p->next)    // 原链表和新链表之间的映射
+            umap[p] = new Node(p->val);
+        for (Node *p = head; p; p = p->next) {
+            umap[p]->next = umap[p->next];
+            umap[p]->random = umap[p->random];
+        }
+        return umap[head];
+    }
+};
+```
+

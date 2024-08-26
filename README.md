@@ -14,9 +14,11 @@
 - [9 数据库](#9-数据库)
   - [MySQL](#mysql)
   - [MongoDB](#mongodb)
+  - [Redis](#redis)
 - [10 设计模式](#10-设计模式)
 - [11 前端](#11-前端)
   - [HTML 和 CSS](#html-和-css)
+- [12 分布式](#12-分布式)
   - [JavaScript](#javascript)
 - [References](#references)
 
@@ -64,10 +66,14 @@
 - [线程池](https://github.com/Corner430/study-notes/blob/main/cpp/线程池.md)
 - [基于 muduo 的集群聊天服务器](https://github.com/Corner430/chatserver)
 - [重构 muduo 网络库](https://github.com/Corner430/mymuduo)
+- [rpc 框架](https://github.com/Corner430/mprpc)
 
 ## 5 golang
 
-[Go 语言中文文档](https://www.topgoer.com/)
+- [Go 速成](https://www.aqee.net/go/a-tour-of-go/#1)
+- [Go 语言中文文档](https://www.topgoer.com/)
+- [Go Guide](https://github.com/coderit666/GoGuide)
+- [《The Way to Go》中文译本，中文正式名《Go 入门指南》](https://github.com/unknwon/the-way-to-go_ZH_CN)
 
 ## 6 工具
 
@@ -97,7 +103,6 @@
 - [《网络是怎样连接的》](https://github.com/Corner430/study-notes/blob/main/book.md#网络是怎样连接的)
 - [《计算机网络 第七版（谢希仁）》](https://github.com/Corner430/study-notes/blob/main/book.md#计算机网络)
 - [《TCP/IP 网络编程》](https://github.com/Corner430/study-notes/blob/main/book.md#TCP-IP网络编程)
-
 - [《网络是怎样连接的》学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/网络是怎样连接的学习笔记.md)
 - [计算机网络学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络学习笔记.md)
 - [TCP/IP 网络编程学习笔记](https://github.com/Corner430/TCP-IP-NetworkNote)
@@ -109,10 +114,15 @@
 - [《MySQL 必知必会》](https://github.com/Corner430/study-notes/blob/main/book.md#MySQL必知必会)
 - [《数据库系统概念》](https://github.com/Corner430/study-notes/blob/main/book.md#数据库系统概念)
 - [MySQL 学习笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MySQL/Mysql学习笔记.md)
+- [小林 MySQL](https://xiaolincoding.com/mysql/)
 
 ### MongoDB
 
 - [MongoDB 学习笔记](https://github.com/Corner430/study-notes/blob/main/数据库/MongoDB/MongoDB学习笔记.md)
+
+### Redis
+
+- [小林 Redis](https://xiaolincoding.com/redis/)
 
 ## 10 设计模式
 
@@ -125,6 +135,10 @@
 
 - [HTML 学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/HTML学习笔记.md)
 - [CSS 学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/CSS学习笔记.md)
+
+## 12 分布式
+
+- [Zookeeper 原理详解](https://wxler.github.io/2021/03/01/175946/#42-zxid%E5%92%8Cmyid)
 
 ### JavaScript
 
@@ -142,4 +156,4 @@
 - [heibaiying/Full-Stack-Notes](https://github.com/heibaiying/Full-Stack-Notes)
 - [Python-100-Days](https://github.com/jackfrued/Python-100-Days)
 - [c++ 那些事](https://github.com/Light-City/CPlusPlusThings)
-[Go 语言中文文档](https://www.topgoer.com/)
+- [Go 语言中文文档](https://www.topgoer.com/)

@@ -5,20 +5,21 @@
 - [3 python](#3-python)
 - [4 cpp](#4-cpp)
 - [5 golang](#5-golang)
-- [6 工具](#6-工具)
+- [6 java](#6-java)
+- [7 工具](#7-工具)
   - [git](#git)
-- [7 数据结构与算法](#7-数据结构与算法)
+- [8 数据结构与算法](#8-数据结构与算法)
   - [数据结构](#数据结构)
   - [算法](#算法)
-- [8 计算机网络](#8-计算机网络)
-- [9 数据库](#9-数据库)
+- [9 计算机网络](#9-计算机网络)
+- [10 数据库](#10-数据库)
   - [MySQL](#mysql)
   - [MongoDB](#mongodb)
   - [Redis](#redis)
-- [10 设计模式](#10-设计模式)
-- [11 前端](#11-前端)
+- [11 设计模式](#11-设计模式)
+- [12 前端](#12-前端)
   - [HTML 和 CSS](#html-和-css)
-- [12 分布式](#12-分布式)
+- [13 分布式](#13-分布式)
   - [JavaScript](#javascript)
 - [References](#references)
 
@@ -71,17 +72,22 @@
 ## 5 golang
 
 - [Go 速成](https://www.aqee.net/go/a-tour-of-go/#1)
+- [Go 语言趣学指南](https://github.com/Corner430/study-notes/blob/main/book.md#go-语言趣学指南)
 - [Go 语言中文文档](https://www.topgoer.com/)
 - [Go Guide](https://github.com/coderit666/GoGuide)
 - [《The Way to Go》中文译本，中文正式名《Go 入门指南》](https://github.com/unknwon/the-way-to-go_ZH_CN)
 
-## 6 工具
+## 6 java
+
+- [java 核心技术](https://github.com/Corner430/study-notes/blob/main/book.md#java核心技术-卷i-基础知识)
+
+## 7 工具
 
 ### git
 
 - [git 笔记](https://github.com/Corner430/study-notes/blob/main/工具/git/git笔记.md)
 
-## 7 数据结构与算法
+## 8 数据结构与算法
 
 ### 数据结构
 
@@ -98,7 +104,7 @@
 - [每日一题](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/每日一题.md)
 - [笔试题](https://github.com/Corner430/study-notes/blob/main/数据结构与算法/算法/笔试题.md)
 
-## 8 计算机网络
+## 9 计算机网络
 
 - [《网络是怎样连接的》](https://github.com/Corner430/study-notes/blob/main/book.md#网络是怎样连接的)
 - [《计算机网络 第七版（谢希仁）》](https://github.com/Corner430/study-notes/blob/main/book.md#计算机网络)
@@ -107,7 +113,7 @@
 - [计算机网络学习笔记](https://github.com/Corner430/study-notes/blob/main/计算机网络/计算机网络学习笔记.md)
 - [TCP/IP 网络编程学习笔记](https://github.com/Corner430/TCP-IP-NetworkNote)
 
-## 9 数据库
+## 10 数据库
 
 ### MySQL
 
@@ -124,19 +130,19 @@
 
 - [小林 Redis](https://xiaolincoding.com/redis/)
 
-## 10 设计模式
+## 11 设计模式
 
 - [kama-DesignPattern](https://github.com/youngyangyang04/kama-DesignPattern?tab=readme-ov-file)
 - [设计模式学习笔记](https://github.com/Corner430/study-notes/blob/main/cpp/cpp高级笔记.md#5-设计模式)
 
-## 11 前端
+## 12 前端
 
 ### HTML 和 CSS
 
 - [HTML 学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/HTML学习笔记.md)
 - [CSS 学习笔记](https://github.com/Corner430/study-notes/blob/main/前端/HTML和CSS/CSS学习笔记.md)
 
-## 12 分布式
+## 13 分布式
 
 - [Zookeeper 原理详解](https://wxler.github.io/2021/03/01/175946/#42-zxid%E5%92%8Cmyid)
 

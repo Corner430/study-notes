@@ -15,10 +15,15 @@
   - [Linux 高性能服务器编程](#linux-高性能服务器编程)
 - [5 python](#5-python)
   - [python编程 从入门到实践 第2版](#python编程-从入门到实践-第2版)
-- [6 数据结构与算法](#6-数据结构与算法)
+- [6 go](#6-go)
+  - [Go 语言趣学指南](#go-语言趣学指南)
+  - [The Way to Go](#the-way-to-go)
+- [7 java](#7-java)
+  - [Java核心技术 卷I 基础知识](#java核心技术-卷i-基础知识)
+- [8 数据结构与算法](#8-数据结构与算法)
   - [大话数据结构](#大话数据结构)
   - [算法图解](#算法图解)
-- [7 数据库](#7-数据库)
+- [9 数据库](#9-数据库)
   - [MySQL必知必会](#mysql必知必会)
   - [数据库系统概念 第六版](#数据库系统概念-第六版)
 
@@ -56,13 +61,23 @@
 
 ### [python编程 从入门到实践 第2版](https://weread.qq.com/web/reader/08232ac0720befa90825d88)
 
-## 6 数据结构与算法
+## 6 go
+
+### [Go 语言趣学指南](https://1drv.ms/b/c/48c45a7df562c5ce/EdMlagDmD0pEr1MHIFHGAs4BJYwo5FRZ1WgRwSapfsmxqQ?e=eIZhio)
+
+### [The Way to Go](https://github.com/Unknwon/the-way-to-go_ZH_CN)
+
+## 7 java
+
+### [Java核心技术 卷I 基础知识](https://1drv.ms/b/c/48c45a7df562c5ce/EZDCAW7hJdJHlHybveeiDVEBUcn6AxZCFCAHaA6e9zGGVQ?e=IN6bxb)
+
+## 8 数据结构与算法
 
 ### [大话数据结构](https://weread.qq.com/web/bookDetail/f7c324d0813ab6bb7g017833)
 
 ### [算法图解](https://weread.qq.com/web/bookDetail/fbf32b80715c0184fbff41f)
 
-## 7 数据库
+## 9 数据库
 
 ### [MySQL必知必会](https://weread.qq.com/web/bookDetail/929321f0715c01b5929bd3f)
 
